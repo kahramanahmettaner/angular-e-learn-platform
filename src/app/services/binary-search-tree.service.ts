@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { INode } from '../models/Node.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
+import { TreeState } from '../models/TreeState.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -249,4 +250,19 @@ export class BinarySearchTreeService {
       this.createTreeFromJSONRecursiv(right, parentNodeJSON.rightChild)
     }
   }
+
+  isTreeValid(): TreeState {
+    if (this.isEmpty()) { return TreeState.NO_ROOT }
+
+    if (this.getNumberOfConnectedNodes(this.rootNode) !== this.nodes.length) { return TreeState.INVALID }
+
+    return TreeState.VALID
+  }
+
+  getNumberOfConnectedNodes(currentNode: INode | null): number {
+    if (currentNode === null ) { return 0 }
+
+    return 1 + this.getNumberOfConnectedNodes(currentNode.leftChild) + this.getNumberOfConnectedNodes(currentNode.rightChild)
+  }
+
 }

@@ -7,6 +7,7 @@ import { IPosition } from './models/Position.interface';
 import { ISize } from './models/Size.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TreeState } from './models/TreeState.enum';
 
 @Component({
   selector: 'app-root',
@@ -46,12 +47,24 @@ export class AppComponent implements AfterViewInit {
   }
 
   onJSONToConsoleClick() {
-    console.log('JSON Output for the tree:', this.bstService.getTreeStructure())
-    alert('Die Ausgabe ist in der Konsole')
+    if (this.bstService.isTreeValid() === TreeState.VALID) {
+      console.log('JSON Output for the tree:', this.bstService.getTreeStructure())
+      alert('Die Ausgabe ist in der Konsole')
+    } else if (this.bstService.isTreeValid() === TreeState.INVALID) {
+      alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nMöglicherweise gibt es Knoten, die ausgehend vom Wurzeknoten nicht erreichbar sind.")
+    } else {
+      alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nEntweder existiert kein Wurzelknoten oder es gibt keine Knoten die miteinander verbunden sind.")
+    }
   }
 
   onDownloadAsJSONClick() {
+    if (this.bstService.isTreeValid() === TreeState.VALID) {
       this.bstService.downloadTreeAsJSON()
+    } else if (this.bstService.isTreeValid() === TreeState.INVALID) {
+      alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nMöglicherweise gibt es Knoten, die ausgehend vom Wurzeknoten nicht erreichbar sind.")
+    } else {
+      alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nEntweder existiert kein Wurzelknoten oder es gibt keine Knoten die miteinander verbunden sind.")
+    }
   }
 
   onJSONFileSelected(event: any) {
