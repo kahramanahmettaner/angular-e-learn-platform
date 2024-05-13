@@ -120,6 +120,12 @@ export class BinarySearchTreeService {
     const nodeStructure: any = {
       nodeId: node.nodeId,
       value: node.value,
+      // ###################
+      // TODO: all three attributes are necessary?
+      position: node.position,
+      size: node.size,
+      center: node.center,
+      // ###################
       leftChild: this.constructTreeStructure(node.leftChild), // Recursively construct JSON for left child
       rightChild: this.constructTreeStructure(node.rightChild) // Recursively construct JSON for right child
     };
@@ -155,5 +161,23 @@ export class BinarySearchTreeService {
       y: position.y + (size.height / 2)
     };
     return center;
+  }
+
+
+  downloadTreeAsJSON() {
+    // prepare
+    const treeStructure = this.getTreeStructure();
+    const json = JSON.stringify(treeStructure, null, 2);
+    
+    const blob = new Blob([json], { type: 'application/json' });
+    
+    // download
+    const link = document.createElement('a');
+    link.download = 'binary_search_tree.json';
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
   }
 }

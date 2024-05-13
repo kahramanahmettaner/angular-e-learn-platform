@@ -45,9 +45,13 @@ export class AppComponent implements AfterViewInit {
     }, 0);
   }
 
-  onBtnClick() {
+  onJSONToConsoleClick() {
     console.log('JSON Output for the tree:', this.bstService.getTreeStructure())
     alert('Die Ausgabe ist in der Konsole')
+  }
+
+  onDownloadAsJSONClick() {
+      this.bstService.downloadTreeAsJSON()
   }
 
   // TODO: for the functioanlities which are not implemented
