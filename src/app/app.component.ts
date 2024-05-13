@@ -54,6 +54,24 @@ export class AppComponent implements AfterViewInit {
       this.bstService.downloadTreeAsJSON()
   }
 
+  onJSONFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.readFile(file);
+    }
+  }
+
+  private readFile(file: File) {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const fileContent = e.target.result;
+      this.bstService.createTreeFromJSON(fileContent);
+    };
+
+    reader.readAsText(file);
+  }
+
   // TODO: for the functioanlities which are not implemented
   notImplemented(text: string){
     alert(text)

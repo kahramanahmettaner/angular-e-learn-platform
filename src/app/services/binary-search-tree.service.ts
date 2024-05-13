@@ -180,4 +180,73 @@ export class BinarySearchTreeService {
     // Clean up
     window.URL.revokeObjectURL(link.href);
   }
+
+  createTreeFromJSON(json: string, parentId: number = -1) {
+
+    try {
+      const rootNodeJSON = JSON.parse(json); // Parse JSON string to object
+      if (!rootNodeJSON) {
+        throw new Error('Invalid JSON data');
+      }
+
+      // clean the current state 
+      this.nodes.splice(0, this.nodes.length);
+      this.rootNode = null
+
+
+      if (rootNodeJSON != null) {
+        
+        // create new Object because directly using the ones from json causes some issues
+        this.rootNode = {
+          nodeId: rootNodeJSON.nodeId, 
+          value: rootNodeJSON.value,
+          parent: null,
+          leftChild: null,
+          rightChild: null,
+          position: rootNodeJSON.position,
+          size: rootNodeJSON.size,
+          center: rootNodeJSON.center
+        } 
+        this.createTreeFromJSONRecursiv(this.rootNode, rootNodeJSON)
+      }
+
+    } catch (error) {
+      console.error('Error parsing JSON data:', error);
+    }
+  }
+
+  private createTreeFromJSONRecursiv(parentNode: INode, parentNodeJSON: INode){
+
+    this.nodes.push(parentNode)
+    
+    if (parentNodeJSON.leftChild !== null) {
+      const left: INode = {
+        nodeId: parentNodeJSON?.leftChild.nodeId, 
+        value: parentNodeJSON?.leftChild.value,
+        parent: parentNode,
+        leftChild: null,
+        rightChild: null,
+        position: parentNodeJSON?.leftChild.position,
+        size: parentNodeJSON?.leftChild.size,
+        center: parentNodeJSON?.leftChild.center
+      } 
+      parentNode.leftChild = left
+      this.createTreeFromJSONRecursiv(left, parentNodeJSON.leftChild)
+    }
+
+    if (parentNodeJSON.rightChild !== null) {
+      const right: INode = {
+        nodeId: parentNodeJSON?.rightChild.nodeId, 
+        value: parentNodeJSON?.rightChild.value,
+        parent: parentNode,
+        leftChild: null,
+        rightChild: null,
+        position: parentNodeJSON?.rightChild.position,
+        size: parentNodeJSON?.rightChild.size,
+        center: parentNodeJSON?.rightChild.center
+      }
+      parentNode.rightChild = right
+      this.createTreeFromJSONRecursiv(right, parentNodeJSON.rightChild)
+    }
+  }
 }
