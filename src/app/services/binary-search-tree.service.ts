@@ -38,7 +38,7 @@ export class BinarySearchTreeService {
   deleteNode(node: INode) {
     
     if (this.rootNode === node) {
-      this.rootNode === null;
+      this.rootNode = null;
       // TODO: use modal to get the new root node 
       // for instance, there is no rootNode until any nodes connected to each other
     }
