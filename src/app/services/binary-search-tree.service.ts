@@ -4,6 +4,7 @@ import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
 import { TreeState } from '../models/TreeState.enum';
 import { INewLink } from '../models/NewLink.interface';
+import { ChildRole } from '../models/ChildRole.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,28 @@ export class BinarySearchTreeService {
   
   }
 
-  addNode(position: IPosition, size: ISize) {
-    
+  addNode(newNodeAttributes: Partial<INode>, childRole: ChildRole) {
+
+    // Destructure the attributes and assign default values if they are undefined
+    const { 
+      value = '',
+      parent = null,
+      leftChild = null,
+      rightChild = null,
+      position = { x: 0, y: 0},
+      size = { width: 100, height: 100 }, // TODO: 
+    } = newNodeAttributes;
+
+    // Check if childRole and parent are suitable for each other
+    if ((parent === null && (childRole === ChildRole.LEFT_CHILD || childRole === ChildRole.RIGHT_CHILD)) ||
+        (parent !== null && childRole === ChildRole.NO_PARENT)) {
+      throw new Error('Invalid parent-child relationship');
+    }
+
+    // Generate new node
     const newNode: INode = {
       nodeId: this.idCounter,
-      value: '',
+      value: value,
       parent: null,
       leftChild: null,
       rightChild: null,
@@ -31,11 +49,56 @@ export class BinarySearchTreeService {
       center: this.calculateCenter(position, size)
     }
 
+    // Increment id counter for the next nodes
     this.idCounter += 1;
-    //console.log(newNode)
+
+    // Add the node and adjust the relations of the previous and current parents and childs
     this.nodes.push(newNode);
+    this.connectNodes(newNode, leftChild, ChildRole.LEFT_CHILD);
+    this.connectNodes(newNode, rightChild, ChildRole.RIGHT_CHILD);
+    this.connectNodes(parent, newNode, childRole);
+    //this.resolveRelationConflicts(newNode, childRole);
+
+    // TODO: In which cases should be rootNode set?
+    if (this.rootNode === null) { 
+      this.rootNode = newNode; 
+    }
   }
 
+  connectNodes(parent: INode | null, child: INode | null, childRole: ChildRole) {
+    if (parent === null || child === null || childRole === ChildRole.NO_PARENT) {
+      // throw new Error('For a new link parent and one of the children are required!')
+      return
+    }
+
+    // TODO: check if the parent has parent recursively and set the root node if there is no parent anymore
+    // first link ever or parent to root node
+    if (this.rootNode === null || this.rootNode === child) { 
+      this.rootNode = parent;
+    }
+
+    if (childRole === ChildRole.LEFT_CHILD) {
+      
+      if (parent.leftChild !== null) { parent.leftChild.parent = null }
+      if (child.parent != null) { 
+        if (child.parent.leftChild === child) { child.parent.leftChild = null }
+        if (child.parent.rightChild === child) { child.parent.rightChild = null }
+      }
+
+      parent.leftChild = child
+      child.parent = parent
+    } else {
+      
+      if (parent.rightChild !== null) { parent.rightChild.parent = null }
+      if (child.parent != null) { 
+        if (child.parent.leftChild === child) { child.parent.leftChild = null }
+        if (child.parent.rightChild === child) { child.parent.rightChild = null }
+      }
+
+      parent.rightChild = child
+      child.parent = parent
+    }
+  }
   
   deleteNode(node: INode) {
     
@@ -66,43 +129,6 @@ export class BinarySearchTreeService {
   getRootNode() {
     return this.rootNode;
   }
-  
-  insertToTree( 
-    parent: INode | null = null,
-    child: INode | null = null, 
-    isLeftChild: boolean
-  ) {
-    if (parent === null || child === null) {
-      throw new Error('For a new link parent and one of the children are required!')
-    }
-
-    // first link ever or parent to root node
-    if (this.rootNode === null || this.rootNode === child) { 
-      this.rootNode = parent;
-    }
-
-    if (isLeftChild) {
-      
-      if (parent.leftChild !== null) { parent.leftChild.parent = null }
-      if (child.parent != null) { 
-        if (child.parent.leftChild === child) { child.parent.leftChild = null }
-        if (child.parent.rightChild === child) { child.parent.rightChild = null }
-      }
-
-      parent.leftChild = child
-      child.parent = parent
-    } else {
-      
-      if (parent.rightChild !== null) { parent.rightChild.parent = null }
-      if (child.parent != null) { 
-        if (child.parent.leftChild === child) { child.parent.leftChild = null }
-        if (child.parent.rightChild === child) { child.parent.rightChild = null }
-      }
-
-      parent.rightChild = child
-      child.parent = parent
-    }
-}
 
   // Function to return the JSON structure of the tree starting from the root node
   getTreeStructure(): any {
@@ -137,7 +163,7 @@ export class BinarySearchTreeService {
 
   
   // ############################################
-  // extra functionalities to ise in future
+  // extra functionalities to use in future
   // ############################################
 
   preOrder() {
@@ -271,7 +297,7 @@ export class BinarySearchTreeService {
   }
 
   // new link
-  private newLink: INewLink = { started: false, parent: null, child: null, isLeftChild: true }
+  private newLink: INewLink = { started: false, parent: null, child: null, childRole: ChildRole.NO_PARENT }
 
   getNewLink() {
     return this.newLink
@@ -281,16 +307,14 @@ export class BinarySearchTreeService {
     this.newLink.started = false;
     this.newLink.parent = null;
     this.newLink.child = null;
-    this.newLink.isLeftChild = true;
+    this.newLink.childRole = ChildRole.NO_PARENT;
   }
 
   updateNewLink( newValues: Partial<INewLink> ) {
-
-    const { started, parent, child, isLeftChild } = newValues;
+    const { started, parent, child, childRole } = newValues;
     if (started) { this.newLink.started = started; }
     if (parent) { this.newLink.parent = parent; }
     if (child) { this.newLink.child = child; }
-    if (isLeftChild) { this.newLink.isLeftChild = isLeftChild; }
-
+    if (childRole) { this.newLink.childRole = childRole; }
   }
 }

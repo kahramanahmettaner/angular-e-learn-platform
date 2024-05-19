@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { TreeState } from './models/TreeState.enum';
 import { NodeBinarySearchTreeComponent } from './node-binary-search-tree/node-binary-search-tree.component';
 import { INewLink } from './models/NewLink.interface';
+import { ChildRole } from './models/ChildRole.enum';
 
 @Component({
   selector: 'app-root',
@@ -70,9 +71,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   // #############################
   // Functions for interactions with UI
 
+  // TODO: is this function really required?
   // helps to do specific operations whenever adding new node
   addNewNode(position: IPosition, size: ISize) {
-    this.bstService.addNode(position, size);
+    
+    //this.bstService.addNode({ position, size });
 
     //####this.nodeComponents.last.nodeValueInput.nativeElement.focus();
 
@@ -222,7 +225,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     // but this causes that the very first element can not being added in tree
     //this.bstService.addNode(newNodePosition, newNodeSize)
     event.source.reset()
-    this.addNewNode(newNodePosition, newNodeSize)
+
+    this.bstService.addNode({ position: newNodePosition, size: newNodeSize }, ChildRole.NO_PARENT)
   }
 
   calculateUI() {

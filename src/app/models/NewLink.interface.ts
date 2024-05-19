@@ -1,8 +1,9 @@
+import { ChildRole } from "./ChildRole.enum";
 import { INode } from "./Node.interface";
 
 export interface INewLink {
     started: boolean; 
     parent: INode | null; 
     child: INode | null; 
-    isLeftChild: boolean;
+    childRole: ChildRole;
 }

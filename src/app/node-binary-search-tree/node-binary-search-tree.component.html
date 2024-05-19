@@ -35,7 +35,7 @@
         <!-- Generate new node connected to current node -->
         <div 
             class="left-parent-new container-item" 
-            (click)="onParentNewClick($event, false)" 
+            (click)="onNewNodeClick($event, { parentRole: ParentRole.PARENT_OF_RIGHT_CHILD })" 
             title="Neuen Elternknoten erzeugen"
             [ngStyle]="{display: (!newLink.started && node.parent === null) ? 'block' : 'none'}"
         >
@@ -45,7 +45,7 @@
         </div>
         <div 
             class="right-parent-new container-item" 
-            (click)="onParentNewClick($event, true)" 
+            (click)="onNewNodeClick($event, { parentRole: ParentRole.PARENT_OF_LEFT_CHILD })" 
             title="Neuen Elternknoten erzeugen"
             [ngStyle]="{display: (!newLink.started && node.parent === null) ? 'block' : 'none'}"
         >
@@ -56,7 +56,7 @@
 
         <div 
             class="left-child-new container-item" 
-            (click)="onLeftChildNewClick($event)" 
+            (click)="onNewNodeClick($event, { childRole: ChildRole.LEFT_CHILD })" 
             title="Neuen linken Kindknoten erzeugen"
             [ngStyle]="{display: (!newLink.started && node.leftChild === null) ? 'block' : 'none'}"
         >
@@ -67,7 +67,7 @@
 
         <div 
             class="right-child-new container-item" 
-            (click)="onRightChildNewClick($event)" 
+            (click)="onNewNodeClick($event, { childRole: ChildRole.RIGHT_CHILD })" 
             title="Neuen rechten Kindknoten erzeugen"
             [ngStyle]="{display: (!newLink.started && node.rightChild === null) ? 'block' : 'none'}"
         >

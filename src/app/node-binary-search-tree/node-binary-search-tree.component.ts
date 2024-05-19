@@ -4,9 +4,10 @@ import { INode } from '../models/Node.interface';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ISize } from '../models/Size.interface';
 import { IPosition } from '../models/Position.interface';
 import { INewLink } from '../models/NewLink.interface';
+import { ChildRole } from '../models/ChildRole.enum';
+import { ParentRole } from '../models/ParentRole.enum';
 
 @Component({
   selector: 'app-node-binary-search-tree',
@@ -16,6 +17,11 @@ import { INewLink } from '../models/NewLink.interface';
   styleUrl: './node-binary-search-tree.component.css'
 })
 export class NodeBinarySearchTreeComponent implements OnInit {
+
+  // #############################
+  // Expose the ParentRole and ChildRole enums to the template
+  public ParentRole = ParentRole;
+  public ChildRole = ChildRole;
 
   // #############################
   // References for HTML Elements
@@ -87,181 +93,181 @@ export class NodeBinarySearchTreeComponent implements OnInit {
     this.node.center = this.bstService.calculateCenter(this.node.position, this.node.size)
   }
 
-  // TODO: do not have to pass node as input parameter because it is already in component
-  /*
-  onNewNodeClick(event:any, node:INode, newNodeRelationship: NodeRelation) {
 
-    // calculate position
-    let pos: IPosition = {
-      x: node.position.x + 130,
-      y: node.position.y -130,
+  onNewNodeClick(event:any, role: Partial<{childRole: ChildRole, parentRole: ParentRole}>) {
+    
+    const { childRole = ChildRole.NO_PARENT, parentRole = ParentRole.NO_CHILD } = role;
+
+    // Check if the parameter childRole and parentRole are suitable
+    if ((childRole !== ChildRole.NO_PARENT && parentRole !== ParentRole.NO_CHILD) ||
+        (childRole === ChildRole.NO_PARENT && parentRole === ParentRole.NO_CHILD)) {
+      throw new Error('Invalid role configuration: Only one of childRole or parentRole must be set.');
     }
 
-    // TODO: Size of the currentNode is beeing used right now
-    const size: ISize = {
-      width: node.size.width,
-      height: node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(this.workspaceElements[this.workspaceElements.length - 1], node, isLeftChild)
-  }
-  */
+    // TODO: Size is not being passed and the default value in the service (100, 100) is being used
 
 
-  onParentNewClick(event:any, isLeftChild: boolean) {
+    // New node will be leftChild of the current node
+    if (childRole === ChildRole.LEFT_CHILD) {
 
-    let pos:IPosition = {
-      x: this.node.position.x + 130,
-      y: this.node.position.y -130,
-    }
-    if (!isLeftChild ) {
-      pos = {
+      // Calculate position of the new node based on the current node
+      let position: IPosition = {
         x: this.node.position.x - 130,
-        y: this.node.position.y -130,
+        y: this.node.position.y + 130,
       }
+
+      // Add the node
+      this.bstService.addNode({ position, parent: this.node }, childRole)
     }
+    
+    // New node will be rightChild of the current node
+    else if (childRole === ChildRole.RIGHT_CHILD) {
 
-    const size:ISize = {
-      width: this.node.size.width,
-      height: this.node.size.height,
-    }
-    this.addNewNode(pos, size)
-
-    // TODO: do this in service
-
-    this.bstService.insertToTree(this.bstService.getRecentNode(), this.node, isLeftChild)
-  }
-
-  onRightChildNewClick(event:any) {
-    const pos:IPosition = {
-      x: this.node.position.x +130,
-      y: this.node.position.y +130,
-    }
-    const size:ISize = {
-      width: this.node.size.width,
-      height: this.node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(this.node, this.bstService.getRecentNode(), false)
-  }
-
-  onLeftChildNewClick(event:any) {
-    const pos:IPosition = {
-      x: this.node.position.x -130,
-      y: this.node.position.y + 130,
-    }
-    const size:ISize = {
-      width: this.node.size.width,
-      height: this.node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(this.node, this.bstService.getRecentNode(), true)
-  }
-
-
-    // TODO: link Delete functions -> implement the logic in service
-    onParentLinkDeleteClick(event: MouseEvent) {
-      if ( this.node.parent !== null ) {
-        if (this.node.parent.leftChild === this.node) { this.node.parent.leftChild = null }
-        else if (this.node.parent.rightChild === this.node) { this.node.parent.rightChild = null }
+      // Calculate position of the new node based on the current node
+      let position: IPosition = {
+        x: this.node.position.x + 130,
+        y: this.node.position.y + 130,
       }
-      this.node.parent = null
+
+      // Add the node
+      this.bstService.addNode({ position, parent: this.node }, childRole)
     }
-  
-    
-    onLeftChildLinkDeleteClick(event: MouseEvent) {
-      if (this.node.leftChild) { this.node.leftChild.parent = null }
-      this.node.leftChild = null
+
+    // New node will be parent
+    // The current node will be leftChild
+    else if (parentRole === ParentRole.PARENT_OF_LEFT_CHILD) {
+
+      // Calculate position of the new node based on the current node
+      let position: IPosition = {
+        x: this.node.position.x + 130,
+        y: this.node.position.y - 130,
+      }
+
+      // Add the node
+      this.bstService.addNode({ position, leftChild: this.node }, ChildRole.NO_PARENT)
     }
-  
-    
-    onRightChildLinkDeleteClick(event: MouseEvent) {
-      if (this.node.rightChild) { this.node.rightChild.parent = null }
-      this.node.rightChild = null
+
+    // New node will be parent
+    // The current node will be leftChild
+    else if (parentRole === ParentRole.PARENT_OF_RIGHT_CHILD) {
+
+      // Calculate position of the new node based on the current node
+      let position: IPosition = {
+        x: this.node.position.x - 130,
+        y: this.node.position.y - 130,
+      }
+
+      // Add the node
+      this.bstService.addNode({ position, rightChild: this.node }, ChildRole.NO_PARENT)
     }
-  
-    onParentLinkClick(event: MouseEvent) {
-      if (this.newLink.started === false) {
-        this.bstService.updateNewLink({
-          started: true,
-          child: this.node, 
-        })
-      } else {
-        // TODO: do not throw an error but do something else
-        if (this.newLink.child !== null) { throw new Error('Child is already choosed') }
-        this.bstService.updateNewLink({
-          child: this.node,
-        })
       
-        console.log(this.newLink)
-        this.bstService.insertToTree(this.newLink.parent, this.newLink.child, this.newLink.isLeftChild)
-  
-        // reset new link
-        this.bstService.resetNewLink()
-      }
+      //this.addNewNode({pos, size})
+      //this.bstService.insertToTree(this.workspaceElements[this.workspaceElements.length - 1], node, isLeftChild)
+    
+  }
+
+  // TODO: link Delete functions -> implement the logic in service
+  onParentLinkDeleteClick(event: MouseEvent) {
+    if ( this.node.parent !== null ) {
+      if (this.node.parent.leftChild === this.node) { this.node.parent.leftChild = null }
+      else if (this.node.parent.rightChild === this.node) { this.node.parent.rightChild = null }
     }
+    this.node.parent = null
+  }
   
-    onLeftChildLinkClick(event: MouseEvent) {
-      if (this.newLink.started === false) {
-        this.bstService.updateNewLink({
-          started: true,
-          parent: this.node, 
-          isLeftChild: true,
-        })
-      } else {
+    
+  onLeftChildLinkDeleteClick(event: MouseEvent) {
+    if (this.node.leftChild) { this.node.leftChild.parent = null }
+    this.node.leftChild = null
+  }
+
   
+  onRightChildLinkDeleteClick(event: MouseEvent) {
+    if (this.node.rightChild) { this.node.rightChild.parent = null }
+    this.node.rightChild = null
+  }
+
+  onParentLinkClick(event: MouseEvent) {
+    if (this.newLink.started === false) {
+      this.bstService.updateNewLink({
+        started: true,
+        child: this.node, 
+      })
+    } else {
+      // TODO: do not throw an error but do something else
+      if (this.newLink.child !== null) { throw new Error('Child is already choosed') }
+      this.bstService.updateNewLink({
+        child: this.node,
+      })
+    
+      this.bstService.connectNodes(this.newLink.parent, this.newLink.child, this.newLink.childRole)
+
+      // reset new link
+      this.bstService.resetNewLink()
+    }
+  }
+
+  onLeftChildLinkClick(event: MouseEvent) {
+    if (this.newLink.started === false) {
+      this.bstService.updateNewLink({
+        started: true,
+        parent: this.node, 
+        childRole: ChildRole.LEFT_CHILD,
+      })
+    } else {
+
+      // TODO: do not throw an error but do something else
+      if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
+      this.bstService.updateNewLink({
+        parent: this.node,
+      })
+
+      this.bstService.connectNodes(this.newLink.parent, this.newLink.child, ChildRole.LEFT_CHILD)
+
+      // reset new link
+      this.bstService.resetNewLink()
+
+    }
+  }
+
+  onRightChildLinkClick(event: MouseEvent) {
+    if (this.newLink.started === false) {
+      this.bstService.updateNewLink({
+        started: true,
+        parent: this.node, 
+        childRole: ChildRole.RIGHT_CHILD,
+      })
+    } else {
         // TODO: do not throw an error but do something else
         if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
         this.bstService.updateNewLink({
           parent: this.node,
         })
-  
-        this.bstService.insertToTree(this.newLink.parent, this.newLink.child, true)
+
+        this.bstService.connectNodes(this.newLink.parent, this.newLink.child, ChildRole.RIGHT_CHILD)
   
         // reset new link
         this.bstService.resetNewLink()
-  
-      }
-    }
-  
-    onRightChildLinkClick(event: MouseEvent) {
-      if (this.newLink.started === false) {
-        this.bstService.updateNewLink({
-          started: true,
-          parent: this.node, 
-          isLeftChild: false,
-        })
-      } else {
-          // TODO: do not throw an error but do something else
-          if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
-          this.bstService.updateNewLink({
-            parent: this.node,
-          })
-
-          this.bstService.insertToTree(this.newLink.parent, this.newLink.child, false)
-    
-          // reset new link
-          this.bstService.resetNewLink()
-      }
-  
     }
 
-    onDeleteNodeClick(event:any) {
-      this.bstService.deleteNode(this.node)
-    }
+  }
+
+  onDeleteNodeClick(event:any) {
+    this.bstService.deleteNode(this.node)
+  }
   
 
-    onEditNodeValueClick() {
-      this.editNodeValue = true;
+  onEditNodeValueClick() {
+    this.editNodeValue = true;
 
-      setTimeout(() => {
-        this.nodeValueInput.nativeElement.focus();
-      }, 0);
-    }
+    setTimeout(() => {
+      this.nodeValueInput.nativeElement.focus();
+    }, 0);
+  }
   
-    // helps to do specific operations whenever adding new node
-    addNewNode(position: IPosition, size: ISize) {
-      this.bstService.addNode(position, size)
-    }
+  // helps to do specific operations whenever adding new node
+  // addNewNode(position: IPosition, size: ISize) {
+  //   this.bstService.addNode({ position, size })
+  // }
 }
 
