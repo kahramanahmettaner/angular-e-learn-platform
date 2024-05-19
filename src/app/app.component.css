@@ -5,32 +5,6 @@
     border-top: dotted #ccc 2px;
   }
 
-.node-div {
-    position: absolute; 
-    width: 100px;
-    height: 100px;
-    border: solid 1px #ccc;
-    border-radius: 20%;
-    color: rgba(0, 0, 0, 0.87);
-    cursor: move;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: #fff;
-    z-index: 1;
-    transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
-
-.node-div:hover {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
 .toolbar {
     display: flex;
     flex-direction: row;
@@ -92,87 +66,7 @@
     height: 50px;
     margin-right: 10px; 
 }
-
-.node-value {
-    width: 100%;
-    z-index: 1;
-}
-.node-value input {    
-    width: 100%;
-}
   
-.container {
-    position: absolute;
-    width: 170%;
-    height: 170%;
-    border-radius: 50%;
-    border: dotted #ccc 2px;
-}
-
-.container-item {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    padding: 6px;
-    border-radius: 50%;
-    border: solid silver 1px;
-    opacity: 0.4;
-}
-
-.container-item:hover {
-    opacity: 1;
-    transform: scale(1.2, 1.2);  
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.parent-link {
-    top: -15px;
-    left: 40%;
-}
-
-.left-parent-new {
-    top: 0px;
-    left: 20px;
-}
-
-.right-parent-new{
-    top: 0px;
-    right: 20px;
-}
-
-.delete {
-    top: 50px;
-    left: -15px;
-}
-
-.edit {
-    top: 50px;
-    right: -15px;
-}
-
-.left-child-link {
-    bottom: -10px;
-    left: 30px;
-}
-
-.left-child-new {
-    bottom: 30px;
-    left: -8px;
-}
-
-.right-child-link {
-    bottom: -10px;
-    right: 30px;
-}
-
-.right-child-new {
-    bottom: 30px;
-    right: -8px;
-}
-
 .svg {
     width: 100%;
     height: 100%;

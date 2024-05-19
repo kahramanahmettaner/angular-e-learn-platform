@@ -3,6 +3,7 @@ import { INode } from '../models/Node.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
 import { TreeState } from '../models/TreeState.enum';
+import { INewLink } from '../models/NewLink.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -265,4 +266,31 @@ export class BinarySearchTreeService {
     return 1 + this.getNumberOfConnectedNodes(currentNode.leftChild) + this.getNumberOfConnectedNodes(currentNode.rightChild)
   }
 
+  getRecentNode() {
+    return this.nodes[this.nodes.length - 1]
+  }
+
+  // new link
+  private newLink: INewLink = { started: false, parent: null, child: null, isLeftChild: true }
+
+  getNewLink() {
+    return this.newLink
+  }
+
+  resetNewLink() {
+    this.newLink.started = false;
+    this.newLink.parent = null;
+    this.newLink.child = null;
+    this.newLink.isLeftChild = true;
+  }
+
+  updateNewLink( newValues: Partial<INewLink> ) {
+
+    const { started, parent, child, isLeftChild } = newValues;
+    if (started) { this.newLink.started = started; }
+    if (parent) { this.newLink.parent = parent; }
+    if (child) { this.newLink.child = child; }
+    if (isLeftChild) { this.newLink.isLeftChild = isLeftChild; }
+
+  }
 }

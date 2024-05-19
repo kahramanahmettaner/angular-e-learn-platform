@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { BinarySearchTreeService } from './services/binary-search-tree.service';
@@ -8,41 +8,86 @@ import { ISize } from './models/Size.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TreeState } from './models/TreeState.enum';
+import { NodeBinarySearchTreeComponent } from './node-binary-search-tree/node-binary-search-tree.component';
+import { INewLink } from './models/NewLink.interface';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DragDropModule, CdkDrag, CommonModule, FormsModule],
+  imports: [RouterOutlet, DragDropModule, CdkDrag, CommonModule, FormsModule, NodeBinarySearchTreeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'angular-e-learn-platform';
-  
+
+  // #############################
+  // References for HTML Elements
   @ViewChild('workSpace') workSpace!: ElementRef;
-  @ViewChildren('nodeElements') nodeElements!: QueryList<ElementRef>;
   @ViewChildren('tool') toolElements!: QueryList<ElementRef>;
   @ViewChild('toolbar') toolbar!: ElementRef;
-  @ViewChildren('nodeValueInput') nodeValueInputs! : QueryList<ElementRef>;
+  @ViewChildren(NodeBinarySearchTreeComponent) nodeComponents!: QueryList<NodeBinarySearchTreeComponent>;
 
-  onEditNodeValueClick(index: number) {
-    this.editNodeValue = index
-    setTimeout(() => {
-      this.nodeValueInputs.get(index)?.nativeElement.focus()
-    }, 0);
+
+  // #############################
+  // Class properties
+  newLink: INewLink = this.bstService.getNewLink();
+
+
+  // #############################
+  // Constructor
+  constructor( private bstService: BinarySearchTreeService) { 
+
   }
+
+
+  // #############################
+  // Lifecycle hook methods
+
+  ngOnInit(): void {
+    // #############################
+    // Set up event listeners
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  ngOnDestroy() {
+    // #############################
+    // Remove event listeners
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+
+  // #############################
+  // Callback functions for event listeners
+  private onKeyDown = (event: KeyboardEvent) => {
+    // to cancel new link between nodes
+    if (event.key === 'Escape') {
+      if (this.newLink.started) { this.bstService.resetNewLink(); } 
+    }
+  }
+  
+
+  // #############################
+  // Functions for interactions with UI
 
   // helps to do specific operations whenever adding new node
   addNewNode(position: IPosition, size: ISize) {
-    this.bstService.addNode(position, size)
+    this.bstService.addNode(position, size);
+
+    //####this.nodeComponents.last.nodeValueInput.nativeElement.focus();
 
     // focus on the new node to add a value
-    this.editNodeValue = this.workspaceElements.length - 1
+
+    // TODO: you can activate it on ngOnInit 
+    // TODO: but how to deactivate the other ones?
+    
+    //####this.nodeComponents.last.editNodeValue = true;
     
     // TODO: find a better way
     // to be sure that the ui initialized
     setTimeout(() => {
-      this.nodeValueInputs.last.nativeElement.focus();
+      //####this.nodeComponents.last.nodeValueInput.nativeElement.focus();
+      //this.nodeValueInputs.last.nativeElement.focus();
     }, 0);
   }
 
@@ -90,192 +135,15 @@ export class AppComponent implements AfterViewInit {
     alert(text)
   }
 
-
-  newLink:{
-    started: boolean;
-    parent: INode | null;
-    child: INode | null;
-    isLeftChild: boolean;
-  } = {
-    started: false,
-    parent: null,
-    child: null,
-    isLeftChild: true
-  }
-
-  // TODO: link Delete functions -> implement the logic in service
-  onParentLinkDeleteClick(event: MouseEvent, node: INode) {
-    if ( node.parent !== null ) {
-      if (node.parent.leftChild === node) { node.parent.leftChild = null }
-      else if (node.parent.rightChild === node) { node.parent.rightChild = null }
-    }
-    node.parent = null
-  }
-
-  
-  onLeftChildLinkDeleteClick(event: MouseEvent, node: INode) {
-    if (node.leftChild) { node.leftChild.parent = null }
-    node.leftChild = null
-  }
-
-  
-  onRightChildLinkDeleteClick(event: MouseEvent, node: INode) {
-    if (node.rightChild) { node.rightChild.parent = null }
-    node.rightChild = null
-  }
-
-  onParentLinkClick(event: MouseEvent, node: INode) {
-    if (this.newLink.started === false) {
-      this.newLink.started = true;
-      this.newLink.child = node;
-    } else {
-      // TODO: do not throw an error but do something else
-      if (this.newLink.child !== null) { throw new Error('Child is already choosed') }
-      this.newLink.child = node;
-
-      this.bstService.insertToTree(this.newLink.parent, this.newLink.child, this.newLink.isLeftChild)
-
-      // reset new link
-      this.newLink = {
-        started: false,
-        parent: null,
-        child: null,
-        isLeftChild: true
-      }
-    }
-  }
-
-  onLeftChildLinkClick(event: MouseEvent, node: INode) {
-    if (this.newLink.started === false) {
-      this.newLink.started = true;
-      this.newLink.parent = node;
-      this.newLink.isLeftChild = true;
-    } else {
-
-      // TODO: do not throw an error but do something else
-      if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
-      this.newLink.parent = node;
-
-      this.bstService.insertToTree(this.newLink.parent, this.newLink.child, true)
-
-      // reset new link
-      this.newLink = {
-        started: false,
-        parent: null,
-        child: null,
-        isLeftChild: true
-      }
-
-    }
-  }
-
-  onRightChildLinkClick(event: MouseEvent, node: INode) {
-    if (this.newLink.started === false) {
-      this.newLink.started = true;
-      this.newLink.parent = node;
-      this.newLink.isLeftChild = false;
-    } else {
-        // TODO: do not throw an error but do something else
-        if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
-        this.newLink.parent = node;
-  
-        this.bstService.insertToTree(this.newLink.parent, this.newLink.child, false)
-  
-        // reset new link
-        this.newLink = {
-          started: false,
-          parent: null,
-          child: null,
-          isLeftChild: true
-        }
-    }
-
-  }
-
-  onRightChildNewClick(event:any, node:INode) {
-    const pos:IPosition = {
-      x: node.position.x +130,
-      y: node.position.y +130,
-    }
-    const size:ISize = {
-      width: node.size.width,
-      height: node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(node, this.workspaceElements[this.workspaceElements.length - 1], false)
-  }
-
-  onLeftChildNewClick(event:any, node:INode) {
-    const pos:IPosition = {
-      x: node.position.x -130,
-      y: node.position.y + 130,
-    }
-    const size:ISize = {
-      width: node.size.width,
-      height: node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(node, this.workspaceElements[this.workspaceElements.length - 1], true)
-  }
-
-  onParentNewClick(event:any, node:INode, isLeftChild: boolean) {
-
-    let pos:IPosition = {
-      x: node.position.x + 130,
-      y: node.position.y -130,
-    }
-    if (!isLeftChild ) {
-      pos = {
-        x: node.position.x - 130,
-        y: node.position.y -130,
-      }
-    }
-
-    const size:ISize = {
-      width: node.size.width,
-      height: node.size.height,
-    }
-    this.addNewNode(pos, size)
-    this.bstService.insertToTree(this.workspaceElements[this.workspaceElements.length - 1], node, isLeftChild)
-  }
-
-  onDeleteNodeClick(event:any, node:INode) {
-    this.bstService.deleteNode(node)
-  }
-
   onWorkSpaceClick(event: MouseEvent) {
     // TODO: implement onWorkspaceClick listener 
   }
   
-
-
   dragPosition = { x: 50, y:60 };
   difference = { x: 0, y: 0 };
   workSpaceRect = { startX: 0, startY: 0, endX: 0, endY: 0, width: 0, height: 0 };
   toolbarRect = { startX: 0, startY: 0, endX: 0, endY: 0, width: 0, height: 0 };
   // TODO: Find a proper way to listen to UI change to update workSpaceRect etc. 
-
-  constructor( private bstService: BinarySearchTreeService) { 
-    window.addEventListener('keydown', (event) => {
-      this.onKeyDown(event);
-    });
-  }
-
-  // to cancel new link between nodes
-  onKeyDown(event: KeyboardEvent) {
-
-    if (event.key === 'Escape') {
-
-      if (this.newLink.started) {
-        this.newLink = {
-          started: false,
-          parent: null,
-          child: null,
-          isLeftChild: true
-        }
-      } 
-    }
-  }
   
   ngAfterViewInit() {
     // TODO: implement to initialize UI etc.
@@ -289,16 +157,6 @@ export class AppComponent implements AfterViewInit {
     this.mouseY = event.clientY;
   }
 
-  active = -1;
-  editNodeValue = -1;
-  onFieldHover(event: any, index: number) {
-    this.active = index;
-  }
-
-  onFieldLeave(event: any) {
-    this.active = -1;
-  }
-
   toolbarElements: string[] = ["Toolbar1"]
   workspaceElements: INode[] = this.bstService.getNodesAsList();
 
@@ -308,35 +166,6 @@ export class AppComponent implements AfterViewInit {
     const offsetX = toolbarRect.left - workspaceRect.left;
     const offsetY = toolbarRect.top - workspaceRect.top;
   }
-
-  onClick(event: MouseEvent) {
-    
-  }
-
-  nodeOnDragStart(event: CdkDragStart) {
-    //console.log('drag start...');
-    //console.log(event.source.element);
-  }
-
-  nodeOnDragMove(event: CdkDragMove, node: INode) {
-    //console.log('drag move...');
-    //console.log($event);
-    node.position.x = event.source.getFreeDragPosition().x
-    node.position.y = event.source.getFreeDragPosition().y
-    node.center = this.bstService.calculateCenter(node.position, node.size)
-  }
-
-  // TODO: whenever you calculate something with toolbarElemenent you should consider the difference of toolbar and workspace
-  // TODO: find a proper way to fix this
-
-  nodeOnDragEnd(event: CdkDragEnd) {
-    //console.log('drag end...');
-    //console.log($event);
-    //console.log(event.source.getFreeDragPosition())
-    //this.addNode(event.source.getFreeDragPosition().x, event.source.getFreeDragPosition().y)
-    //event.source.reset()
-    //console.log(event.dropPoint)
-  }  
   
   toolOnDragStart(event: CdkDragStart) {
     //console.log('drag start...');

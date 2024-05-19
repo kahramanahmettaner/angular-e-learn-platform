@@ -1,4 +1,8 @@
+<!-- ################### -->
+<!-- Toolbar -->
 <div #toolbar class="toolbar">
+
+  <!-- ################### -->
   <!-- Elements in the toolbar -->
   <div class="tools">
     <div class="toolbar-item">
@@ -13,7 +17,12 @@
       <span>Neuer Knoten</span>
     </div>
   </div>
+  <!-- End - Elements -->
+  <!-- ################### -->
 
+
+  <!-- ################### -->
+  <!-- Functionalities (JSON-Output etc.) -->
   <div class="functionalities">
     <div class="functionality">
       <button class="image-button" (click)="onJSONToConsoleClick()">
@@ -51,12 +60,23 @@
       <span>Von JSON importieren</span>
     </div>
   </div>
-</div>
+  <!-- End - Functionalities -->
+  <!-- ################### -->
 
+</div>
+<!-- End - Toolbar -->
+<!-- ################### -->
+
+
+<!-- ################### -->
+<!-- Workspace -->
 <div #workSpace class="workspace-boundary" (mousemove)="onMouseMove($event)" (click)="onWorkSpaceClick($event)">
 
+
   <svg class="svg" xmlns="http://www.w3.org/2000/svg">
-    
+
+    <!-- ################### -->
+    <!-- Lines presenting existing relations between nodes -->
     @for(node of workspaceElements;track $index){
       @if(node.leftChild !== null){
       <line #nodeLines [attr.x1]="node.center.x" [attr.y1]="node.center.y" [attr.x2]="node.leftChild.center.x" [attr.y2]="node.leftChild.center.y"
@@ -67,7 +87,12 @@
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
       }
     }
+    <!-- End - Lines for existing relations -->
+    <!-- ################### -->
 
+    
+    <!-- ################### -->
+    <!-- Lines presenting new relations between nodes -->
     @if(newLink.started){
 
       @if (newLink.parent !== null) {
@@ -79,196 +104,20 @@
         style="stroke:rgb(129, 129, 129);stroke-width:2" />
       }
     }
+    <!-- End - Lines for new relations -->
+    <!-- ################### -->
   </svg>
 
 
+  <!-- ################### -->
+  <!-- Nodes in workspace -->
   @for(node of workspaceElements;track $index){
-  <div #nodeElements cdkDrag
-    [cdkDragFreeDragPosition]="node.position"
-
-    (mouseenter)="onFieldHover($event, $index)"
-
-    class="node-div" 
-    cdkDragBoundary=".workspace-boundary"  
-    (click)="onClick($event)"
-    (cdkDragStarted)="nodeOnDragStart($event)" 
-    (cdkDragMoved)="nodeOnDragMove($event,node)"
-    (cdkDragEnded)="nodeOnDragEnd($event)">
-
-    <div [ngStyle]="{display: editNodeValue === $index ? 'block' : 'none'}" class="node-value" (mouseenter)="onFieldHover($event, $index)" >
-      <form (submit)="editNodeValue=-1">
-        <input #nodeValueInput type="text" [(ngModel)]="node.value" name="value" placeholder="Wert eingeben"
-          (blur)="editNodeValue=-1"
-        />
-      </form>
-    </div>
-    <div [ngStyle]="{display: editNodeValue !== $index ? 'block' : 'none'}" class="node-value" (mouseenter)="onFieldHover($event, $index)" >
-      <span style="display: flex; justify-content: center;">{{ node.value }}</span>
-    </div>
-
-    
-    <div [ngStyle]="{display: active === $index ? 'block' : 'none'}" (mouseleave)="onFieldLeave($event)" class="container">  
-
-      <!-- Generate new Node connected to current node -->
-      <div 
-        class="left-parent-new container-item" 
-        (click)="onParentNewClick($event, node, false)" 
-        title="Neuen Elternknoten erzeugen"
-        [ngStyle]="{display: (!newLink.started && node.parent === null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-        </svg>
-      </div>
-      <div 
-        class="right-parent-new container-item" 
-        (click)="onParentNewClick($event, node, true)" 
-        title="Neuen Elternknoten erzeugen"
-        [ngStyle]="{display: (!newLink.started && node.parent === null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-        </svg>
-      </div>
-
-      <div 
-        class="left-child-new container-item" 
-        (click)="onLeftChildNewClick($event, node)" 
-        title="Neuen linken Kindknoten erzeugen"
-        [ngStyle]="{display: (!newLink.started && node.leftChild === null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-        </svg>
-      </div>
-
-      <div 
-        class="right-child-new container-item" 
-        (click)="onRightChildNewClick($event, node)" 
-        title="Neuen rechten Kindknoten erzeugen"
-        [ngStyle]="{display: (!newLink.started && node.rightChild === null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-        </svg>
-      </div>
-      <!-- ################### -->
-      <!-- ################### -->
-      
-      <!-- Delete an existing link between two nodes -->
-      <!-- TODO: classnames not proper
-            is there any other proper way to do this whole thing?
-            left parent or right parent minus ??
-      -->
-      <div 
-        class="left-parent-new container-item" 
-        (click)="onParentLinkDeleteClick($event, node)" 
-        title="Vom Elternknoten trennen"
-        [ngStyle]="{display: (!newLink.started && node.parent !== null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-        </svg>
-      </div>
-      <div 
-        class="right-parent-new container-item" 
-        (click)="onParentLinkDeleteClick($event, node)" 
-        title="Vom Elternknoten trennen"
-        [ngStyle]="{display: (!newLink.started && node.parent !== null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-        </svg>
-      </div>
-
-      <div 
-        class="left-child-new container-item" 
-        (click)="onLeftChildLinkDeleteClick($event, node)" 
-        title="Vom linken Kindknoten trennen"
-        [ngStyle]="{display: (!newLink.started && node.leftChild !== null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-        </svg>
-      </div>
-
-      <div 
-        class="right-child-new container-item" 
-        (click)="onRightChildLinkDeleteClick($event, node)" 
-        title="Vom rechten Kindknoten trennen"
-        [ngStyle]="{display: (!newLink.started && node.rightChild !== null) ? 'block' : 'none'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-        </svg>
-      </div>
-      <!-- ################### -->
-      <!-- ################### -->
-
-
-      <!-- Connect two existing nodes -->
-      <div 
-        class="parent-link container-item" 
-        (click)="onParentLinkClick($event, node)"
-        title="Mit einem Knoten verbinden"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
-        </svg>
-      </div>
-
-      <div
-        class="left-child-link container-item" 
-        (click)="onLeftChildLinkClick($event, node)"
-        title="Mit einem Knoten verbinden" 
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-left" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M2 13.5a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1H3.707L13.854 2.854a.5.5 0 0 0-.708-.708L3 12.293V7.5a.5.5 0 0 0-1 0z"/>
-        </svg>
-      </div>
-
-      <div 
-        class="right-child-link container-item" 
-        (click)="onRightChildLinkClick($event, node)"
-        title="Mit einem Knoten verbinden"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-right" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M14 13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h4.793L2.146 2.854a.5.5 0 1 1 .708-.708L13 12.293V7.5a.5.5 0 0 1 1 0z"/>
-        </svg>
-      </div>
-      
-      <!-- ################### -->
-      <!-- ################### -->
-
-
-      <!-- extra functionalities -->
-      <div 
-        class="delete container-item" 
-        title="Knoten löschen" 
-        (click)="onDeleteNodeClick($event, node)"
-        [ngStyle]="{display: newLink.started ? 'none' : 'block'}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-        </svg>
-      </div>
-
-      <div 
-        class="edit container-item" 
-        title="Den Wert ändern" 
-        (click)="onEditNodeValueClick($index)"
-        [ngStyle]="{display: newLink.started ? 'none' : 'block'}"
-        >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-        </svg>
-      </div>
-          
-      <!-- ################### -->
-      <!-- ################### -->
-
-    </div>
-  </div>
+    <app-node-binary-search-tree [node]="node" [index]="$index"/>
   }
+  <!-- End - Nodes -->
+  <!-- ################### -->
+
+
 </div>
+<!-- End - Workspace -->
+<!-- ################### -->
