@@ -5,6 +5,7 @@ import { ISize } from '../models/Size.interface';
 import { TreeState } from '../models/TreeState.enum';
 import { INewLink } from '../models/NewLink.interface';
 import { ChildRole } from '../models/ChildRole.enum';
+import { NodeRole } from '../models/NodeRole.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,29 @@ export class BinarySearchTreeService {
       child.parent = parent
     }
   }
+
+  disconnectNode(node: INode, roleToDisconnect: NodeRole, childRoleToDisconnect: ChildRole | null = null) {
+
+    // Disconnect from parent node
+    if (roleToDisconnect === NodeRole.PARENT) {
+      if (node.parent?.leftChild == node) { node.parent.leftChild = null; }
+      if (node.parent?.rightChild == node) { node.parent.rightChild = null; }
+      node.parent = null;
+      return
+    }
+
+    // Disconnect from child node
+    if (childRoleToDisconnect === null) { throw new Error('The child role is not provided that denotes which child will be disconnected from the node') }
+    if (childRoleToDisconnect === ChildRole.LEFT_CHILD && node.leftChild !== null) {
+      node.leftChild.parent = null;
+      node.leftChild = null;
+    }
+    if (childRoleToDisconnect === ChildRole.RIGHT_CHILD && node.rightChild !== null) {
+      node.rightChild.parent = null;
+      node.rightChild = null;
+    } 
+  }
+
   
   deleteNode(node: INode) {
     

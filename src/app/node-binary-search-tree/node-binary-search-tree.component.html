@@ -87,7 +87,7 @@
         -->
         <div 
             class="left-parent-new container-item" 
-            (click)="onParentLinkDeleteClick($event)" 
+            (click)="onDisconnectNodeClick($event, NodeRole.PARENT)" 
             title="Vom Elternknoten trennen"
             [ngStyle]="{display: (!newLink.started && node.parent !== null) ? 'block' : 'none'}"
         >
@@ -97,7 +97,7 @@
         </div>
         <div 
             class="right-parent-new container-item" 
-            (click)="onParentLinkDeleteClick($event)" 
+            (click)="onDisconnectNodeClick($event, NodeRole.PARENT)" 
             title="Vom Elternknoten trennen"
             [ngStyle]="{display: (!newLink.started && node.parent !== null) ? 'block' : 'none'}"
         >
@@ -108,7 +108,7 @@
 
         <div 
             class="left-child-new container-item" 
-            (click)="onLeftChildLinkDeleteClick($event)" 
+            (click)="onDisconnectNodeClick($event, NodeRole.CHILD, ChildRole.LEFT_CHILD)" 
             title="Vom linken Kindknoten trennen"
             [ngStyle]="{display: (!newLink.started && node.leftChild !== null) ? 'block' : 'none'}"
         >
@@ -119,7 +119,7 @@
 
         <div 
             class="right-child-new container-item" 
-            (click)="onRightChildLinkDeleteClick($event)" 
+            (click)="onDisconnectNodeClick($event, NodeRole.CHILD, ChildRole.RIGHT_CHILD)" 
             title="Vom rechten Kindknoten trennen"
             [ngStyle]="{display: (!newLink.started && node.rightChild !== null) ? 'block' : 'none'}"
         >

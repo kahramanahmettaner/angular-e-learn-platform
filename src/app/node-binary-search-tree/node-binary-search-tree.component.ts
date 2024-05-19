@@ -8,6 +8,7 @@ import { IPosition } from '../models/Position.interface';
 import { INewLink } from '../models/NewLink.interface';
 import { ChildRole } from '../models/ChildRole.enum';
 import { ParentRole } from '../models/ParentRole.enum';
+import { NodeRole } from '../models/NodeRole.enum';
 
 @Component({
   selector: 'app-node-binary-search-tree',
@@ -22,6 +23,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
   // Expose the ParentRole and ChildRole enums to the template
   public ParentRole = ParentRole;
   public ChildRole = ChildRole;
+  public NodeRole = NodeRole;
 
   // #############################
   // References for HTML Elements
@@ -166,25 +168,8 @@ export class NodeBinarySearchTreeComponent implements OnInit {
     
   }
 
-  // TODO: link Delete functions -> implement the logic in service
-  onParentLinkDeleteClick(event: MouseEvent) {
-    if ( this.node.parent !== null ) {
-      if (this.node.parent.leftChild === this.node) { this.node.parent.leftChild = null }
-      else if (this.node.parent.rightChild === this.node) { this.node.parent.rightChild = null }
-    }
-    this.node.parent = null
-  }
-  
-    
-  onLeftChildLinkDeleteClick(event: MouseEvent) {
-    if (this.node.leftChild) { this.node.leftChild.parent = null }
-    this.node.leftChild = null
-  }
-
-  
-  onRightChildLinkDeleteClick(event: MouseEvent) {
-    if (this.node.rightChild) { this.node.rightChild.parent = null }
-    this.node.rightChild = null
+  onDisconnectNodeClick(event: MouseEvent, roleToDisconnect: NodeRole, childRoleToDisconnect: ChildRole | null = null) {
+    this.bstService.disconnectNode(this.node, roleToDisconnect, childRoleToDisconnect);
   }
 
   onParentLinkClick(event: MouseEvent) {
