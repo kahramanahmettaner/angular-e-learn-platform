@@ -20,7 +20,7 @@ import { NodeRole } from '../models/NodeRole.enum';
 export class NodeBinarySearchTreeComponent implements OnInit {
 
   // #############################
-  // Expose the ParentRole and ChildRole enums to the template
+  // Expose the enums to the template
   public ParentRole = ParentRole;
   public ChildRole = ChildRole;
   public NodeRole = NodeRole;
@@ -60,8 +60,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
 
 
   // #############################
-  // Functions for interactions with UI
-
+  // Functions for interactions with node
   onFieldHover(event: any) {
     this.displayNodeToolbar = true;
   }
@@ -75,27 +74,23 @@ export class NodeBinarySearchTreeComponent implements OnInit {
   }
 
   nodeOnDragStart(event: CdkDragStart) {
-    //console.log('drag start...');
-    //console.log(event.source.element);
+    // Drag start...
   }
 
   nodeOnDragEnd(event: CdkDragEnd) {
-    //console.log('drag end...');
-    //console.log($event);
-    //console.log(event.source.getFreeDragPosition())
-    //this.addNode(event.source.getFreeDragPosition().x, event.source.getFreeDragPosition().y)
-    //event.source.reset()
-    //console.log(event.dropPoint)
+    // Drag end...
   }  
 
   nodeOnDragMove(event: CdkDragMove) {
-    // update node data (position, center)
+    // Update node data (position, center)
     this.node.position.x = event.source.getFreeDragPosition().x;
     this.node.position.y = event.source.getFreeDragPosition().y;
-    this.node.center = this.bstService.calculateCenter(this.node.position, this.node.size)
+    this.node.center = this.bstService.calculateCenter(this.node.position, this.node.size);
   }
 
 
+  // #############################
+  // Functions for interactions with node toolset
   onNewNodeClick(event:any, role: Partial<{childRole: ChildRole, parentRole: ParentRole}>) {
     
     const { childRole = ChildRole.NO_PARENT, parentRole = ParentRole.NO_CHILD } = role;
@@ -106,7 +101,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
       throw new Error('Invalid role configuration: Only one of childRole or parentRole must be set.');
     }
 
-    // TODO: Size is not being passed and the default value in the service (100, 100) is being used
+    // TODO: Size is not being configured here, instead the default value in the service (100, 100) is being used
 
 
     // New node will be leftChild of the current node
@@ -119,7 +114,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
       }
 
       // Add the node
-      this.bstService.addNode({ position, parent: this.node }, childRole)
+      this.bstService.addNode({ position, parent: this.node }, childRole);
     }
     
     // New node will be rightChild of the current node
@@ -132,7 +127,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
       }
 
       // Add the node
-      this.bstService.addNode({ position, parent: this.node }, childRole)
+      this.bstService.addNode({ position, parent: this.node }, childRole);
     }
 
     // New node will be parent
@@ -146,7 +141,7 @@ export class NodeBinarySearchTreeComponent implements OnInit {
       }
 
       // Add the node
-      this.bstService.addNode({ position, leftChild: this.node }, ChildRole.NO_PARENT)
+      this.bstService.addNode({ position, leftChild: this.node }, ChildRole.NO_PARENT);
     }
 
     // New node will be parent
@@ -160,99 +155,84 @@ export class NodeBinarySearchTreeComponent implements OnInit {
       }
 
       // Add the node
-      this.bstService.addNode({ position, rightChild: this.node }, ChildRole.NO_PARENT)
+      this.bstService.addNode({ position, rightChild: this.node }, ChildRole.NO_PARENT);
     }
-      
-      //this.addNewNode({pos, size})
-      //this.bstService.insertToTree(this.workspaceElements[this.workspaceElements.length - 1], node, isLeftChild)
-    
   }
 
   onDisconnectNodeClick(event: MouseEvent, roleToDisconnect: NodeRole, childRoleToDisconnect: ChildRole | null = null) {
     this.bstService.disconnectNode(this.node, roleToDisconnect, childRoleToDisconnect);
   }
 
-  onParentLinkClick(event: MouseEvent) {
+  onConnectNodeClick(event: MouseEvent, selectedNodeRole: NodeRole, selectedChildRole: ChildRole | null = null) {
+
+    // First node selection
     if (this.newLink.started === false) {
-      this.bstService.updateNewLink({
-        started: true,
-        child: this.node, 
-      })
-    } else {
-      // TODO: do not throw an error but do something else
-      if (this.newLink.child !== null) { throw new Error('Child is already choosed') }
-      this.bstService.updateNewLink({
-        child: this.node,
-      })
-    
-      this.bstService.connectNodes(this.newLink.parent, this.newLink.child, this.newLink.childRole)
+      this.bstService.updateNewLink({ started: true });
 
-      // reset new link
-      this.bstService.resetNewLink()
-    }
-  }
+      // Current node will be child and second node parent
+      if (selectedNodeRole === NodeRole.CHILD) { 
+        this.bstService.updateNewLink({ child: this.node });
+      }
 
-  onLeftChildLinkClick(event: MouseEvent) {
-    if (this.newLink.started === false) {
-      this.bstService.updateNewLink({
-        started: true,
-        parent: this.node, 
-        childRole: ChildRole.LEFT_CHILD,
-      })
-    } else {
-
-      // TODO: do not throw an error but do something else
-      if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
-      this.bstService.updateNewLink({
-        parent: this.node,
-      })
-
-      this.bstService.connectNodes(this.newLink.parent, this.newLink.child, ChildRole.LEFT_CHILD)
-
-      // reset new link
-      this.bstService.resetNewLink()
-
-    }
-  }
-
-  onRightChildLinkClick(event: MouseEvent) {
-    if (this.newLink.started === false) {
-      this.bstService.updateNewLink({
-        started: true,
-        parent: this.node, 
-        childRole: ChildRole.RIGHT_CHILD,
-      })
-    } else {
-        // TODO: do not throw an error but do something else
-        if (this.newLink.parent !== null) { throw new Error('Parent is already choosed') }
-        this.bstService.updateNewLink({
-          parent: this.node,
-        })
-
-        this.bstService.connectNodes(this.newLink.parent, this.newLink.child, ChildRole.RIGHT_CHILD)
-  
-        // reset new link
-        this.bstService.resetNewLink()
+      // Current node will be parent and second node child
+      else {
+        // Check if the child role is provided
+        if (selectedChildRole === null) { throw new Error('The child role is not provided that denotes if left or right child will be connected to the node in future'); }
+        this.bstService.updateNewLink({ parent: this.node, childRole: selectedChildRole });
+      }
     }
 
+
+    // Second node selection
+    else {
+      // Current node will be child and previous selected node parent
+      if (selectedNodeRole === NodeRole.CHILD) { 
+
+        // Check if the child is already selected
+        if (this.newLink.child !== null) { throw new Error('Child is already selected'); }
+
+        // Add this as child
+        this.bstService.updateNewLink({ child: this.node });
+        
+        // Connect the nodes
+        this.bstService.connectNodes(this.newLink.parent, this.newLink.child, this.newLink.childRole);
+
+        // Reset new link for future use
+        this.bstService.resetNewLink();
+      }
+
+      // Current node will be parent and previous selected node child
+      else {
+        // Check if the child role is provided
+        if (selectedChildRole === null) { throw new Error('The child role is not provided that denotes if left or right child will be connected to the node'); }
+
+        // Check if the parent is already selected
+        if (this.newLink.parent !== null) { throw new Error('Parent is already selected'); }
+
+        // Add this as child
+        this.bstService.updateNewLink({ parent: this.node, childRole: selectedChildRole });
+        
+        // Connect the nodes
+        this.bstService.connectNodes(this.newLink.parent, this.newLink.child, this.newLink.childRole);
+
+        // Reset new link for future use
+        this.bstService.resetNewLink();
+      }
+      
+    }
   }
 
   onDeleteNodeClick(event:any) {
-    this.bstService.deleteNode(this.node)
+    this.bstService.deleteNode(this.node);
   }
   
-
   onEditNodeValueClick() {
     this.editNodeValue = true;
 
+    // Ensure that the input element is mounted 
     setTimeout(() => {
       this.nodeValueInput.nativeElement.focus();
     }, 0);
   }
-  
-  // helps to do specific operations whenever adding new node
-  // addNewNode(position: IPosition, size: ISize) {
-  //   this.bstService.addNode({ position, size })
-  // }
 }
 

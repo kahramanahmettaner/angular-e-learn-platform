@@ -135,7 +135,7 @@
         <!-- Connect two existing nodes -->
         <div 
             class="parent-link container-item" 
-            (click)="onParentLinkClick($event)"
+            (click)="onConnectNodeClick($event, NodeRole.CHILD)"
             title="Mit einem Knoten verbinden"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
@@ -145,7 +145,7 @@
 
         <div
             class="left-child-link container-item" 
-            (click)="onLeftChildLinkClick($event)"
+            (click)="onConnectNodeClick($event, NodeRole.PARENT, ChildRole.LEFT_CHILD)"
             title="Mit einem Knoten verbinden" 
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-left" viewBox="0 0 16 16">
@@ -155,7 +155,7 @@
 
         <div 
             class="right-child-link container-item" 
-            (click)="onRightChildLinkClick($event)"
+            (click)="onConnectNodeClick($event, NodeRole.PARENT, ChildRole.RIGHT_CHILD)"
             title="Mit einem Knoten verbinden"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-right" viewBox="0 0 16 16">
