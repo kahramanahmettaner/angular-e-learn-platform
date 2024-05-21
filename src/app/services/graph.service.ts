@@ -3,6 +3,7 @@ import { IGraphNode } from '../models/GraphNode.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
+import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,12 @@ export class GraphService {
   private nodes: IGraphNode[];
   private edges: IGraphEdge[];
   private idCounter: number;
-
+  private newEdge: INewGraphEdge;
   constructor() { 
     this.nodes = [];
     this.edges = [];
     this.idCounter = 0;
+    this.newEdge = { started: false, from: null, to: null, weight: 0 };
   }
 
   addNode(newNodeAttributes: Partial<IGraphNode>): IGraphNode {
@@ -127,6 +129,25 @@ export class GraphService {
 
     // Remove the edge from the list of edges
     this.edges.splice(indexOfEdge, 1);
+  }
+
+  updateNewEdge( newValues: Partial<INewGraphEdge> ) {
+    const { started = null, from = null, to = null, weight = null } = newValues;
+    if (started !== null) { this.newEdge.started = started; }
+    if (from !== null) { this.newEdge.from = from; }
+    if (to !== null) { this.newEdge.to = to; }
+    if (weight !== null) { this.newEdge.weight = weight; }
+  }
+
+  getNewEdge() {
+    return this.newEdge;
+  }
+
+  resetNewEdge() {
+    this.newEdge.started = false;
+    this.newEdge.from = null;
+    this.newEdge.to = null;
+    this.newEdge.weight = 0;
   }
 
   // #############
