@@ -87,6 +87,23 @@
         <!-- End - Edges for existing relations -->
         <!-- ################### -->
 
+
+        <!-- ################### -->
+        <!-- Edges presenting new relations between nodes -->
+        @if(newEdge.started){
+    
+            @if (newEdge.node1 !== null) {
+            <line #newLinkLine [attr.x1]="newEdge.node1.center.x" [attr.y1]="newEdge.node1.center.y" [attr.x2]="mouseX + difference.x" [attr.y2]="mouseY + difference.y"
+            style="stroke:rgb(129, 129, 129);stroke-width:2" />
+            } 
+            @if (newEdge.node2 !== null) {
+            <line #newLinkLine [attr.x1]="newEdge.node2.center.x" [attr.y1]="newEdge.node2.center.y" [attr.x2]="mouseX + difference.x" [attr.y2]="mouseY + difference.y"
+            style="stroke:rgb(129, 129, 129);stroke-width:2" />
+            }
+        }
+        <!-- End - Edges for new relations -->
+        <!-- ################### -->
+
     </svg>
     <!-- End - svg -->
     <!-- ################### -->

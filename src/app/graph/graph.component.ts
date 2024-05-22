@@ -8,6 +8,7 @@ import { NodeGraphComponent } from '../node-graph/node-graph.component';
 import { IGraphNode } from '../models/GraphNode.interface';
 import { EdgeGraphComponent } from '../edge-graph/edge-graph.component';
 import { IGraphEdge } from '../models/GraphEdge.interface';
+import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 
 @Component({
   selector: 'app-graph',
@@ -37,8 +38,9 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   mouseY: number;
 
   toolbarElements!: string[];
-  nodes: IGraphNode[] = this.graphService.getNodes();
-  edges: IGraphEdge[] = this.graphService.getEdges();
+  nodes!: IGraphNode[];
+  edges!: IGraphEdge[];
+  newEdge!: INewGraphEdge;
   
   
   // #############################
@@ -73,7 +75,12 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     // #############################
     // Initialize properties
     this.toolbarElements = ["Toolbar1"];  // TODO:
+  
+    this.nodes = this.graphService.getNodes();
+    this.edges = this.graphService.getEdges();
+    this.newEdge = this.graphService.getNewEdge();
     
+    // TODO:
     // Calculate the differences
     const xDifference = this.toolbarRect.topLeft.x - this.workspaceRect.topLeft.x;
     const yDifference = this.toolbarRect.topLeft.y - this.workspaceRect.topLeft.y;
