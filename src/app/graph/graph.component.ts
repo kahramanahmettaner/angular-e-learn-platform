@@ -4,11 +4,13 @@ import { IRectangle } from '../models/Rectangle.interface';
 import { GraphService } from '../services/graph.service';
 import { ISize } from '../models/Size.interface';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
+import { NodeGraphComponent } from '../node-graph/node-graph.component';
+import { IGraphNode } from '../models/GraphNode.interface';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
-  imports: [DragDropModule, CdkDrag],
+  imports: [DragDropModule, CdkDrag, NodeGraphComponent],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.css'
 })
@@ -19,7 +21,7 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   @ViewChild('workspace') workspace!: ElementRef;
   @ViewChildren('tool') toolElements!: QueryList<ElementRef>;
   @ViewChild('toolbar') toolbar!: ElementRef;
-
+  @ViewChildren(NodeGraphComponent) nodeComponents!: QueryList<NodeGraphComponent>;
 
   // #############################
   // Class properties
@@ -33,7 +35,9 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   mouseY: number;
 
   toolbarElements!: string[];
-
+  nodes: IGraphNode[] = this.graphService.getNodes();
+  
+  
   // #############################
   // Constructor
   constructor( private graphService: GraphService) { 

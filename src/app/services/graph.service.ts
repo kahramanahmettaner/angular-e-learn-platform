@@ -18,7 +18,7 @@ export class GraphService {
     this.nodes = [];
     this.edges = [];
     this.idCounter = 0;
-    this.newEdge = { started: false, from: null, to: null, weight: 0 };
+    this.newEdge = { started: false, node1: null, node2: null, weight: 0 };
   }
 
   addNode(newNodeAttributes: Partial<IGraphNode>): IGraphNode {
@@ -132,10 +132,10 @@ export class GraphService {
   }
 
   updateNewEdge( newValues: Partial<INewGraphEdge> ) {
-    const { started = null, from = null, to = null, weight = null } = newValues;
+    const { started = null, node1 = null, node2 = null, weight = null } = newValues;
     if (started !== null) { this.newEdge.started = started; }
-    if (from !== null) { this.newEdge.from = from; }
-    if (to !== null) { this.newEdge.to = to; }
+    if (node1 !== null) { this.newEdge.node1 = node1; }
+    if (node2 !== null) { this.newEdge.node2 = node2; }
     if (weight !== null) { this.newEdge.weight = weight; }
   }
 
@@ -145,8 +145,8 @@ export class GraphService {
 
   resetNewEdge() {
     this.newEdge.started = false;
-    this.newEdge.from = null;
-    this.newEdge.to = null;
+    this.newEdge.node1 = null;
+    this.newEdge.node2 = null;
     this.newEdge.weight = 0;
   }
 

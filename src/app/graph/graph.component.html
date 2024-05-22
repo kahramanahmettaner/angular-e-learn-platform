@@ -86,9 +86,9 @@
      
     <!-- ################### -->
     <!-- Nodes in workspace -->
-
-    <!--  Not Implemented -->
-    
+    @for(node of nodes;track $index){
+        <app-node-graph [node]="node" [index]="$index"/>
+    }    
     <!-- End - Nodes -->
     <!-- ################### -->
   
