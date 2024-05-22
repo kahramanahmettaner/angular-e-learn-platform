@@ -174,7 +174,7 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     this.dragPosition.y = event.source.getFreeDragPosition().y;
   }
 
-  // Drag emd
+  // Drag end
   toolOnDragEnd(event: CdkDragEnd) {
 
     // TODO: 
