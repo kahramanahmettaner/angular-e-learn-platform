@@ -1,0 +1,10 @@
+<!-- Edge - Line -->
+<svg:line 
+    [attr.x1]="calculateEdgeStart(edge).x" 
+    [attr.y1]="calculateEdgeStart(edge).y" 
+    [attr.x2]="calculateEdgeEnd(edge).x" 
+    [attr.y2]="calculateEdgeEnd(edge).y"
+    style="stroke:rgb(129, 129, 129);stroke-width:2" />
+
+<!-- Edge - Arrow head -->
+<svg:polygon [attr.points]="calculateArrowPoints(edge)" fill="black" />

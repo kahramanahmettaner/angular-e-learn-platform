@@ -6,11 +6,13 @@ import { ISize } from '../models/Size.interface';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { NodeGraphComponent } from '../node-graph/node-graph.component';
 import { IGraphNode } from '../models/GraphNode.interface';
+import { EdgeGraphComponent } from '../edge-graph/edge-graph.component';
+import { IGraphEdge } from '../models/GraphEdge.interface';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
-  imports: [DragDropModule, CdkDrag, NodeGraphComponent],
+  imports: [DragDropModule, CdkDrag, NodeGraphComponent, EdgeGraphComponent],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.css'
 })
@@ -36,6 +38,7 @@ export class GraphComponent  implements OnInit, AfterViewInit {
 
   toolbarElements!: string[];
   nodes: IGraphNode[] = this.graphService.getNodes();
+  edges: IGraphEdge[] = this.graphService.getEdges();
   
   
   // #############################

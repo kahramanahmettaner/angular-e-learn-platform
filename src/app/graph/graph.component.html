@@ -79,6 +79,14 @@
     <!-- svg for edges in workspace -->
     <svg class="svg" xmlns="http://www.w3.org/2000/svg">
 
+        <!-- ################### -->
+        <!-- Edges presenting existing relations between nodes -->
+        @for(edge of edges;track $index){
+            <g app-edge-graph [edge]="edge" />
+        }
+        <!-- End - Edges for existing relations -->
+        <!-- ################### -->
+
     </svg>
     <!-- End - svg -->
     <!-- ################### -->
