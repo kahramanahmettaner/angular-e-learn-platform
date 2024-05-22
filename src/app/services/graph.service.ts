@@ -131,6 +131,24 @@ export class GraphService {
     this.edges.splice(indexOfEdge, 1);
   }
 
+  changeEdgeDirection(edge: IGraphEdge) {
+
+    // Check if there is already an edge which starts at edge.node2 and ends at edge.node1
+    this.edges.forEach(existingEdge => {
+      if (existingEdge.node1 === edge.node2 && existingEdge.node2 === edge.node1) {
+        throw new Error('There is already an edge which connects these nodes in the opposite direction.');
+      }
+    });
+    
+    // Get the nodes from the edge
+    const newNode2 = edge.node1;
+    const newNode1 = edge.node2;
+    
+    // Swap the nodes
+    edge.node2 = newNode2;
+    edge.node1 = newNode1;
+  }
+
   updateNewEdge( newValues: Partial<INewGraphEdge> ) {
     const { started = null, node1 = null, node2 = null, weight = null } = newValues;
     if (started !== null) { this.newEdge.started = started; }

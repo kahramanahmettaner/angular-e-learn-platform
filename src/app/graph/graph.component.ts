@@ -9,11 +9,12 @@ import { IGraphNode } from '../models/GraphNode.interface';
 import { EdgeGraphComponent } from '../edge-graph/edge-graph.component';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
+import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
-  imports: [DragDropModule, CdkDrag, NodeGraphComponent, EdgeGraphComponent],
+  imports: [DragDropModule, CdkDrag, NodeGraphComponent, EdgeGraphComponent, EdgeToolsetGraphComponent],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.css'
 })
@@ -90,6 +91,19 @@ export class GraphComponent  implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.calculateUI();
+  }
+
+
+  // #############################
+  // Functions for children events
+  removeEdge(index: number) {
+    const edgeToDelete = this.edges[index];
+    this.graphService.removeEdge(edgeToDelete);
+  }
+
+  changeEdgeDirection(index: number) {
+    const edgeToUpdate = this.edges[index];
+    this.graphService.changeEdgeDirection(edgeToUpdate);
   }
 
 

@@ -107,8 +107,23 @@
     </svg>
     <!-- End - svg -->
     <!-- ################### -->
-    
+
+
+    <!-- ################### -->
+    <!-- Toolset for edges -->
+    @for(edge of edges;track $index){
+        <app-edge-toolset-graph 
+            [edge]="edge" 
+            [index]="$index" 
+            [workspacePosition]="workspaceRect.topLeft"
+            (removeEdge)="removeEdge($event)"
+            (changeEdgeDirection)="changeEdgeDirection($event)"    
+        />
+      }
+    <!-- End - Toolset for edges -->
+    <!-- ################### -->
      
+
     <!-- ################### -->
     <!-- Nodes in workspace -->
     @for(node of nodes;track $index){
