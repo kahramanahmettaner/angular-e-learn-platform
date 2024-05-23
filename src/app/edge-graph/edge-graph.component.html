@@ -1,10 +1,31 @@
+<!-- Display if the edge is directed --> 
 <!-- Edge - Line -->
 <svg:line 
+    *ngIf="edge.directed"
     [attr.x1]="calculateEdgeStart(edge).x" 
     [attr.y1]="calculateEdgeStart(edge).y" 
     [attr.x2]="calculateEdgeEnd(edge).x" 
     [attr.y2]="calculateEdgeEnd(edge).y"
-    style="stroke:rgb(129, 129, 129);stroke-width:2" />
+    style="stroke:rgb(129, 129, 129);stroke-width:2" 
+/>
 
 <!-- Edge - Arrow head -->
-<svg:polygon [attr.points]="calculateArrowPoints(edge)" fill="black" />
+<svg:polygon 
+    *ngIf="edge.directed"    
+    [attr.points]="calculateArrowPoints(edge)" 
+    fill="black" 
+/>
+
+<!-- ################### -->
+        
+
+<!-- Display if the edge is undirected --> 
+<!-- Edge - Line -->
+<svg:line 
+    *ngIf="!edge.directed"
+    [attr.x1]="edge.node1.center.x" 
+    [attr.y1]="edge.node1.center.y" 
+    [attr.x2]="edge.node2.center.x" 
+    [attr.y2]="edge.node2.center.y"
+    style="stroke:rgb(129, 129, 129);stroke-width:2" 
+/>

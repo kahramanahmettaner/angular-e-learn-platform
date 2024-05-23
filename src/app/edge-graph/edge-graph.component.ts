@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IPosition } from '../models/Position.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'g[app-edge-graph]',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './edge-graph.component.html',
   styleUrl: './edge-graph.component.css'
 })
