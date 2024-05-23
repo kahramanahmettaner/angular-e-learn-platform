@@ -7,6 +7,7 @@ import { IGraphNode } from '../models/GraphNode.interface';
 import { GraphService } from '../services/graph.service';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
+import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 
 @Component({
   selector: 'app-node-graph',
@@ -34,7 +35,7 @@ export class NodeGraphComponent implements OnInit {
   editNodeValue: boolean = false;
 
   newEdge: INewGraphEdge = this.graphService.getNewEdge();
-
+  graphConfiguration: IGraphConfiguration = this.graphService.getGraphConfiguration();
   
   // #############################
   // Constructor
@@ -91,31 +92,33 @@ export class NodeGraphComponent implements OnInit {
 
   // #############################
   // Functions for interactions with node toolset
-  onNewNodeClick(event:any, isIncoming: boolean) {
-    
+  onNewNodeClick(event:any, isIncoming: boolean | null = null) {
+    if (this.graphConfiguration.edges.directed && isIncoming === null) {
+      throw new Error('The edges must be undirected')
+    }
     
     // TODO: Size is not being configured here, instead the default value in the service (100, 100) is being used
 
 
-      let position: IPosition = {
-        x: this.node.position.x + 130,
-        y: this.node.position.y + 130,
-      }
+    let position: IPosition = {
+      x: this.node.position.x + 130,
+      y: this.node.position.y + 130,
+    }
 
-      // Add the node
-      const newNode = this.graphService.addNode({ position });
+    // Add the node
+    const newNode = this.graphService.addNode({ position });
 
-      // Add the edge between this node and new generated
-      if (isIncoming) {
-        // from newNode to this.node
-        this.graphService.addEdge(newNode, this.node)
-      } else {
-        // from this.node to newNode
-        this.graphService.addEdge(this.node, newNode)
-      }
+    // Add the edge between this node and new generated
+    if (isIncoming) {
+      // from newNode to this.node
+      this.graphService.addEdge(newNode, this.node)
+    } else {
+      // from this.node to newNode
+      this.graphService.addEdge(this.node, newNode)
+    }
   }
 
-  onConnectNodeClick(event: MouseEvent, isIncoming: boolean) {
+  onConnectNodeDirectedClick(event: MouseEvent, isIncoming: boolean) {
 
     // First node selection
     if (this.newEdge.started === false) {
@@ -171,6 +174,33 @@ export class NodeGraphComponent implements OnInit {
         // Reset new link for future use
         this.graphService.resetNewEdge();
       }
+  }
+
+  onConnectNodeUndirectedClick(event: MouseEvent) {
+
+    // First node selection
+    if (this.newEdge.started === false) {
+      this.graphService.updateNewEdge({ started: true, node1: this.node });
+    }
+    // Second node selection
+    else {
+      
+      this.graphService.updateNewEdge({ node2: this.node });
+      
+      // Add new edge
+      try {
+        if ( this.newEdge.node1 !== null && this.newEdge.node2 !== null) {
+          this.graphService.addEdge(
+            this.newEdge.node1, 
+            this.newEdge.node2, 
+            this.newEdge.weight
+          );
+        }
+      } catch(err) { console.error(err) }
+      
+      // Reset new link for future use
+      this.graphService.resetNewEdge();
+    } 
   }
 
   onDeleteNodeClick(event:any) {

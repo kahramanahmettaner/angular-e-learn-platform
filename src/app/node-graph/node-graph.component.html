@@ -31,6 +31,9 @@
     <!-- Toolset -->
     <div [ngStyle]="{display: displayNodeToolset ? 'block' : 'none'}" (mouseleave)="onFieldLeave($event)" class="container">  
 
+        <!-- Display if the edge is directed --> 
+        @if (graphConfiguration.edges.directed) {
+
         <!-- ################### -->
         <!-- Generate new node connected to current node -->
         <div 
@@ -70,7 +73,7 @@
             [ngStyle]="{display: (newEdge.started && newEdge.node2 !== null) ? 'none' : 'block'}"
             class="new-edge-incoming container-item" 
             title="Eingehende Kante - Mit einem Knoten verbinden"
-            (click)="onConnectNodeClick($event, true)"
+            (click)="onConnectNodeDirectedClick($event, true)"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
@@ -81,7 +84,7 @@
             [ngStyle]="{display: (newEdge.started && newEdge.node1 !== null) ? 'none' : 'block'}"
             class="new-edge-outgoing container-item"
             title="Ausgehende Kante - Mit einem Knoten verbinden"
-            (click)="onConnectNodeClick($event, false)"
+            (click)="onConnectNodeDirectedClick($event, false)"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
@@ -89,6 +92,33 @@
         </div>
         <!-- End - Connect nodes -->
         <!-- ################### -->
+
+        }
+
+
+        @else { <!-- Display if the edge is undirected --> 
+            <!-- ################### -->
+            <!-- Generate new node connected to current node -->
+            <div 
+                [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
+                class="new-node container-item" 
+                title="Einen neuen Knoten erzeugen und verbinden" 
+                (click)="onNewNodeClick($event)" 
+            >   
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                </svg>
+            </div>
+            <div 
+                class="new-edge container-item"
+                title="Mit einem Knoten verbinden"
+                (click)="onConnectNodeUndirectedClick($event)"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                </svg>
+            </div>
+        }
         
         <!-- ################### -->
         <!-- Extra functionalities -->

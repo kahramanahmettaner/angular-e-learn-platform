@@ -59,6 +59,26 @@
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
+.delete {
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.delete:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
+.edit {
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.edit:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
+/* For directed edges */
 .new-node-incoming {
     top: 0;
     left: 50%;
@@ -79,25 +99,6 @@
     transform: translate(10%, -50%) scale(1.2, 1.2);
 }
 
-.delete {
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.delete:hover {
-    transform: translate(-50%, -50%) scale(1.2, 1.2);
-}
-
-.edit {
-    top: 50%;
-    left: 100%;
-    transform: translate(-50%, -50%);
-}
-
-.edit:hover {
-    transform: translate(-50%, -50%) scale(1.2, 1.2);
-}
-
 .new-edge-incoming {
     top: 100%;
     left: 50%;
@@ -116,4 +117,25 @@
 
 .new-edge-outgoing:hover {
     transform: translate(10%, -50%) scale(1.2, 1.2);
+}
+
+/* For undirected edges */
+.new-node {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.new-node:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
+.new-edge {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.new-edge:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
 }
