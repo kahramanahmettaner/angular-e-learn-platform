@@ -96,18 +96,23 @@ export class GraphService {
   addEdge(node1: IGraphNode, node2: IGraphNode, weightValue: number | null = null): void {
 
     // For directed graphs:
-    // Check if an edge already exist which originates from the same node and points to the same node as the new edge
+        // Check if an edge already exist which originates from the same node and points to the same node as the new edge
+    // For undirected graphs:
+        // Check if an edge already exist which aconnects these two nodes
     // TODO: Is this allowed, or must it be prevented?
     this.edges.forEach(existingEdge => {
-      if (existingEdge.node1 === node1 && existingEdge.node2 === node2) {
+      if (this.graphConfiguration.edges.directed && existingEdge.node1 === node1 && existingEdge.node2 === node2) {
         throw new Error('These two nodes already are connected with an edge in the same direction.')
       }
+      if (!this.graphConfiguration.edges.directed && 
+          (
+          (existingEdge.node1 === node1 && existingEdge.node2 === node2) || 
+          (existingEdge.node2 === node1 && existingEdge.node1 === node2) 
+          )
+        ){
+        throw new Error('These two nodes already are connected with an edge.')
+      }
     });
-    
-    // For undirected graphs:
-    // TODO: Check if an edge already exist which originates from the same node and points to the same node as the new edge
-    // TODO: Is this allowed, or must it be prevented?
-
 
     // Adjust the properties according to the graphConfiguration  
     let weight: { enabled: boolean, value: number };
