@@ -82,12 +82,14 @@ export class EdgeToolsetGraphComponent implements OnInit {
   }
 
   onEditNodeValueClick() {
-    this.editEdgeWeight = true;
+    if (this.edge.weight.enabled) {
+      this.editEdgeWeight = true;
 
-    // Ensure that the input element is mounted 
-    setTimeout(() => {
-      this.edgeWeightValueInput.nativeElement.focus();
-    }, 0);
+      // Ensure that the input element is mounted 
+      setTimeout(() => {
+        this.edgeWeightValueInput.nativeElement.focus();
+      }, 0);
+    }
   }
 
     
