@@ -103,7 +103,10 @@ export class GraphComponent  implements OnInit, AfterViewInit {
 
   changeEdgeDirection(index: number) {
     const edgeToUpdate = this.edges[index];
-    this.graphService.changeEdgeDirection(edgeToUpdate);
+    try {
+      this.graphService.changeEdgeDirection(edgeToUpdate);
+    } catch (err) { console.error(err); } 
+    
   }
 
 

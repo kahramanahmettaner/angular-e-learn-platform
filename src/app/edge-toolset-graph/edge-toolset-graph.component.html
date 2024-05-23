@@ -9,17 +9,20 @@
     >
 
 
+    
+
+
     <!-- ################### -->
     <!-- Input to edit edge weight -->
     <div [ngStyle]="{display: editEdgeWeight ? 'block' : 'none'}" class="edge-weight-value" (mouseenter)="onFieldHover($event)" >
       <form (submit)="editEdgeWeight=false">
-        <input #edgeWeightValueInput type="text" [(ngModel)]="edge.weight" name="value" placeholder="Wert eingeben"
+        <input #edgeWeightValueInput type="text" [(ngModel)]="edge.weight.value" name="value" placeholder="Wert eingeben"
           (blur)="editEdgeWeight=false"
         />
       </form>
     </div>
     <div [ngStyle]="{display: !editEdgeWeight ? 'block' : 'none'}" class="edge-weight-value" (mouseenter)="onFieldHover($event)" >
-      <span style="display: flex; justify-content: center;">{{ edge.weight }}</span>
+      <span style="display: flex; justify-content: center;">{{ edge.weight.value }}</span>
     </div>
     <!-- End - Input -->
     <!-- ################### -->

@@ -4,33 +4,70 @@ import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
+import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphService {
 
+  private graphConfiguration!: IGraphConfiguration;
   private nodes: IGraphNode[];
   private edges: IGraphEdge[];
   private idCounter: number;
   private newEdge: INewGraphEdge;
+
+
   constructor() { 
     this.nodes = [];
     this.edges = [];
     this.idCounter = 0;
     this.newEdge = { started: false, node1: null, node2: null, weight: 0 };
+    
+    // Configure graph with default graph values
+    this.configureGraph({
+      nodes: {
+        weight: true,
+        visited: true
+      },
+      edges: {
+        directed: true,  
+        weight: true,  
+      }
+    })
+  }
+
+  configureGraph(graphConfiguration: IGraphConfiguration) {
+    this.graphConfiguration = graphConfiguration;
+  }
+
+  getGraphConfiguration() {
+    return this.graphConfiguration;
   }
 
   addNode(newNodeAttributes: Partial<IGraphNode>): IGraphNode {
 
     // Destructure the attributes and assign default values if they are undefined
-    const { 
+    let { 
       value = '',
-      visited = false,
-      weight = 0,
+      visited = null, 
+      weight = null,
       position = { x: 0, y: 0},
       size = { width: 100, height: 100 },  // TODO:
     } = newNodeAttributes;
+
+    // Adjust the properties according to the graphConfiguration
+    if (this.graphConfiguration.nodes.weight) {
+      weight = { enabled: true, value: weight?.value || 0 }
+    } else {
+      weight = { enabled: false, value: -1 }
+    }
+    
+    if (this.graphConfiguration.nodes.visited) {
+      visited = { enabled: true, value: visited?.value || false }
+    } else {
+      visited = { enabled: false, value: false }
+    }
 
     // Generate new node
     const newNode: IGraphNode = {
@@ -56,7 +93,7 @@ export class GraphService {
     return newNode;
   }
 
-  addEdge(node1: IGraphNode, node2: IGraphNode, weight: number = 0): void {
+  addEdge(node1: IGraphNode, node2: IGraphNode, weightValue: number | null = null): void {
 
     // For directed graphs:
     // Check if an edge already exist which originates from the same node and points to the same node as the new edge
@@ -71,9 +108,18 @@ export class GraphService {
     // TODO: Check if an edge already exist which originates from the same node and points to the same node as the new edge
     // TODO: Is this allowed, or must it be prevented?
 
+
+    // Adjust the properties according to the graphConfiguration  
+    let weight: { enabled: boolean, value: number };
+    if (this.graphConfiguration.edges.weight) {
+      weight = { enabled: true, value: weightValue || 0 };
+    } else {
+      weight = { enabled: false, value: -1 };
+    }
+
     // Generate new edge
     const newEdge: IGraphEdge = {
-      node1, node2, weight
+      node1, node2, weight, directed: this.graphConfiguration.edges.directed
     }
 
     // Add edge to the list of edges
@@ -132,6 +178,11 @@ export class GraphService {
   }
 
   changeEdgeDirection(edge: IGraphEdge) {
+
+    // Check if the edges are directed according to graphConfiguration 
+    if (!this.graphConfiguration.edges.directed) {
+      throw new Error('The edge is not directed.')
+    }
 
     // Check if there is already an edge which starts at edge.node2 and ends at edge.node1
     this.edges.forEach(existingEdge => {
