@@ -20,6 +20,11 @@ export class BinarySearchTreeService {
   
   }
 
+  resetTree() {
+    this.nodes = [];
+    this.idCounter = 0;
+  }
+
   addNode(newNodeAttributes: Partial<INode>, childRole: ChildRole) {
 
     // Destructure the attributes and assign default values if they are undefined

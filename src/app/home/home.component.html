@@ -1,6 +1,28 @@
-<div>
-    <ul>
-        <li><a routerLink="/tree">Binary Search Tree Structure</a></li>
-        <li><a routerLink="/graph">Graph Structure</a></li>
-    </ul>
+<div class="container">
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+
+        <div class="form-group">
+            <label for="selectedOption">Eine Aufgabentyp auswählen:</label>
+            <select formControlName="selectedOption" (change)="onChangeOption($event)">
+                <option value="" disabled>Aufgabentyp auswählen</option>
+                <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+            </select>
+        </div>
+
+        <div *ngIf="showCheckbox" class="form-group checkboxes">
+            <label>
+                <input type="checkbox" formControlName="checkboxEdgeDirected"> Gerichtete Kanten
+            </label>
+            <label>
+                <input type="checkbox" formControlName="checkboxEdgeWeighted"> Kanten mit Gewichten
+            </label>
+            <label>
+                <input type="checkbox" formControlName="checkboxNodeWeighted"> Knoten mit Gewichten
+            </label>
+        </div>
+
+        <button type="submit" [disabled]="form.invalid" class="submit-btn">Weiter</button>
+    </form>
+
 </div>

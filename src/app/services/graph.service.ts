@@ -37,6 +37,13 @@ export class GraphService {
     })
   }
 
+  resetGraph(){
+    this.nodes = []
+    this.edges = []
+    this.idCounter = 0;
+    this.resetNewEdge()
+  }
+
   configureGraph(graphConfiguration: IGraphConfiguration) {
     this.graphConfiguration = graphConfiguration;
   }
