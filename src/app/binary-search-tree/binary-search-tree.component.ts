@@ -11,6 +11,7 @@ import { TreeState } from '../models/TreeState.enum';
 import { NodeBinarySearchTreeComponent } from '../node-binary-search-tree/node-binary-search-tree.component';
 import { INewLink } from '../models/NewLink.interface';
 import { ChildRole } from '../models/ChildRole.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-binary-search-tree',
@@ -48,7 +49,10 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
 
   // #############################
   // Constructor
-  constructor( private bstService: BinarySearchTreeService) { 
+  constructor( 
+    private bstService: BinarySearchTreeService,
+    private router: Router
+  ) { 
     
     // #############################
     // Initialize Properties
@@ -261,5 +265,9 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
       // Update the difference property
       this.difference = { x: xDifference, y: yDifference };
     }
+  }
+
+  navigateToRoute(route: string): void {
+    this.router.navigate([route]);
   }
 }

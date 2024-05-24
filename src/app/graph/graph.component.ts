@@ -10,6 +10,7 @@ import { EdgeGraphComponent } from '../edge-graph/edge-graph.component';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-graph',
@@ -46,7 +47,10 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   
   // #############################
   // Constructor
-  constructor( private graphService: GraphService) { 
+  constructor( 
+    private graphService: GraphService,
+    private router: Router
+  ) { 
     
     // #############################
     // Initialize Properties
@@ -221,6 +225,10 @@ export class GraphComponent  implements OnInit, AfterViewInit {
       // Update the difference property
       this.difference = { x: xDifference, y: yDifference };
     }
+  }
+
+  navigateToRoute(route: string): void {
+    this.router.navigate([route]);
   }
 
 }
