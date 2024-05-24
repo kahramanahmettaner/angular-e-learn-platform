@@ -53,9 +53,17 @@ export class EdgeToolsetGraphComponent implements OnInit {
   // #############################
   // Lifecycle hook methods
   ngOnInit(): void {
-    this.componentSize = {
-      width: 50,
-      height: 30
+    // weight is enabled:
+    if (this.edge.weight.enabled) {
+      this.componentSize = {
+        width: 50,
+        height: 30
+      }
+    } else { // weight is disabled
+      this.componentSize = {
+        width: 25,
+        height: 25
+      }
     }
   }
 

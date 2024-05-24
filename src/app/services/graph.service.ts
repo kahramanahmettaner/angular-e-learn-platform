@@ -31,8 +31,8 @@ export class GraphService {
         visited: true
       },
       edges: {
-        directed: false,  
-        weight: false,  
+        directed: true,  
+        weight: true,  
       }
     })
   }
