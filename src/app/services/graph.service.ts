@@ -241,4 +241,71 @@ export class GraphService {
     return center;
   }
 
+  private adjustNodeAttributes(node: IGraphNode) {
+    // Destructure node object
+    const { 
+      visited: { value: visitedValue, ...visitedRest },
+      weight: { value: weightValue, ...weightRest },
+      ...nodeRest } = node;
+    return {
+      ...nodeRest,
+      visited: visitedValue,
+      weight: weightValue
+    };
+  }
+
+  private adjustEdgeAttributes(edge: IGraphEdge) {
+    // Destructure edge object
+    const { 
+      weight: { value: weightValue, ...weightRest },
+      node1, node2,
+      ...edgeRest } = edge;
+
+    return {
+      node1Id: node1.nodeId,
+      node2Id: node2.nodeId,
+      weight: weightValue,
+    };
+  }
+
+  graphToJSON() {
+
+    // Modify nodes to disclude some attributes
+    const modifiedNodes = this.nodes.map(node => {
+      return this.adjustNodeAttributes(node);
+    });
+
+    // Modify edges to disclude some attributes
+    const modifiedEdges = this.edges.map(edge => {
+      return this.adjustEdgeAttributes(edge);
+    });
+  
+    const graph = {
+      structureType: 'graph',
+      configuration: this.graphConfiguration,
+      nodes: modifiedNodes,
+      edges: modifiedEdges
+    };
+
+    const json = JSON.stringify(graph, null, 2);
+    
+    return json;
+  }
+
+  downloadGraphAsJSON() {
+    // prepare
+    const graphAsJSON = this.graphToJSON();
+    
+    const blob = new Blob([graphAsJSON], { type: 'application/json' });
+    
+    // download
+    const link = document.createElement('a');
+    link.download = 'graph.json';
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
+  }
+
 }

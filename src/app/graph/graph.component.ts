@@ -121,6 +121,15 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     alert('Noch nicht implementiert')
   }
 
+  onJSONToConsoleClick() {
+    const json = this.graphService.graphToJSON();
+    console.log(json);
+  }
+
+  onDownloadAsJSONClick() {
+    this.graphService.downloadGraphAsJSON();
+  }
+
 
   // #############################
   // Functions for interactions with toolbar
