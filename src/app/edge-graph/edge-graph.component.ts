@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IPosition } from '../models/Position.interface';
 import { CommonModule } from '@angular/common';
+import { IGraphNode } from '../models/GraphNode.interface';
 
 @Component({
   selector: 'g[app-edge-graph]',
@@ -83,10 +84,19 @@ export class EdgeGraphComponent {
   }
 
   calculateArrowPoints(edge: IGraphEdge) {
-    // Specify where the arrowhead starts and ends  
-    const start = edge.node1.center;
-    const end = this.calculateEdgeEnd(edge);
-
+    // Specify where the arrowhead starts and ends
+    let start: IPosition;  
+    let end: IPosition;  
+    if (edge.node1 === edge.node2) { // connects the node with itself
+      const xOffset = 30;
+      const yOffset = -10;
+      start = { x: edge.node1.position.x + xOffset, y: edge.node1.position.y - 100 }; // -100 is not important it is just to specify the direction
+      end = { x: edge.node1.position.x + xOffset, y: edge.node1.position.y + yOffset };
+    } else {
+      start = edge.node1.center; // to specify the direction of the startpoint
+      end = this.calculateEdgeEnd(edge);  
+    }
+    
     // Size of the arrowhead
     const arrowSize = 15; 
 
@@ -107,4 +117,24 @@ export class EdgeGraphComponent {
     // Return the points
     return `${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`;
   }
+
+  calculateSelfLoopPath(edge: IGraphEdge): string {
+    
+    // Start position of the edge
+    const x = edge.node1.position.x;
+    const y = edge.node2.position.y;
+    
+    // Loop Properties
+    const radius = 20;
+    const controlPointOffset = 0.55 * radius;
+
+    // Construct the SVG path for a self-loop
+    return `
+      M ${x - 10} ${y + 30}
+      C ${x - 100} ${y + 30},
+        ${x + 30} ${y - 100},
+        ${x + 30} ${y - 10}
+    `;
+  }
+
 }
