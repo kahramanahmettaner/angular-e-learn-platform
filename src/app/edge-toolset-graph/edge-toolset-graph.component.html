@@ -89,8 +89,8 @@
         
         <!-- ################### -->
         <!-- Change edge direction -->
-        <!-- Display if the edge is directed --> 
-        @if (edge.directed) {
+        <!-- Display if the edge is directed and edge does not connect a node with itself --> 
+        @if (edge.directed && edge.node1 !== edge.node2) {
         <div 
         class="change-direction container-item" 
         (click)="onChangeDirection($event)" 

@@ -105,7 +105,16 @@ export class EdgeToolsetGraphComponent implements OnInit {
   // Utility functions
 
   calculateComponentPosition(): IPosition {
-    const relativePos = this.calculateEdgeCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
+    let relativePos: IPosition;
+    if (this.edge.node1 === this.edge.node2) { // edges which connect a node with itself
+      relativePos = { 
+        x: this.edge.node1.position.x - 20 - (this.componentSize.width / 2), 
+        y: this.edge.node1.position.y - 20 - (this.componentSize.height / 2)
+      }; 
+    } else { // edges which connect two different nodes
+      relativePos = this.calculateEdgeCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
+    }
+      
     return {
       x: relativePos.x + this.workspacePosition.x,
       y: relativePos.y + this.workspacePosition.y
