@@ -25,4 +25,16 @@
         <button type="submit" [disabled]="form.invalid" class="submit-btn">Weiter</button>
     </form>
 
+    <div class="predesigned-examples-container">
+        <p>Beispiel Aufgaben:</p>
+        <div class="predesigned-examples">
+            <button 
+                *ngFor="let example of predesigned_examples; let i = index"
+                (click)="choosePredesigned(i)"
+            >
+                {{ example.title }}
+            </button>
+        </div>
+    </div>
+
 </div>

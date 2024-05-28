@@ -1,17 +1,36 @@
 .container {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Full height of the viewport */
+    flex-direction: column;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     background-color: rgb(248, 242, 233);
+  }
+
+  
+  .predesigned-examples-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 2em;
+    border-radius: .5em;
+  }
+
+  .predesigned-examples {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
   }
   
   .form {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items (options, checkboxes) to the left */
+    align-items: flex-start;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     padding: 2em;
     border-radius: .5em;
   }
@@ -19,7 +38,7 @@
   .form-group {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px; /* Add space between form groups */
+    margin-bottom: 10px;
     gap: .5em;
   }
   
@@ -28,6 +47,6 @@
   }
 
   .submit-btn {
-    margin-top: 20px; /* Add space between form and submit button */
-    align-self: center; /* Center horizontally */
+    margin-top: 20px;
+    align-self: center;
   }
