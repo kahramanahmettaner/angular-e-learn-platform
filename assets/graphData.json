@@ -1,0 +1,838 @@
+{
+  "examples": [
+    {
+      "title": "Graph Representation",
+      "data": {
+        "structureType": "graph",
+        "configuration": {
+          "nodes": {
+            "visited": false,
+            "weight": false
+          },
+          "edges": {
+            "directed": true,
+            "weight": false
+          }
+        },
+        "nodes": [
+          {
+            "nodeId": 0,
+            "value": "1",
+            "position": {
+              "x": 493,
+              "y": 115.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 543,
+              "y": 165.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 1,
+            "value": "2",
+            "position": {
+              "x": 761,
+              "y": 118.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 811,
+              "y": 168.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 2,
+            "value": "4",
+            "position": {
+              "x": 908,
+              "y": 363.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 958,
+              "y": 413.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 3,
+            "value": "3",
+            "position": {
+              "x": 1066,
+              "y": 122.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1116,
+              "y": 172.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 4,
+            "value": "5",
+            "position": {
+              "x": 496,
+              "y": 361.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 546,
+              "y": 411.203125
+            },
+            "visited": false,
+            "weight": -1
+          }
+        ],
+        "edges": [
+          {
+            "node1Id": 0,
+            "node2Id": 1,
+            "weight": -1
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 1,
+            "weight": -1
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 2,
+            "weight": -1
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 2,
+            "weight": -1
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 3,
+            "weight": -1
+          },
+          {
+            "node1Id": 2,
+            "node2Id": 2,
+            "weight": -1
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 4,
+            "weight": -1
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 4,
+            "weight": -1
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 4,
+            "weight": -1
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 0,
+            "weight": -1
+          }
+        ]
+      } 
+    },
+    {
+      "title": "Graph Transitiv Hülle",
+      "data": {
+        "structureType": "graph",
+        "configuration": {
+          "nodes": {
+            "visited": false,
+            "weight": false
+          },
+          "edges": {
+            "directed": true,
+            "weight": false
+          }
+        },
+        "nodes": [
+          {
+            "nodeId": 0,
+            "value": "1",
+            "position": {
+              "x": 377,
+              "y": 52.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 427,
+              "y": 102.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 1,
+            "value": "2",
+            "position": {
+              "x": 713,
+              "y": 125.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 763,
+              "y": 175.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 2,
+            "value": "3",
+            "position": {
+              "x": 1080,
+              "y": 59.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1130,
+              "y": 109.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 3,
+            "value": "4",
+            "position": {
+              "x": 378,
+              "y": 455.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 428,
+              "y": 505.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 4,
+            "value": "5",
+            "position": {
+              "x": 710,
+              "y": 441.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 760,
+              "y": 491.203125
+            },
+            "visited": false,
+            "weight": -1
+          }
+        ],
+        "edges": [
+          {
+            "node1Id": 0,
+            "node2Id": 1,
+            "weight": -1
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 2,
+            "weight": -1
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 3,
+            "weight": -1
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 1,
+            "weight": -1
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 4,
+            "weight": -1
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 2,
+            "weight": -1
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 1,
+            "weight": -1
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 2,
+            "weight": -1
+          }
+        ]
+      }
+    },
+    {
+      "title": "Graph Dijkstra",
+      "data": {
+        "structureType": "graph",
+        "configuration": {
+          "nodes": {
+            "visited": false,
+            "weight": false
+          },
+          "edges": {
+            "directed": false,
+            "weight": true
+          }
+        },
+        "nodes": [
+          {
+            "nodeId": 0,
+            "value": "D",
+            "position": {
+              "x": 758,
+              "y": 32.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 808,
+              "y": 82.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 1,
+            "value": "C",
+            "position": {
+              "x": 1105,
+              "y": 295.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1155,
+              "y": 345.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 2,
+            "value": "F",
+            "position": {
+              "x": 760,
+              "y": 623.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 810,
+              "y": 673.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 3,
+            "value": "A",
+            "position": {
+              "x": 416,
+              "y": 289.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 466,
+              "y": 339.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 4,
+            "value": "E",
+            "position": {
+              "x": 413,
+              "y": 611.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 463,
+              "y": 661.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 5,
+            "value": "B",
+            "position": {
+              "x": 756,
+              "y": 288.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 806,
+              "y": 338.203125
+            },
+            "visited": false,
+            "weight": -1
+          }
+        ],
+        "edges": [
+          {
+            "node1Id": 0,
+            "node2Id": 1,
+            "weight": "3"
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 2,
+            "weight": "2"
+          },
+          {
+            "node1Id": 2,
+            "node2Id": 3,
+            "weight": "5"
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 4,
+            "weight": "2"
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 0,
+            "weight": "9"
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 5,
+            "weight": "1"
+          },
+          {
+            "node1Id": 5,
+            "node2Id": 3,
+            "weight": "8"
+          },
+          {
+            "node1Id": 5,
+            "node2Id": 2,
+            "weight": "4"
+          },
+          {
+            "node1Id": 5,
+            "node2Id": 1,
+            "weight": "1"
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 2,
+            "weight": "1"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Graph Minimaler Spannbaum",
+      "data": {
+        "structureType": "graph",
+        "configuration": {
+          "nodes": {
+            "visited": false,
+            "weight": false
+          },
+          "edges": {
+            "directed": false,
+            "weight": true
+          }
+        },
+        "nodes": [
+          {
+            "nodeId": 0,
+            "value": "A",
+            "position": {
+              "x": 433,
+              "y": 246.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 483,
+              "y": 296.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 1,
+            "value": "C",
+            "position": {
+              "x": 692,
+              "y": 130.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 742,
+              "y": 180.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 2,
+            "value": "G",
+            "position": {
+              "x": 973,
+              "y": 22.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1023,
+              "y": 72.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 3,
+            "value": "D",
+            "position": {
+              "x": 430,
+              "y": 495.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 480,
+              "y": 545.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 4,
+            "value": "B",
+            "position": {
+              "x": 707,
+              "y": 367.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 757,
+              "y": 417.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 5,
+            "value": "E",
+            "position": {
+              "x": 967,
+              "y": 508.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1017,
+              "y": 558.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 6,
+            "value": "F",
+            "position": {
+              "x": 968,
+              "y": 260.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1018,
+              "y": 310.203125
+            },
+            "visited": false,
+            "weight": -1
+          }
+        ],
+        "edges": [
+          {
+            "node1Id": 0,
+            "node2Id": 1,
+            "weight": "4"
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 2,
+            "weight": "5"
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 3,
+            "weight": "9"
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 4,
+            "weight": "6"
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 4,
+            "weight": "5"
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 5,
+            "weight": "2"
+          },
+          {
+            "node1Id": 3,
+            "node2Id": 5,
+            "weight": "3"
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 6,
+            "weight": "6"
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 6,
+            "weight": "3"
+          },
+          {
+            "node1Id": 6,
+            "node2Id": 5,
+            "weight": "1"
+          },
+          {
+            "node1Id": 2,
+            "node2Id": 6,
+            "weight": "7"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Graph Floyd Algorithmus",
+      "data": {
+        "structureType": "graph",
+        "configuration": {
+          "nodes": {
+            "visited": false,
+            "weight": false
+          },
+          "edges": {
+            "directed": true,
+            "weight": true
+          }
+        },
+        "nodes": [
+          {
+            "nodeId": 0,
+            "value": "D",
+            "position": {
+              "x": 371,
+              "y": 129.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 421,
+              "y": 179.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 1,
+            "value": "A",
+            "position": {
+              "x": 758,
+              "y": 133.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 808,
+              "y": 183.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 2,
+            "value": "B",
+            "position": {
+              "x": 1161,
+              "y": 137.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1211,
+              "y": 187.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 3,
+            "value": "E",
+            "position": {
+              "x": 1159,
+              "y": 429.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 1209,
+              "y": 479.203125
+            },
+            "visited": false,
+            "weight": -1
+          },
+          {
+            "nodeId": 4,
+            "value": "C",
+            "position": {
+              "x": 752,
+              "y": 430.203125
+            },
+            "size": {
+              "width": 100,
+              "height": 100
+            },
+            "center": {
+              "x": 802,
+              "y": 480.203125
+            },
+            "visited": false,
+            "weight": -1
+          }
+        ],
+        "edges": [
+          {
+            "node1Id": 0,
+            "node2Id": 1,
+            "weight": "2"
+          },
+          {
+            "node1Id": 2,
+            "node2Id": 1,
+            "weight": "2"
+          },
+          {
+            "node1Id": 2,
+            "node2Id": 3,
+            "weight": "4"
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 3,
+            "weight": 0
+          },
+          {
+            "node1Id": 1,
+            "node2Id": 4,
+            "weight": "3"
+          },
+          {
+            "node1Id": 0,
+            "node2Id": 4,
+            "weight": "10"
+          },
+          {
+            "node1Id": 4,
+            "node2Id": 2,
+            "weight": "9"
+          }
+        ]
+      }
+    }
+  ]
+}
