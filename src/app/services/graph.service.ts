@@ -308,4 +308,72 @@ export class GraphService {
     window.URL.revokeObjectURL(link.href);
   }
 
+  graphFromJSON(json: string) {
+
+    let graphJSON;
+    try {
+      graphJSON = JSON.parse(json);
+    } catch (error) {
+      console.error('Error parsing JSON data:', error);
+    }
+
+    // reset the graph state
+    // remove nodes and edges
+    while (this.nodes.length !== 0) {
+      this.removeNode(this.nodes[0]); // will remove the edges too
+    }
+    this.idCounter = 0;
+    this.newEdge = { started: false, node1: null, node2: null, weight: 0 };
+    
+    // Configure graph with default graph values
+    this.configureGraph(graphJSON.configuration);
+
+    // Add nodes
+    graphJSON.nodes.forEach((nodeJSON: any) => {
+
+      const node: IGraphNode = {
+        nodeId: nodeJSON.nodeId,
+        value: nodeJSON.value,
+        position: nodeJSON.position,
+        size: nodeJSON.size,
+        center: nodeJSON.center,
+        visited: {
+          enabled: this.graphConfiguration.nodes.visited,
+          value: nodeJSON.visited
+        },
+        weight: {
+          enabled: this.graphConfiguration.nodes.weight,
+          value: nodeJSON.weight
+        }
+      }
+      this.nodes.push(node);
+      
+      // Adjust idCounter
+      this.idCounter = Math.max(this.idCounter, node.nodeId);
+    });
+  
+    // Add edges
+    graphJSON.edges.forEach((edgeJSON: any) => {
+      
+      // find nodes
+      let node1: IGraphNode | null = null;
+      let node2: IGraphNode | null = null;
+      this.nodes.forEach(node => {
+        if (node.nodeId === edgeJSON.node1Id) { node1 = node; }
+        if (node.nodeId === edgeJSON.node2Id) { node2 = node; }
+      });
+
+      if (node1 !==  null && node2 !== null) {
+        const edge: IGraphEdge = {
+          node1, node2, 
+          directed: this.graphConfiguration.edges.directed,
+          weight: { enabled: this.graphConfiguration.edges.weight, value: edgeJSON.weight }
+        };
+
+        this.edges.push(edge);
+      }
+    });
+
+  }
+
 }

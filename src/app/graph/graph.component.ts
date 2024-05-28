@@ -130,6 +130,24 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     this.graphService.downloadGraphAsJSON();
   }
 
+  onJSONFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.readFile(file);
+    }
+  }
+
+  private readFile(file: File) {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const fileContent = e.target.result;
+      this.graphService.graphFromJSON(fileContent);
+    };
+
+    reader.readAsText(file);
+  }
+
 
   // #############################
   // Functions for interactions with toolbar
