@@ -87,12 +87,28 @@
       <!-- Lines presenting existing relations between nodes -->
       @for(node of nodes;track $index){
         @if(node.leftChild !== null){
-        <line #nodeLines [attr.x1]="node.center.x" [attr.y1]="node.center.y" [attr.x2]="node.leftChild.center.x" [attr.y2]="node.leftChild.center.y"
+        <line #nodeLines 
+          [attr.x1]="calculateEdgeStart(node, node.leftChild).x" 
+          [attr.y1]="calculateEdgeStart(node, node.leftChild).y" 
+          [attr.x2]="calculateEdgeEnd(node, node.leftChild).x" 
+          [attr.y2]="calculateEdgeEnd(node, node.leftChild).y"
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
+        <svg:polygon 
+          [attr.points]="calculateArrowPoints(node, node.leftChild)" 
+          fill="black" 
+        />
         }      
         @if(node.rightChild !== null){
-        <line #nodeLines [attr.x1]="node.center.x" [attr.y1]="node.center.y" [attr.x2]="node.rightChild.center.x" [attr.y2]="node.rightChild.center.y"
-            style="stroke:rgb(129, 129, 129);stroke-width:2" />
+        <line #nodeLines           
+          [attr.x1]="calculateEdgeStart(node, node.rightChild).x" 
+          [attr.y1]="calculateEdgeStart(node, node.rightChild).y" 
+          [attr.x2]="calculateEdgeEnd(node, node.rightChild).x" 
+          [attr.y2]="calculateEdgeEnd(node, node.rightChild).y"
+          style="stroke:rgb(129, 129, 129);stroke-width:2" />
+        <svg:polygon 
+          [attr.points]="calculateArrowPoints(node, node.rightChild)" 
+          fill="black" 
+        />
         }
       }
       <!-- End - Lines for existing relations -->
