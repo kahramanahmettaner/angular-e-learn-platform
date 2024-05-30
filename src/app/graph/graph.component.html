@@ -101,11 +101,11 @@
         @if(newEdge.started){
     
             @if (newEdge.node1 !== null) {
-            <line #newLinkLine [attr.x1]="newEdge.node1.center.x" [attr.y1]="newEdge.node1.center.y" [attr.x2]="mouseX + difference.x" [attr.y2]="mouseY + difference.y"
+            <line #newLinkLine [attr.x1]="newEdge.node1.center.x" [attr.y1]="newEdge.node1.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
             style="stroke:rgb(129, 129, 129);stroke-width:2" />
             } 
             @if (newEdge.node2 !== null) {
-            <line #newLinkLine [attr.x1]="newEdge.node2.center.x" [attr.y1]="newEdge.node2.center.y" [attr.x2]="mouseX + difference.x" [attr.y2]="mouseY + difference.y"
+            <line #newLinkLine [attr.x1]="newEdge.node2.center.x" [attr.y1]="newEdge.node2.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
             style="stroke:rgb(129, 129, 129);stroke-width:2" />
             }
         }
@@ -122,8 +122,7 @@
     @for(edge of edges;track $index){
         <app-edge-toolset-graph 
             [edge]="edge" 
-            [index]="$index" 
-            [workspacePosition]="workspaceRect.topLeft"
+            [index]="$index"
             (removeEdge)="removeEdge($event)"
             (changeEdgeDirection)="changeEdgeDirection($event)"    
         />

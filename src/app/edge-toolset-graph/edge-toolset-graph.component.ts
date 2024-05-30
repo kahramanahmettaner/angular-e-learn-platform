@@ -24,7 +24,6 @@ export class EdgeToolsetGraphComponent implements OnInit {
   // Inputs from parent component
   @Input() edge!: IGraphEdge;
   @Input() index!: number;
-  @Input() workspacePosition!: IPosition;
 
 
   // #############################
@@ -105,19 +104,14 @@ export class EdgeToolsetGraphComponent implements OnInit {
   // Utility functions
 
   calculateComponentPosition(): IPosition {
-    let relativePos: IPosition;
+    let position: IPosition;
     if (this.edge.node1 === this.edge.node2) { // edges which connect a node with itself
-      relativePos = { 
+      return { 
         x: this.edge.node1.position.x - 20 - (this.componentSize.width / 2), 
         y: this.edge.node1.position.y - 20 - (this.componentSize.height / 2)
       }; 
     } else { // edges which connect two different nodes
-      relativePos = this.calculateEdgeCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
-    }
-      
-    return {
-      x: relativePos.x + this.workspacePosition.x,
-      y: relativePos.y + this.workspacePosition.y
+      return this.calculateEdgeCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
     }
   }
 

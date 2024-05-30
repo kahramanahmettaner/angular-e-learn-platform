@@ -31,7 +31,7 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   // #############################
   // Class properties
   dragPosition: IPosition;
-  difference: IPosition;
+  wsRelativeToTb: IPosition;
   workspaceRect: IRectangle;
   toolbarRect: IRectangle;
   // TODO: Find a proper way to listen to UI change to update workSpaceRect etc. 
@@ -55,7 +55,7 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     // #############################
     // Initialize Properties
     this.dragPosition = { x: 0, y:0 };
-    this.difference =  { x: 0, y: 0 };
+    this.wsRelativeToTb =  { x: 0, y: 0 };
     this.workspaceRect = { 
       topLeft: { x: 0, y: 0},  
       bottomRight: { x: 0, y: 0},
@@ -87,14 +87,12 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     
     // TODO:
     // Calculate the differences
-    const xDifference = this.toolbarRect.topLeft.x - this.workspaceRect.topLeft.x;
-    const yDifference = this.toolbarRect.topLeft.y - this.workspaceRect.topLeft.y;
-
-    this.difference = { x: xDifference, y: yDifference };
+    this.calculateUI();
   }
 
   ngAfterViewInit() {
     this.calculateUI();
+    console.log(this.wsRelativeToTb)
   }
 
 
@@ -162,8 +160,8 @@ export class GraphComponent  implements OnInit, AfterViewInit {
   toolOnDragMove(event: CdkDragMove) {
 
     // Update dragPosition
-    this.dragPosition.x = event.source.getFreeDragPosition().x;
-    this.dragPosition.y = event.source.getFreeDragPosition().y;
+    this.dragPosition.x = event.source.getFreeDragPosition().x + event.source.element.nativeElement.offsetLeft - this.wsRelativeToTb.x;
+    this.dragPosition.y = event.source.getFreeDragPosition().y + + event.source.element.nativeElement.offsetTop - this.wsRelativeToTb.y;
   }
 
   // Drag end
@@ -182,24 +180,21 @@ export class GraphComponent  implements OnInit, AfterViewInit {
 
     // Get the drag point to set the size of new node
     const newNodePosition: IPosition = {
-      x: event.source.getFreeDragPosition().x,
-      y: event.source.getFreeDragPosition().y
+      x: event.source.getFreeDragPosition().x + event.source.element.nativeElement.offsetLeft - this.wsRelativeToTb.x,
+      y: event.source.getFreeDragPosition().y + + event.source.element.nativeElement.offsetTop - this.wsRelativeToTb.y
     }
 
     // Check if the position is inside the workspace and adjust it if it is not
-    if (newNodePosition.x < this.workspaceRect.topLeft.x) { 
-      newNodePosition.x = this.workspaceRect.topLeft.x + this.difference.x
-    } else if (newNodePosition.x + newNodeSize.width > this.workspaceRect.bottomRight.x) { 
-      newNodePosition.x = this.workspaceRect.bottomRight.x - newNodeSize.width + this.difference.x
-    } else {
-      newNodePosition.x += this.difference.x
+    if (newNodePosition.x < 0) { 
+      newNodePosition.x = 0
+    } else if (newNodePosition.x + newNodeSize.width > this.workspaceRect.size.width) { 
+      newNodePosition.x = this.workspaceRect.size.width - newNodeSize.width
     }
-    if (newNodePosition.y < this.workspaceRect.topLeft.y) { 
-      newNodePosition.y = this.workspaceRect.topLeft.y + this.difference.y
-    } else if (newNodePosition.y + newNodeSize.height > this.workspaceRect.bottomRight.y) { 
-      newNodePosition.y = this.workspaceRect.bottomRight.y - newNodeSize.height + this.difference.y
-    } else {
-      newNodePosition.y += this.difference.y
+
+    if (newNodePosition.y < 0) { 
+      newNodePosition.y = 0
+    } else if (newNodePosition.y + newNodeSize.height > this.workspaceRect.size.height) { 
+      newNodePosition.y = this.workspaceRect.size.height - newNodeSize.height
     }
 
     // Reset the Toolbar Element
@@ -246,11 +241,11 @@ export class GraphComponent  implements OnInit, AfterViewInit {
       }
 
       // Calculate the differences
-      const xDifference = this.toolbarRect.topLeft.x - this.workspaceRect.topLeft.x;
-      const yDifference = this.toolbarRect.topLeft.y - this.workspaceRect.topLeft.y;
+      const xDifference = this.workspaceRect.topLeft.x - this.toolbarRect.topLeft.x;
+      const yDifference = this.workspaceRect.topLeft.y - this.toolbarRect.topLeft.y;
 
       // Update the difference property
-      this.difference = { x: xDifference, y: yDifference };
+      this.wsRelativeToTb = { x: xDifference, y: yDifference };
     }
   }
 
