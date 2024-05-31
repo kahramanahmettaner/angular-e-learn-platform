@@ -120,11 +120,11 @@
       @if(newLink.started){
   
         @if (newLink.parent !== null) {
-          <line #newLinkLine [attr.x1]="newLink.parent.center.x" [attr.y1]="newLink.parent.center.y" [attr.x2]="mouseX +  + difference.x" [attr.y2]="mouseY + difference.y"
+          <line #newLinkLine [attr.x1]="newLink.parent.center.x" [attr.y1]="newLink.parent.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
         } 
         @if (newLink.child !== null) {
-          <line #newLinkLine [attr.x1]="newLink.child.center.x" [attr.y1]="newLink.child.center.y" [attr.x2]="mouseX + difference.x" [attr.y2]="mouseY + difference.y"
+          <line #newLinkLine [attr.x1]="newLink.child.center.x" [attr.y1]="newLink.child.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
         }
       }
