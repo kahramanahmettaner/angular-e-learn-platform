@@ -1,14 +1,15 @@
-<div cdkDrag
-    [cdkDragFreeDragPosition]="node.position"
-
-    (mouseenter)="onFieldHover($event)"
-
-    class="node-div" 
+<div 
+    class="node-div"     
+    cdkDrag
     cdkDragBoundary=".workspace-boundary"  
-    (click)="onClick($event)"
+    [cdkDragFreeDragPosition]="node.position"
     (cdkDragStarted)="nodeOnDragStart($event)" 
     (cdkDragMoved)="nodeOnDragMove($event)"
-    (cdkDragEnded)="nodeOnDragEnd($event)">
+    (cdkDragEnded)="nodeOnDragEnd($event)"
+    (mouseenter)="onFieldHover($event)"
+    (click)="onClick($event)"
+    (dblclick)="onEditNodeValueClick()"
+>
 
 
     <!-- ################### -->
