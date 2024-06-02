@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IPosition } from '../models/Position.interface';
 import { IRectangle } from '../models/Rectangle.interface';
 import { GraphService } from '../services/graph.service';
@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.css'
 })
-export class GraphComponent  implements OnInit, AfterViewInit {
+export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
 
   // #############################
   // References for HTML Elements
@@ -85,14 +85,31 @@ export class GraphComponent  implements OnInit, AfterViewInit {
     this.edges = this.graphService.getEdges();
     this.newEdge = this.graphService.getNewEdge();
     
-    // TODO:
-    // Calculate the differences
     this.calculateUI();
+
+    // #############################
+    // Set up event listeners
+    window.addEventListener('keydown', this.onKeyDown);
   }
 
   ngAfterViewInit() {
     this.calculateUI();
     console.log(this.wsRelativeToTb)
+  }
+
+  ngOnDestroy() {
+    // #############################
+    // Remove event listeners
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  // #############################
+  // Callback functions for event listeners
+  private onKeyDown = (event: KeyboardEvent) => {
+    // to cancel new edge between nodes
+    if (event.key === 'Escape') {
+      if (this.newEdge.started) { this.graphService.resetNewEdge(); } 
+    }
   }
 
 
