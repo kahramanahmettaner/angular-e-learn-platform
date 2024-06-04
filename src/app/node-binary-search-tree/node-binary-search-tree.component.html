@@ -9,6 +9,7 @@
     (mouseenter)="onFieldHover($event)"
     (click)="onClick($event)"    
     (dblclick)="onEditNodeValueClick()"
+    [style.zIndex]="nodeZIndex"
 >
 
 
@@ -30,7 +31,7 @@
     
     <!-- ################### -->
     <!-- Toolset -->
-    <div [ngStyle]="{display: displayNodeToolbar ? 'block' : 'none'}" (mouseleave)="onFieldLeave($event)" class="container">  
+    <div [ngStyle]="{display: displayNodeToolset ? 'block' : 'none'}" (mouseleave)="onFieldLeave($event)" class="container">  
 
         <!-- ################### -->
         <!-- Generate new node connected to current node -->

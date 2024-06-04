@@ -38,16 +38,20 @@ export class NodeBinarySearchTreeComponent implements OnInit {
 
   // #############################
   // Class properties
-  displayNodeToolbar: boolean = false;
-  editNodeValue: boolean = false;
+  nodeZIndex: number;
+  displayNodeToolset: boolean;
+  editNodeValue: boolean;
 
-  newLink: INewLink = this.bstService.getNewLink();
+  newLink!: INewLink;
 
   
   // #############################
   // Constructor
   constructor(private bstService: BinarySearchTreeService) {
-
+    // Initalize properties
+    this.nodeZIndex = 1;
+    this.displayNodeToolset = false;
+    this.editNodeValue = false;
   }
 
 
@@ -56,17 +60,24 @@ export class NodeBinarySearchTreeComponent implements OnInit {
   ngOnInit(): void {
     // Activate the input field for the node
     this.onEditNodeValueClick();
+
+    // Initialize properties
+    this.newLink = this.bstService.getNewLink();
   }
 
 
   // #############################
   // Functions for interactions with node
   onFieldHover(event: any) {
-    this.displayNodeToolbar = true;
+    // Activate the toolset for the node and adjust z index
+    this.displayNodeToolset = true;
+    this.nodeZIndex = 10;
   }
 
   onFieldLeave(event: any) {
-    this.displayNodeToolbar = false;
+    // Deactivate the toolset for the node and adjust z index
+    this.displayNodeToolset = false;
+    this.nodeZIndex = 1;
   }
 
   onClick(event: MouseEvent) {
