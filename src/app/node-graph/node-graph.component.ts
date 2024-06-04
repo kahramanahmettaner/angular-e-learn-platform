@@ -31,16 +31,20 @@ export class NodeGraphComponent implements OnInit {
 
   // #############################
   // Class properties
-  displayNodeToolset: boolean = false;
-  editNodeValue: boolean = false;
+  nodeZIndex: number;
+  displayNodeToolset: boolean;
+  editNodeValue: boolean;
 
-  newEdge: INewGraphEdge = this.graphService.getNewEdge();
-  graphConfiguration: IGraphConfiguration = this.graphService.getGraphConfiguration();
+  newEdge!: INewGraphEdge;
+  graphConfiguration!: IGraphConfiguration;
   
   // #############################
   // Constructor
   constructor(private graphService: GraphService) {
-
+    // Initalize properties
+    this.nodeZIndex = 1;
+    this.displayNodeToolset = false;
+    this.editNodeValue = false;
   }
 
 
@@ -50,6 +54,10 @@ export class NodeGraphComponent implements OnInit {
   
     // Activate the input field for the node
     this.onEditNodeValueClick();
+
+    // Initialize properties
+    this.newEdge = this.graphService.getNewEdge();
+    this.graphConfiguration = this.graphService.getGraphConfiguration();
   }
 
 
@@ -57,14 +65,16 @@ export class NodeGraphComponent implements OnInit {
   // Functions for interactions with node
   onFieldHover(event: any) {
   
-    // Activate the toolset for the node
+    // Activate the toolset for the node and adjust z index
     this.displayNodeToolset = true;
+    this.nodeZIndex = 10;
   }
 
   onFieldLeave(event: any) {
 
-    // Deactivate the toolset for the node
+    // Deactivate the toolset for the node and adjust z index
     this.displayNodeToolset = false;
+    this.nodeZIndex = 1;
   }
 
   onClick(event: MouseEvent) {
