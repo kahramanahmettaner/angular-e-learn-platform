@@ -32,8 +32,6 @@ export class AssignmentsListComponent implements OnInit {
   }
 
   onBtnClick(id: number): void {
-    // TODO: Route to the assignment container:
-    //this.navigateToRoute(`/assignment/${id}`);
-    alert('Not Implemented.')
+    this.navigateToRoute(`/assignments/${id}`);
   }
 }

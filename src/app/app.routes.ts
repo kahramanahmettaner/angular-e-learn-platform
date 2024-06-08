@@ -20,24 +20,7 @@ export const routes: Routes = [
         component: CreateAssignmentComponent
     },
     {
-        path: 'tree',
-        component: AssignmentContainerComponent,
-        children: [
-            {
-                path: '',
-                component: BinarySearchTreeComponent
-            }
-        ]
-        
-    },
-    {
-        path: 'graph',
-        component: AssignmentContainerComponent,
-        children: [
-            {
-                path: '',
-                component: GraphComponent
-            }
-        ]
+        path: 'assignments/:id',
+        component: AssignmentContainerComponent
     },
 ];

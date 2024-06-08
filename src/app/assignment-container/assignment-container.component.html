@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" *ngIf="assignment$ | async as assignment">
     <div class="assignment box">
-        <h2>Aufgabentitel</h2>   
+        <h2>{{ assignment.title }}</h2>   
         <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque laborum debitis voluptate natus minima officiis placeat expedita amet corporis mollitia iste numquam aspernatur repellendus nulla distinctio blanditiis, exercitationem, ex iure?
+            {{ assignment.text }}
         </p>
     </div>
     <div class="evaluation box">
@@ -10,9 +10,17 @@
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi modi laudantium voluptate quae amet tenetur non eligendi, facilis aperiam quisquam consectetur adipisci repudiandae nulla asperiores voluptatem error harum praesentium mollitia.</p>
     </div>
     <div class="solution box">
-        <router-outlet></router-outlet>
+        @if (assignment.dataStructure === 'graph') {
+            <app-graph />
+        }
+        @else if (assignment.dataStructure === 'tree') {
+            <app-binary-search-tree />
+        }
+        @else {
+            <p>No Structure</p>
+        }
     </div>
     <div class="controls box">
-
+        
     </div>
 </div>
