@@ -1,4 +1,4 @@
-<div class="container" *ngIf="assignment$ | async as assignment">
+<div class="container" *ngIf="assignment$ | async as assignment; else noAssignment">
     <div class="assignment box">
         <h2>{{ assignment.title }}</h2>   
         <p>
@@ -24,3 +24,13 @@
         
     </div>
 </div>
+
+<ng-template #noAssignment>
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; background-color: rgb(248, 242, 233);">
+        <h2>Keine Aufgabe vorhanden</h2>
+        <a 
+            routerLink="/assignments">
+            Zurück zur Liste der Beispiel-Aufgaben
+        </a>
+    </div>
+</ng-template>

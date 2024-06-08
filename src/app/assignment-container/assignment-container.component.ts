@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import IAssignment from '../models/Assignment.interface';
 import { AssignmentService } from '../services/assignment.service';
@@ -11,7 +11,7 @@ import { BinarySearchTreeComponent } from '../binary-search-tree/binary-search-t
 @Component({
   selector: 'app-assignment-container',
   standalone: true,
-  imports: [CommonModule, GraphComponent, BinarySearchTreeComponent],
+  imports: [CommonModule, RouterLink, GraphComponent, BinarySearchTreeComponent],
   templateUrl: './assignment-container.component.html',
   styleUrl: './assignment-container.component.css'
 })
