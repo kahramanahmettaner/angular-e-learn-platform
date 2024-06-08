@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="assignment" *ngFor="let assignment of assignments$ | async">
+        <div class="title">
+            <p>{{ assignment.title }}</p>
+            <button (click)="onBtnClick(assignment.id)"> öffnen </button>
+        </div>
+        <div class="details">
+            <p>Data Structure: {{ assignment.dataStructure }}</p>
+            @if (assignment.dataStructure === 'graph') {
+                <p>
+                    Node Config( 
+                    weight: {{ assignment.graphConfiguration?.nodeConfiguration?.weight }}
+                    visited: {{ assignment.graphConfiguration?.nodeConfiguration?.visited }}
+                    )
+                </p>
+                <p>
+                    Edge Config( 
+                    weight: {{ assignment.graphConfiguration?.edgeConfiguration?.weight }}
+                    directed: {{ assignment.graphConfiguration?.edgeConfiguration?.directed }}
+                    )
+                </p>
+            }
+        </div>
+    </div>
+</div>
