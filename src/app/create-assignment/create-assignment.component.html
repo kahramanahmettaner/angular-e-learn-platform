@@ -2,6 +2,18 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
 
+        <h2>Eine neue Aufgabe erstellen</h2>
+
+        <div class="form-group">
+            <label for="title">Aufgabentitel:</label>
+            <input class="text-input" type="text" formControlName="title" id="title" placeholder="Titel eingeben">
+        </div>
+
+        <div class="form-group">
+            <label for="text">Aufgabenstellung:</label>
+            <textarea class="text-input" formControlName="text" id="text" rows="5" placeholder="Text eingeben"></textarea>
+        </div>
+
         <div class="form-group">
             <label for="selectedOption">Eine Aufgabentyp auswählen:</label>
             <select formControlName="selectedOption" (change)="onChangeOption($event)">
@@ -22,22 +34,13 @@
             </label>
         </div>
 
+        <div class="form-group">
+            <label>
+                <input type="checkbox" formControlName="stepsEnabled"> Lösung mit mehreren Schritten
+            </label>
+        </div>
+
         <button type="submit" [disabled]="form.invalid" class="submit-btn">Weiter</button>
     </form>
-
-    <div class="predesigned-examples-container">
-        <div class="predesigned-examples">
-            <button
-                (click)="navigateToRoute('assignments')"
-            >
-                Beispielaufgaben anzeigen
-            </button>
-            <button
-                (click)="navigateToRoute('assignments/create')"
-            >
-                Neue Aufgabe erstellen
-        </button>
-        </div>
-    </div>
 
 </div>

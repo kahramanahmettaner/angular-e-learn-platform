@@ -4,6 +4,7 @@ import { GraphComponent } from './graph/graph.component';
 import { HomeComponent } from './home/home.component';
 import { AssignmentContainerComponent } from './assignment-container/assignment-container.component';
 import { AssignmentsListComponent } from './assignments-list/assignments-list.component';
+import { CreateAssignmentComponent } from './create-assignment/create-assignment.component';
 
 export const routes: Routes = [
     {
@@ -13,6 +14,10 @@ export const routes: Routes = [
     {
         path: 'assignments',
         component: AssignmentsListComponent
+    },
+    {
+        path: 'assignments/create',
+        component: CreateAssignmentComponent
     },
     {
         path: 'tree',
