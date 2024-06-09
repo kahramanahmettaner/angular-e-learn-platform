@@ -58,6 +58,14 @@ export class GraphService {
     this.graphConfiguration$.next(graphConfiguration);
   }
 
+  setNodes(nodes: IGraphNode[]) {
+    this.nodes$.next(nodes);
+  }
+
+  setEdges(edges: IGraphEdge[]) {
+    this.edges$.next(edges);
+  }
+
   resetGraph(){
     this.nodes$.next([]);
     this.edges$.next([]);

@@ -17,7 +17,7 @@ export class AssignmentService {
     // TODO: fetch assigments from backend and update assignments$
     
     // for now, use dummy data instead
-    const dummy_assignments: IAssignment[] = this.dummy_data();
+    const dummy_assignments: IAssignment[] = this.dummyData();
     this.assignments$.next(dummy_assignments);
   }
 
@@ -39,7 +39,16 @@ export class AssignmentService {
   }
 
   // TODO: delete this function
-  public dummy_data(): IAssignment[] {
+  generateDummyId(): number {
+    const assignments = this.assignments$.getValue();
+    const maxId = assignments.reduce((max, assignment) => {
+      return assignment.id > max ? assignment.id : max;
+    }, 0);
+    return maxId + 1;
+  }
+
+  // TODO: delete this function
+  public dummyData(): IAssignment[] {
     return [
       { 
         "id": 1,

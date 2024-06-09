@@ -99,6 +99,10 @@ export class BinarySearchTreeService {
     this.idCounter = 0;
   }
 
+  setNodes(nodes: IBstNode[]) {
+    this.nodes$.next(nodes);
+  }
+
   resetNewEdge() {
     this.newEdge$.next({ 
       started: false, parent: null, child: null, childRole: BstChildRole.NO_PARENT 

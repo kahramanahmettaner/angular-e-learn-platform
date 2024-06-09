@@ -7,6 +7,7 @@ import { GraphService } from '../services/graph.service';
 import { CommonModule } from '@angular/common';
 import { GraphComponent } from '../graph/graph.component';
 import { BinarySearchTreeComponent } from '../binary-search-tree/binary-search-tree.component';
+import { BinarySearchTreeService } from '../services/binary-search-tree.service';
 
 @Component({
   selector: 'app-assignment-container',
@@ -22,7 +23,7 @@ export class AssignmentContainerComponent implements OnInit {
   constructor(
     private assignmentService: AssignmentService,
     private graphService: GraphService,
-    //private bstService: BinarySearchTreeService,
+    private bstService: BinarySearchTreeService,
     private route: ActivatedRoute
   ) {
 
@@ -30,27 +31,59 @@ export class AssignmentContainerComponent implements OnInit {
 
   
   ngOnInit(): void {
+    // get assignment id from url
     const idStr = this.route.snapshot.paramMap.get('id') || '-1';
     const id = parseInt(idStr);
 
+    // get assignment observable by id
     this.assignment$ = this.assignmentService.getAssignmentById(id);
 
-    this.assignment$.subscribe((assignment) => {  
-      if (assignment?.dataStructure === 'graph') {
-        console.log('Graph Structure');
-        if (assignment.graphConfiguration === undefined) {
-          console.log('No Configuration');
-        } else {
-          console.log('Successfull');          
-          this.graphService.configureGraph({
-            "nodes": assignment.graphConfiguration?.nodeConfiguration,
-            "edges": assignment.graphConfiguration?.edgeConfiguration,
-          })
-        }
-      }
-      else if (assignment?.dataStructure === 'tree') {
-        console.log('Binary Search Tree Structure');
+    // reset the state of the graph and bst
+    this.graphService.resetGraph();
+    this.bstService.resetTree();
+
+    // subscribe to get assignment data
+    this.assignment$.subscribe((assignment) => {
+      if (assignment !== undefined) {
+        // set the state of the graph and bst
+        this.setAssignmentState(assignment);
       }
     })
+  }
+
+  setAssignmentState(assignment: IAssignment) {
+
+    // graph-assigment
+    if (assignment?.dataStructure === 'graph') {
+        
+      // No configuration
+      if (assignment.graphConfiguration === undefined) {
+        alert('Keine Konfiguration für Graph gefunden.');
+        return
+      } 
+            
+      // Set graph state
+      this.graphService.configureGraph({
+        "nodes": assignment.graphConfiguration?.nodeConfiguration,
+        "edges": assignment.graphConfiguration?.edgeConfiguration,
+      })
+
+      this.graphService.setNodes(assignment.graphConfiguration.initialNodeData);
+      this.graphService.setEdges(assignment.graphConfiguration.initialEdgeData);
+      
+    }
+
+    // bianry-search-tree-assigment
+    else if (assignment?.dataStructure === 'tree') {
+
+      // No configuration
+      if (assignment.binarySearchTreeConfiguration === undefined) {
+        alert('Keine Konfiguration für Binären Suchbaum gefunden.');
+        return
+      } 
+
+      // Set bst state
+      this.bstService.setNodes(assignment.binarySearchTreeConfiguration.initialNodeData);
+    }
   }
 }

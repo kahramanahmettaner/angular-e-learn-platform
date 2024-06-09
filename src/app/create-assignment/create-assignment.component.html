@@ -1,4 +1,5 @@
-<div class="container">
+@if (!workspaceIsActive) {
+<div class="container" >
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
 
@@ -24,13 +25,13 @@
 
         <div *ngIf="showCheckbox" class="form-group checkboxes">
             <label>
-                <input type="checkbox" formControlName="checkboxEdgeDirected"> Gerichtete Kanten
+                <input type="checkbox" formControlName="checkboxEdgeDirected"(change)="onChangeCheckbox($event)"> Gerichtete Kanten
             </label>
             <label>
-                <input type="checkbox" formControlName="checkboxEdgeWeighted"> Kanten mit Gewichten
+                <input type="checkbox" formControlName="checkboxEdgeWeighted" (change)="onChangeCheckbox($event)"> Kanten mit Gewichten
             </label>
             <label>
-                <input type="checkbox" formControlName="checkboxNodeWeighted"> Knoten mit Gewichten
+                <input type="checkbox" formControlName="checkboxNodeWeighted" (change)="onChangeCheckbox($event)"> Knoten mit Gewichten
             </label>
         </div>
 
@@ -40,7 +41,37 @@
             </label>
         </div>
 
-        <button type="submit" [disabled]="form.invalid" class="submit-btn">Weiter</button>
+        <button 
+            type="button" 
+            (click)="activateWorkspace()" 
+            [disabled]="!form.controls['selectedOption'].value" 
+        >
+            Initialstruktur bearbeiten
+        </button>
+
+        <button type="submit" [disabled]="form.invalid" class="submit-btn">Aufgabe erstellen</button>
     </form>
 
 </div>
+}
+@else {
+<div class="workspace-container">
+    <div class="solution box">
+        @if (form.controls['selectedOption'].value === 'graph') {
+            <app-graph />
+        }
+        @else if (form.controls['selectedOption'].value === 'tree') {
+            <app-binary-search-tree />
+        }
+        @else {
+            <p>No Structure</p>
+        }
+    </div>
+    <div class="controls box">
+        <button
+            type="button" 
+            (click)="deactivateWorkspace()" 
+        > Bestätigen </button>
+    </div>
+</div>
+}
