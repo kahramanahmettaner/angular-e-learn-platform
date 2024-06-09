@@ -1,12 +1,12 @@
 import { IPosition } from "./Position.interface";
 import { ISize } from "./Size.interface";
 
-export interface INode {
+export interface IBstNode {
     nodeId: number;
     value: string;
-    parent: INode | null;
-    leftChild: INode | null;
-    rightChild: INode | null;
+    parent: IBstNode | null;
+    leftChild: IBstNode | null;
+    rightChild: IBstNode | null;
     position: IPosition;
     size: ISize;
     center: IPosition;

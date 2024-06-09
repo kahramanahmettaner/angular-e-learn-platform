@@ -1,31 +1,52 @@
 import { Injectable } from '@angular/core';
-import { INode } from '../models/Node.interface';
+import { IBstNode } from '../models/BstNode.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
-import { TreeState } from '../models/TreeState.enum';
-import { INewLink } from '../models/NewLink.interface';
-import { ChildRole } from '../models/ChildRole.enum';
-import { NodeRole } from '../models/NodeRole.enum';
+import { BstState } from '../models/BstState.enum';
+import { IBstNewEdge } from '../models/BstNewEdge.interface';
+import { BstChildRole } from '../models/BstChildRole.enum';
+import { BstNodeRole } from '../models/BstNodeRole.enum';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BinarySearchTreeService {
 
-  private rootNode: INode | null = null;
-  private nodes: Array<INode> = [];
-  private idCounter: number = 0;
+  private rootNode$!: BehaviorSubject<IBstNode | null>;
+  private nodes$!: BehaviorSubject<IBstNode[]>; 
+  private newEdge$!: BehaviorSubject<IBstNewEdge>; 
+  private idCounter!: number;
 
   constructor() { 
-  
-  }
 
-  resetTree() {
-    this.nodes = [];
+    // ##############
+    // Initialize
+    this.rootNode$ = new BehaviorSubject<IBstNode | null>(null);
+    this.nodes$ = new BehaviorSubject<IBstNode[]>([]);
+    this.newEdge$ = new BehaviorSubject<IBstNewEdge>({ 
+      started: false, parent: null, child: null, childRole: BstChildRole.NO_PARENT 
+    });
     this.idCounter = 0;
   }
 
-  addNode(newNodeAttributes: Partial<INode>, childRole: ChildRole) {
+  // ##########
+  // Getters  
+  getNodes(): Observable<IBstNode[]> {
+    return this.nodes$;
+  }
+
+  getRootNode(): Observable<IBstNode | null> {
+    return this.rootNode$;
+  }
+
+  getNewEdge(): Observable<IBstNewEdge>  {
+    return this.newEdge$;
+  }
+  // ###########
+  // Update
+
+  addNode(newNodeAttributes: Partial<IBstNode>, childRole: BstChildRole) {
 
     // Destructure the attributes and assign default values if they are undefined
     const { 
@@ -38,13 +59,13 @@ export class BinarySearchTreeService {
     } = newNodeAttributes;
 
     // Check if childRole and parent are suitable for each other
-    if ((parent === null && (childRole === ChildRole.LEFT_CHILD || childRole === ChildRole.RIGHT_CHILD)) ||
-        (parent !== null && childRole === ChildRole.NO_PARENT)) {
+    if ((parent === null && (childRole === BstChildRole.LEFT_CHILD || childRole === BstChildRole.RIGHT_CHILD)) ||
+        (parent !== null && childRole === BstChildRole.NO_PARENT)) {
       throw new Error('Invalid parent-child relationship');
     }
 
     // Generate new node
-    const newNode: INode = {
+    const newNode: IBstNode = {
       nodeId: this.idCounter,
       value: value,
       parent: null,
@@ -59,31 +80,64 @@ export class BinarySearchTreeService {
     this.idCounter += 1;
 
     // Add the node and adjust the relations of the previous and current parents and childs
-    this.nodes.push(newNode);
-    this.connectNodes(newNode, leftChild, ChildRole.LEFT_CHILD);
-    this.connectNodes(newNode, rightChild, ChildRole.RIGHT_CHILD);
+    this.nodes$.next([ ...this.nodes$.getValue(), newNode ]);
+    this.connectNodes(newNode, leftChild, BstChildRole.LEFT_CHILD);
+    this.connectNodes(newNode, rightChild, BstChildRole.RIGHT_CHILD);
     this.connectNodes(parent, newNode, childRole);
     //this.resolveRelationConflicts(newNode, childRole);
 
     // TODO: In which cases should be rootNode set?
-    if (this.rootNode === null) { 
-      this.rootNode = newNode; 
+    if (this.rootNode$.getValue() === null) { 
+      this.rootNode$.next(newNode); 
     }
   }
 
-  connectNodes(parent: INode | null, child: INode | null, childRole: ChildRole) {
-    if (parent === null || child === null || childRole === ChildRole.NO_PARENT) {
+  resetTree() {
+    this.rootNode$.next(null);
+    this.nodes$.next([]);
+    this.resetNewEdge();
+    this.idCounter = 0;
+  }
+
+  resetNewEdge() {
+    this.newEdge$.next({ 
+      started: false, parent: null, child: null, childRole: BstChildRole.NO_PARENT 
+    });
+  }
+    
+  updateNewEdge( newValues: Partial<IBstNewEdge> ) {
+    const { started, parent, child, childRole } = newValues;
+    const current = this.newEdge$.getValue();
+
+    if (started) {
+      current.started = started;
+    }
+    if (parent) { 
+      current.parent = parent;
+    }
+    if (child) { 
+      current.child = child;
+    }
+    if (childRole) { 
+      current.childRole = childRole;
+    }
+
+    this.newEdge$.next(current); 
+  }
+
+  connectNodes(parent: IBstNode | null, child: IBstNode | null, childRole: BstChildRole) {
+    if (parent === null || child === null || childRole === BstChildRole.NO_PARENT) {
       // throw new Error('For a new link parent and one of the children are required!')
       return
     }
 
     // TODO: check if the parent has parent recursively and set the root node if there is no parent anymore
     // first link ever or parent to root node
-    if (this.rootNode === null || this.rootNode === child) { 
-      this.rootNode = parent;
+    if (this.rootNode$.getValue() === null || this.rootNode$.getValue() === child) { 
+      this.rootNode$.next(parent);
     }
 
-    if (childRole === ChildRole.LEFT_CHILD) {
+    if (childRole === BstChildRole.LEFT_CHILD) {
       
       if (parent.leftChild !== null) { parent.leftChild.parent = null }
       if (child.parent != null) { 
@@ -106,10 +160,10 @@ export class BinarySearchTreeService {
     }
   }
 
-  disconnectNode(node: INode, roleToDisconnect: NodeRole, childRoleToDisconnect: ChildRole | null = null) {
+  disconnectNode(node: IBstNode, roleToDisconnect: BstNodeRole, childRoleToDisconnect: BstChildRole | null = null) {
 
     // Disconnect from parent node
-    if (roleToDisconnect === NodeRole.PARENT) {
+    if (roleToDisconnect === BstNodeRole.PARENT) {
       if (node.parent?.leftChild == node) { node.parent.leftChild = null; }
       if (node.parent?.rightChild == node) { node.parent.rightChild = null; }
       node.parent = null;
@@ -118,21 +172,21 @@ export class BinarySearchTreeService {
 
     // Disconnect from child node
     if (childRoleToDisconnect === null) { throw new Error('The child role is not provided that denotes which child will be disconnected from the node') }
-    if (childRoleToDisconnect === ChildRole.LEFT_CHILD && node.leftChild !== null) {
+    if (childRoleToDisconnect === BstChildRole.LEFT_CHILD && node.leftChild !== null) {
       node.leftChild.parent = null;
       node.leftChild = null;
     }
-    if (childRoleToDisconnect === ChildRole.RIGHT_CHILD && node.rightChild !== null) {
+    if (childRoleToDisconnect === BstChildRole.RIGHT_CHILD && node.rightChild !== null) {
       node.rightChild.parent = null;
       node.rightChild = null;
     } 
   }
 
   
-  deleteNode(node: INode) {
+  removeNode(node: IBstNode) {
     
-    if (this.rootNode === node) {
-      this.rootNode = null;
+    if (this.rootNode$.getValue() === node) {
+      this.rootNode$.next(null);
       // TODO: use modal to get the new root node 
       // for instance, there is no rootNode until any nodes connected to each other
     }
@@ -144,31 +198,24 @@ export class BinarySearchTreeService {
       if (node.parent.rightChild === node) { node.parent.rightChild = null }
     }
 
-    let index = this.nodes.indexOf(node);
+    let index = this.nodes$.getValue().indexOf(node);
     if (index !== -1) {
-       this.nodes.splice(index, 1);
+      const nodesList = this.nodes$.getValue();
+      nodesList.splice(index, 1);
+      this.nodes$.next(nodesList);
     }
-  }
-
-
-  getNodesAsList() {
-    return this.nodes;
-  }
-
-  getRootNode() {
-    return this.rootNode;
   }
 
   // Function to return the JSON structure of the tree starting from the root node
   getTreeStructure(): any {
-    if (!this.rootNode) {
+    if (!this.rootNode$.getValue()) {
       return 'No nodes connected to each other to present a tree structure!';
     }
 
-    return this.constructTreeStructure(this.rootNode);
+    return this.constructTreeStructure(this.rootNode$.getValue());
   }
 
-  private constructTreeStructure(node: INode | null): any {
+  private constructTreeStructure(node: IBstNode | null): any {
     if (!node) {
       return null; // If node is null, return null
     }
@@ -196,10 +243,10 @@ export class BinarySearchTreeService {
   // ############################################
 
   preOrder() {
-    this.preOrderRecursive(this.rootNode)
+    this.preOrderRecursive(this.rootNode$.getValue())
   }
 
-  private preOrderRecursive(currentNode: INode | null) {
+  private preOrderRecursive(currentNode: IBstNode | null) {
     if (currentNode!=null) {
       // Implement doSomething()
       
@@ -209,7 +256,7 @@ export class BinarySearchTreeService {
   }
 
   isEmpty() {
-    return (this.rootNode === null)
+    return (this.rootNode$.getValue() === null)
   }
 
   calculateCenter(position: IPosition, size: ISize): IPosition {
@@ -240,44 +287,43 @@ export class BinarySearchTreeService {
 
   createTreeFromJSON(json: string, parentId: number = -1) {
 
+    let binarySearchTreeJSON;
     try {
-      const rootNodeJSON = JSON.parse(json); // Parse JSON string to object
-      if (!rootNodeJSON) {
-        throw new Error('Invalid JSON data');
-      }
-
-      // clean the current state 
-      this.nodes.splice(0, this.nodes.length);
-      this.rootNode = null
-
-
-      if (rootNodeJSON != null) {
-        
-        // create new Object because directly using the ones from json causes some issues
-        this.rootNode = {
-          nodeId: rootNodeJSON.nodeId, 
-          value: rootNodeJSON.value,
-          parent: null,
-          leftChild: null,
-          rightChild: null,
-          position: rootNodeJSON.position,
-          size: rootNodeJSON.size,
-          center: rootNodeJSON.center
-        } 
-        this.createTreeFromJSONRecursiv(this.rootNode, rootNodeJSON)
-      }
-
+      binarySearchTreeJSON = JSON.parse(json);
     } catch (error) {
       console.error('Error parsing JSON data:', error);
     }
+
+    // clean the current state 
+    this.resetTree();
+
+    if (binarySearchTreeJSON != null) {
+      
+      const rootNodeJSON = binarySearchTreeJSON.rootNode;
+      // create new Object because directly using the ones from json causes some issues
+      const rootNode = {
+        nodeId: rootNodeJSON.nodeId, 
+        value: rootNodeJSON.value,
+        parent: null,
+        leftChild: null,
+        rightChild: null,
+        position: rootNodeJSON.position,
+        size: rootNodeJSON.size,
+        center: rootNodeJSON.center
+      };
+      
+      this.rootNode$.next(rootNode);
+
+      this.createTreeFromJSONRecursiv(rootNode, rootNodeJSON)
+    }
   }
 
-  private createTreeFromJSONRecursiv(parentNode: INode, parentNodeJSON: INode){
+  private createTreeFromJSONRecursiv(parentNode: IBstNode, parentNodeJSON: IBstNode){
 
-    this.nodes.push(parentNode)
+    this.nodes$.next([ ...this.nodes$.getValue() ,parentNode ])
     
     if (parentNodeJSON.leftChild !== null) {
-      const left: INode = {
+      const left: IBstNode = {
         nodeId: parentNodeJSON?.leftChild.nodeId, 
         value: parentNodeJSON?.leftChild.value,
         parent: parentNode,
@@ -292,7 +338,7 @@ export class BinarySearchTreeService {
     }
 
     if (parentNodeJSON.rightChild !== null) {
-      const right: INode = {
+      const right: IBstNode = {
         nodeId: parentNodeJSON?.rightChild.nodeId, 
         value: parentNodeJSON?.rightChild.value,
         parent: parentNode,
@@ -307,43 +353,23 @@ export class BinarySearchTreeService {
     }
   }
 
-  isTreeValid(): TreeState {
-    if (this.isEmpty()) { return TreeState.NO_ROOT }
+  isTreeValid(): BstState {
+    if (this.isEmpty()) { return BstState.NO_ROOT }
 
-    if (this.getNumberOfConnectedNodes(this.rootNode) !== this.nodes.length) { return TreeState.INVALID }
+    if (this.getNumberOfConnectedNodes(this.rootNode$.getValue()) !== this.nodes$.getValue().length) { return BstState.INVALID }
 
-    return TreeState.VALID
+    return BstState.VALID
   }
 
-  getNumberOfConnectedNodes(currentNode: INode | null): number {
+  getNumberOfConnectedNodes(currentNode: IBstNode | null): number {
     if (currentNode === null ) { return 0 }
 
     return 1 + this.getNumberOfConnectedNodes(currentNode.leftChild) + this.getNumberOfConnectedNodes(currentNode.rightChild)
   }
 
   getRecentNode() {
-    return this.nodes[this.nodes.length - 1]
+    return this.nodes$.getValue()[this.nodes$.getValue().length - 1]
   }
 
-  // new link
-  private newLink: INewLink = { started: false, parent: null, child: null, childRole: ChildRole.NO_PARENT }
 
-  getNewLink() {
-    return this.newLink
-  }
-
-  resetNewLink() {
-    this.newLink.started = false;
-    this.newLink.parent = null;
-    this.newLink.child = null;
-    this.newLink.childRole = ChildRole.NO_PARENT;
-  }
-
-  updateNewLink( newValues: Partial<INewLink> ) {
-    const { started, parent, child, childRole } = newValues;
-    if (started) { this.newLink.started = started; }
-    if (parent) { this.newLink.parent = parent; }
-    if (child) { this.newLink.child = child; }
-    if (childRole) { this.newLink.childRole = childRole; }
-  }
 }

@@ -1,12 +1,11 @@
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IPosition } from '../models/Position.interface';
 import { IGraphNode } from '../models/GraphNode.interface';
 import { GraphService } from '../services/graph.service';
-import { INewGraphEdge } from '../models/NewGraphEdge.interface';
-import { IGraphEdge } from '../models/GraphEdge.interface';
+import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +16,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './node-graph.component.html',
   styleUrl: './node-graph.component.css'
 })
-export class NodeGraphComponent implements OnInit {
+export class NodeGraphComponent implements OnInit, OnDestroy {
 
   // #############################
   // References for HTML Elements
@@ -39,7 +38,7 @@ export class NodeGraphComponent implements OnInit {
   private newEdgeSubscription!: Subscription;
   private graphConfigurationSubscription!: Subscription;
 
-  newEdge!: INewGraphEdge;
+  newEdge!: IGraphNewEdge;
   graphConfiguration!: IGraphConfiguration;
   
   // #############################
@@ -58,8 +57,9 @@ export class NodeGraphComponent implements OnInit {
   
     // Activate the input field for the node
     this.onEditNodeValueClick();
-
-    // Initialize properties
+  
+    // #############################
+    // Subscribe to Observables from the graphService
     this.newEdgeSubscription = this.graphService.getNewEdge().subscribe( newEdge => {
       this.newEdge = newEdge; 
     });
@@ -67,6 +67,17 @@ export class NodeGraphComponent implements OnInit {
     this.graphConfigurationSubscription = this.graphService.getGraphConfiguration().subscribe( graphConfiguration => {
       this.graphConfiguration = graphConfiguration;
     });
+  }
+
+  ngOnDestroy(): void {
+    // #############################
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    if (this.newEdgeSubscription) {
+      this.newEdgeSubscription.unsubscribe();
+    }
+    if (this.graphConfigurationSubscription) {
+      this.graphConfigurationSubscription.unsubscribe();
+    }
   }
 
 

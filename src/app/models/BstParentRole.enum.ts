@@ -1,4 +1,4 @@
-export enum ParentRole {
+export enum BstParentRole {
     PARENT_OF_LEFT_CHILD = 'PARENT_OF_LEFT_CHILD',
     PARENT_OF_RIGHT_CHILD = 'PARENT_OF_RIGHT_CHILD',
     NO_CHILD = 'NO_CHILD'

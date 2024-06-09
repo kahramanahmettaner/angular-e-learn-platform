@@ -1,4 +1,4 @@
-export enum TreeState {
+export enum BstState {
     NO_ROOT,
     INVALID,
     VALID

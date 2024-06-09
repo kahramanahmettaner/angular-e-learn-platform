@@ -3,7 +3,7 @@ import { IGraphNode } from '../models/GraphNode.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
-import { INewGraphEdge } from '../models/NewGraphEdge.interface';
+import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class GraphService {
   private graphConfiguration$!: BehaviorSubject<IGraphConfiguration>;
   private nodes$!: BehaviorSubject<IGraphNode[]>;
   private edges$!: BehaviorSubject<IGraphEdge[]>;
-  private newEdge$!: BehaviorSubject<INewGraphEdge>;
+  private newEdge$!: BehaviorSubject<IGraphNewEdge>;
   private idCounter!: number;
 
   constructor() {
@@ -28,7 +28,7 @@ export class GraphService {
     });
     this.nodes$ = new BehaviorSubject<IGraphNode[]>([]);
     this.edges$ = new BehaviorSubject<IGraphEdge[]>([]);
-    this.newEdge$ = new BehaviorSubject<INewGraphEdge>({
+    this.newEdge$ = new BehaviorSubject<IGraphNewEdge>({
       started: false, node1: null, node2: null, weight: 0
     });
     this.idCounter = 0;
@@ -48,7 +48,7 @@ export class GraphService {
     return this.edges$;
   }
 
-  getNewEdge(): Observable<INewGraphEdge> {
+  getNewEdge(): Observable<IGraphNewEdge> {
     return this.newEdge$;
   }
 
@@ -238,7 +238,7 @@ export class GraphService {
     }
   }
 
-  updateNewEdge( newValues: Partial<INewGraphEdge> ) {
+  updateNewEdge( newValues: Partial<IGraphNewEdge> ) {
     // Check input
     const { started = null, node1 = null, node2 = null, weight = null } = newValues;
     

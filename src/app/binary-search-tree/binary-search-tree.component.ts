@@ -1,17 +1,18 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
-import { INode } from '../models/Node.interface';
+import { IBstNode } from '../models/BstNode.interface';
 import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
 import { IRectangle } from '../models/Rectangle.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TreeState } from '../models/TreeState.enum';
+import { BstState } from '../models/BstState.enum';
 import { NodeBinarySearchTreeComponent } from '../node-binary-search-tree/node-binary-search-tree.component';
-import { INewLink } from '../models/NewLink.interface';
-import { ChildRole } from '../models/ChildRole.enum';
+import { IBstNewEdge } from '../models/BstNewEdge.interface';
+import { BstChildRole } from '../models/BstChildRole.enum';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-binary-search-tree',
@@ -43,9 +44,12 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   mouseY: number;
 
   toolbarElements!: string[];
-  nodes!: INode[];
-  newLink!: INewLink;
-
+ 
+  private nodesSubscription!: Subscription;
+  private newEdgeSubscription!: Subscription;
+  
+  nodes!: IBstNode[];
+  newEdge!: IBstNewEdge;
 
   // #############################
   // Constructor
@@ -82,13 +86,23 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     // #############################
     // Initialize properties
     this.toolbarElements = ["Toolbar1"];  // TODO:
-    this.nodes = this.bstService.getNodesAsList();
-    this.newLink = this.bstService.getNewLink();
+
+    
+    // #############################
+    // Subscribe to Observables from the bstService
+    this.nodesSubscription = this.bstService.getNodes().subscribe( nodes => {
+      this.nodes = nodes;
+    });
+
+    this.newEdgeSubscription = this.bstService.getNewEdge().subscribe( newEdge => {
+      this.newEdge = newEdge;
+    });
+    
+    this.calculateUI();
 
     // #############################
     // Set up event listeners
     window.addEventListener('keydown', this.onKeyDown);
-    this.calculateUI();
   }
 
   ngAfterViewInit() {
@@ -99,6 +113,15 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     // #############################
     // Remove event listeners
     window.removeEventListener('keydown', this.onKeyDown);
+
+    // #############################
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    if (this.nodesSubscription) {
+      this.nodesSubscription.unsubscribe();
+    }
+    if (this.newEdgeSubscription) {
+      this.newEdgeSubscription.unsubscribe();
+    }
   }
 
 
@@ -107,15 +130,15 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   private onKeyDown = (event: KeyboardEvent) => {
     // to cancel new link between nodes
     if (event.key === 'Escape') {
-      if (this.newLink.started) { this.bstService.resetNewLink(); } 
+      if (this.newEdge.started) { this.bstService.resetNewEdge(); } 
     }
   }
 
   onJSONToConsoleClick() {
-    if (this.bstService.isTreeValid() === TreeState.VALID) {
+    if (this.bstService.isTreeValid() === BstState.VALID) {
       console.log('JSON Output for the tree:', this.bstService.getTreeStructure())
       alert('Die Ausgabe ist in der Konsole')
-    } else if (this.bstService.isTreeValid() === TreeState.INVALID) {
+    } else if (this.bstService.isTreeValid() === BstState.INVALID) {
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nMöglicherweise gibt es Knoten, die ausgehend vom Wurzeknoten nicht erreichbar sind.")
     } else {
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nEntweder existiert kein Wurzelknoten oder es gibt keine Knoten die miteinander verbunden sind.")
@@ -123,9 +146,9 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   onDownloadAsJSONClick() {
-    if (this.bstService.isTreeValid() === TreeState.VALID) {
+    if (this.bstService.isTreeValid() === BstState.VALID) {
       this.bstService.downloadTreeAsJSON()
-    } else if (this.bstService.isTreeValid() === TreeState.INVALID) {
+    } else if (this.bstService.isTreeValid() === BstState.INVALID) {
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nMöglicherweise gibt es Knoten, die ausgehend vom Wurzeknoten nicht erreichbar sind.")
     } else {
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nEntweder existiert kein Wurzelknoten oder es gibt keine Knoten die miteinander verbunden sind.")
@@ -210,7 +233,7 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     event.source.reset()
 
     // Add new node
-    this.bstService.addNode({ position: newNodePosition, size: newNodeSize }, ChildRole.NO_PARENT)
+    this.bstService.addNode({ position: newNodePosition, size: newNodeSize }, BstChildRole.NO_PARENT)
   }
 
 
@@ -266,7 +289,7 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   // #############################
   // Utility functions
   
-  calculateEdgeStart(parent: INode, child: INode): IPosition {
+  calculateEdgeStart(parent: IBstNode, child: IBstNode): IPosition {
     // Calculate the distance between the center of two nodes
     const diffX = child.center.x - parent.center.x;
     const diffY = child.center.y - parent.center.y;
@@ -294,7 +317,7 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     return { x, y };
   }
 
-  calculateEdgeEnd(parent: INode, child: INode) {
+  calculateEdgeEnd(parent: IBstNode, child: IBstNode) {
     // Calculate the distance between the center of two nodes
     const diffX = parent.center.x - child.center.x;
     const diffY = parent.center.y - child.center.y;
@@ -322,7 +345,7 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
     return { x, y };
   }
 
-  calculateArrowPoints(parent: INode, child: INode) {
+  calculateArrowPoints(parent: IBstNode, child: IBstNode) {
     // Specify where the arrowhead starts and ends
     let start: IPosition;  
     let end: IPosition;  

@@ -8,7 +8,7 @@ import { NodeGraphComponent } from '../node-graph/node-graph.component';
 import { IGraphNode } from '../models/GraphNode.interface';
 import { EdgeGraphComponent } from '../edge-graph/edge-graph.component';
 import { IGraphEdge } from '../models/GraphEdge.interface';
-import { INewGraphEdge } from '../models/NewGraphEdge.interface';
+import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -48,7 +48,7 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
   
   nodes!: IGraphNode[];
   edges!: IGraphEdge[];
-  newEdge!: INewGraphEdge;
+  newEdge!: IGraphNewEdge;
   
   // #############################
   // Constructor

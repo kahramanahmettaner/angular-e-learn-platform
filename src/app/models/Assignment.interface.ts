@@ -1,6 +1,6 @@
 import { IGraphEdge } from "./GraphEdge.interface";
 import { IGraphNode } from "./GraphNode.interface";
-import { INode } from "./Node.interface";
+import { IBstNode } from "./BstNode.interface";
 
 export default interface IAssignment {
     id: number,
@@ -21,6 +21,6 @@ export default interface IAssignment {
         },
     },
     binarySearchTreeConfiguration?: {
-        initialNodeData: INode[],
+        initialNodeData: IBstNode[],
     }
 }

@@ -1,5 +1,5 @@
-import { INode } from "./Node.interface";
+import { IBstNode } from "./BstNode.interface";
 
 export interface IBinarySearchTree {
-    parentNode: INode
+    parentNode: IBstNode
 }

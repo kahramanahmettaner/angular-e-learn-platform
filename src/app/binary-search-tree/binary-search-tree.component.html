@@ -117,14 +117,14 @@
       
       <!-- ################### -->
       <!-- Lines presenting new relations between nodes -->
-      @if(newLink.started){
+      @if(newEdge.started){
   
-        @if (newLink.parent !== null) {
-          <line #newLinkLine [attr.x1]="newLink.parent.center.x" [attr.y1]="newLink.parent.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
+        @if (newEdge.parent !== null) {
+          <line #newEdgeLine [attr.x1]="newEdge.parent.center.x" [attr.y1]="newEdge.parent.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
         } 
-        @if (newLink.child !== null) {
-          <line #newLinkLine [attr.x1]="newLink.child.center.x" [attr.y1]="newLink.child.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
+        @if (newEdge.child !== null) {
+          <line #newEdgeLine [attr.x1]="newEdge.child.center.x" [attr.y1]="newEdge.child.center.y" [attr.x2]="mouseX - workspaceRect.topLeft.x" [attr.y2]="mouseY - workspaceRect.topLeft.y"
           style="stroke:rgb(129, 129, 129);stroke-width:2" />
         }
       }
