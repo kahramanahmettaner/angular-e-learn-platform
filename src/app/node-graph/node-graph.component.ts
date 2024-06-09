@@ -8,6 +8,7 @@ import { GraphService } from '../services/graph.service';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-node-graph',
@@ -35,6 +36,9 @@ export class NodeGraphComponent implements OnInit {
   displayNodeToolset: boolean;
   editNodeValue: boolean;
 
+  private newEdgeSubscription!: Subscription;
+  private graphConfigurationSubscription!: Subscription;
+
   newEdge!: INewGraphEdge;
   graphConfiguration!: IGraphConfiguration;
   
@@ -56,8 +60,13 @@ export class NodeGraphComponent implements OnInit {
     this.onEditNodeValueClick();
 
     // Initialize properties
-    this.newEdge = this.graphService.getNewEdge();
-    this.graphConfiguration = this.graphService.getGraphConfiguration();
+    this.newEdgeSubscription = this.graphService.getNewEdge().subscribe( newEdge => {
+      this.newEdge = newEdge; 
+    });
+
+    this.graphConfigurationSubscription = this.graphService.getGraphConfiguration().subscribe( graphConfiguration => {
+      this.graphConfiguration = graphConfiguration;
+    });
   }
 
 

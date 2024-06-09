@@ -5,57 +5,71 @@ import { IPosition } from '../models/Position.interface';
 import { ISize } from '../models/Size.interface';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphService {
 
-  private graphConfiguration!: IGraphConfiguration;
-  private nodes: IGraphNode[];
-  private edges: IGraphEdge[];
-  private idCounter: number;
-  private newEdge: INewGraphEdge;
+  private graphConfiguration$!: BehaviorSubject<IGraphConfiguration>;
+  private nodes$!: BehaviorSubject<IGraphNode[]>;
+  private edges$!: BehaviorSubject<IGraphEdge[]>;
+  private newEdge$!: BehaviorSubject<INewGraphEdge>;
+  private idCounter!: number;
 
+  constructor() {
 
-  constructor() { 
-    this.nodes = [];
-    this.edges = [];
+    // ##############
+    // Initialize
+    this.graphConfiguration$ = new BehaviorSubject<IGraphConfiguration>({
+      nodes: { weight: true, visited: true },
+      edges: { weight: true, directed: true },
+    });
+    this.nodes$ = new BehaviorSubject<IGraphNode[]>([]);
+    this.edges$ = new BehaviorSubject<IGraphEdge[]>([]);
+    this.newEdge$ = new BehaviorSubject<INewGraphEdge>({
+      started: false, node1: null, node2: null, weight: 0
+    });
     this.idCounter = 0;
-    this.newEdge = { started: false, node1: null, node2: null, weight: 0 };
-    
-    // Configure graph with default graph values
-    this.configureGraph({
-      nodes: {
-        weight: true,
-        visited: true
-      },
-      edges: {
-        directed: true,  
-        weight: true,  
-      }
-    })
+  }
+
+  // ###########
+  // Getters
+  getGraphConfiguration(): Observable<IGraphConfiguration> {
+    return this.graphConfiguration$;
+  }
+
+  getNodes(): Observable<IGraphNode[]> {
+    return this.nodes$;
+  }
+
+  getEdges(): Observable<IGraphEdge[]> {
+    return this.edges$;
+  }
+
+  getNewEdge(): Observable<INewGraphEdge> {
+    return this.newEdge$;
+  }
+
+  // ###########
+  // Update
+  configureGraph(graphConfiguration: IGraphConfiguration) {
+    this.graphConfiguration$.next(graphConfiguration);
   }
 
   resetGraph(){
-    this.nodes = []
-    this.edges = []
+    this.nodes$.next([]);
+    this.edges$.next([]);
+    this.resetNewEdge();
     this.idCounter = 0;
-    this.resetNewEdge()
-  }
-
-  configureGraph(graphConfiguration: IGraphConfiguration) {
-    this.graphConfiguration = graphConfiguration;
-  }
-
-  getGraphConfiguration() {
-    return this.graphConfiguration;
   }
 
   addNode(newNodeAttributes: Partial<IGraphNode>): IGraphNode {
 
     // Destructure the attributes and assign default values if they are undefined
     let { 
+      nodeId = null,
       value = '',
       visited = null, 
       weight = null,
@@ -64,36 +78,46 @@ export class GraphService {
     } = newNodeAttributes;
 
     // Adjust the properties according to the graphConfiguration
-    if (this.graphConfiguration.nodes.weight) {
-      weight = { enabled: true, value: weight?.value || 0 }
+    if (this.graphConfiguration$.getValue().nodes.weight) {
+      weight = { enabled: true, value: weight?.value || 0 };
     } else {
-      weight = { enabled: false, value: -1 }
+      weight = { enabled: false, value: -1 };
     }
     
-    if (this.graphConfiguration.nodes.visited) {
-      visited = { enabled: true, value: visited?.value || false }
+    if (this.graphConfiguration$.getValue().nodes.visited) {
+      visited = { enabled: true, value: visited?.value || false };
     } else {
-      visited = { enabled: false, value: false }
+      visited = { enabled: false, value: false };
+    }
+
+    // Check if nodeId is provided
+    // graphFromJson: nodeId as parameter
+    // via UI: nodeId = idCounter
+    if (nodeId === null) {
+      nodeId = this.idCounter;
+
+      // Increment id counter for the next nodes
+      this.idCounter += 1;
     }
 
     // Generate new node
     const newNode: IGraphNode = {
-      nodeId: this.idCounter,
+      nodeId: nodeId,
       value: value,
       visited: visited,
       weight: weight,
       position: position,
       size: size,
       center: this.calculateCenter(position, size)
-    }
+    };
 
     // TODO: Can different nodes have same value?
 
     // Add node to the list of nodes
-    this.nodes.push(newNode);
-
-    // Increment id counter for the next nodes
-    this.idCounter += 1;
+    this.nodes$.next([
+      ...this.nodes$.getValue(),
+      newNode
+    ]);
 
     // Return newNode, because it is required to addEdge 
     // TODO: Can this be done in a different way?
@@ -107,11 +131,11 @@ export class GraphService {
     // For undirected graphs:
         // Check if an edge already exist which aconnects these two nodes
     // TODO: Is this allowed, or must it be prevented?
-    this.edges.forEach(existingEdge => {
-      if (this.graphConfiguration.edges.directed && existingEdge.node1 === node1 && existingEdge.node2 === node2) {
+    this.edges$.getValue().forEach(existingEdge => {
+      if (this.graphConfiguration$.getValue().edges.directed && existingEdge.node1 === node1 && existingEdge.node2 === node2) {
         throw new Error('These two nodes already are connected with an edge in the same direction.')
       }
-      if (!this.graphConfiguration.edges.directed && 
+      if (!this.graphConfiguration$.getValue().edges.directed && 
           (
           (existingEdge.node1 === node1 && existingEdge.node2 === node2) || 
           (existingEdge.node2 === node1 && existingEdge.node1 === node2) 
@@ -123,7 +147,7 @@ export class GraphService {
 
     // Adjust the properties according to the graphConfiguration  
     let weight: { enabled: boolean, value: number };
-    if (this.graphConfiguration.edges.weight) {
+    if (this.graphConfiguration$.getValue().edges.weight) {
       weight = { enabled: true, value: weightValue || 0 };
     } else {
       weight = { enabled: false, value: -1 };
@@ -131,78 +155,68 @@ export class GraphService {
 
     // Generate new edge
     const newEdge: IGraphEdge = {
-      node1, node2, weight, directed: this.graphConfiguration.edges.directed
-    }
+      node1, node2, weight, directed: this.graphConfiguration$.getValue().edges.directed
+    };
 
     // Add edge to the list of edges
-    this.edges.push(newEdge);
-  }
-
-  getNodes(): IGraphNode[] {
-    return this.nodes;
-  }
-
-  getEdges(): IGraphEdge[] {
-    return this.edges;
+    this.edges$.next([...this.edges$.getValue(), newEdge]);
   }
 
   removeNode(node: IGraphNode): void {
+    // get the nodes and edges as list
+    const nodesList = this.nodes$.getValue();
+    const edgesList = this.edges$.getValue();
 
     // Check if the node is in the list of nodes, and
     // Find the index of the node if it is in the list
-    const indexOfNode = this.nodes.indexOf(node);
+    const indexOfNode = nodesList.indexOf(node);
     if (indexOfNode === -1) {
       throw new Error('Node not found.');
     }
 
-    // Store the index for the edges which contain node that will be removed
-    const indexOfEdgesContainingNode = [];
-
-    for (let i = 0; i < this.edges.length; i++) {
-      if (this.edges[i].node1 === node || this.edges[i].node2 === node) {
-        indexOfEdgesContainingNode.push(i);
-      }
-    }
-
-    // Sort the array in descending order so that the first removed edges do not effect the index of the next ones when removing 
-    indexOfEdgesContainingNode.sort((a, b) => b - a);
-
-    // Remove the edges from the list of edges
-    indexOfEdgesContainingNode.forEach(i => {
-      this.edges.splice(i, 1)
-    });
-
-    // Remove the node from the list of nodes
-    this.nodes.splice(indexOfNode, 1);
+    // Remove edges containing the node
+    const updatedEdges = edgesList.filter(edge => edge.node1 !== node && edge.node2 !== node);
+    this.edges$.next(updatedEdges);
+    
+    // Remove the node
+    nodesList.splice(indexOfNode, 1);
+    this.nodes$.next(nodesList);
   }
 
   removeEdge(edge: IGraphEdge): void {
+    // get the edges as list
+    const edgesList = this.edges$.getValue();
     
     // Check if the edge is in the list of edges, and
     // Find the index of the edge if it is in the list
-    const indexOfEdge = this.edges.indexOf(edge);
+    const indexOfEdge = edgesList.indexOf(edge);
     if (indexOfEdge === -1) {
       throw new Error('Edge not found');
     }
 
-    // Remove the edge from the list of edges
-    this.edges.splice(indexOfEdge, 1);
+    // Remove the edge
+    edgesList.splice(indexOfEdge, 1);
+    this.edges$.next(edgesList);
   }
 
   changeEdgeDirection(edge: IGraphEdge) {
+    // get the edges as list
+    const edgesList = this.edges$.getValue();
 
     // Check if the edges are directed according to graphConfiguration 
-    if (!this.graphConfiguration.edges.directed) {
-      throw new Error('The edge is not directed.')
-    }
+    if (!this.graphConfiguration$.getValue().edges.directed) {
+      throw new Error('The edge is not directed.');
+    };
 
     // Check if there is already an edge which starts at edge.node2 and ends at edge.node1
-    this.edges.forEach(existingEdge => {
-      if (existingEdge.node1 === edge.node2 && existingEdge.node2 === edge.node1) {
-        throw new Error('There is already an edge which connects these nodes in the opposite direction.');
-      }
-    });
+    const hasOppositeEdge = edgesList.some(existingEdge => 
+      existingEdge.node1 === edge.node2 && existingEdge.node2 === edge.node1
+    );
     
+    if (hasOppositeEdge) {
+      throw new Error('There is already an edge which connects these nodes in the opposite direction.');
+    }
+
     // Get the nodes from the edge
     const newNode2 = edge.node1;
     const newNode1 = edge.node2;
@@ -210,27 +224,45 @@ export class GraphService {
     // Swap the nodes
     edge.node2 = newNode2;
     edge.node1 = newNode1;
+
+    // Find the index of the edge to update it in the edges list
+    const edgeIndex = edgesList.indexOf(edge);
+    
+    // If the edge is found, update the list
+    if (edgeIndex !== -1) {
+      const updatedEdgesList = [...edgesList];
+      updatedEdgesList[edgeIndex] = edge;
+      this.edges$.next(updatedEdgesList);
+    } else {
+      throw new Error('Edge not found.');
+    }
   }
 
   updateNewEdge( newValues: Partial<INewGraphEdge> ) {
+    // Check input
     const { started = null, node1 = null, node2 = null, weight = null } = newValues;
-    if (started !== null) { this.newEdge.started = started; }
-    if (node1 !== null) { this.newEdge.node1 = node1; }
-    if (node2 !== null) { this.newEdge.node2 = node2; }
-    if (weight !== null) { this.newEdge.weight = weight; }
-  }
+    
+    // Get new edge as object
+    const newEdge = this.newEdge$.getValue();
 
-  getNewEdge() {
-    return this.newEdge;
+    // Update the object
+    if (started !== null) { newEdge.started = started; }
+    if (node1 !== null) { newEdge.node1 = node1; }
+    if (node2 !== null) { newEdge.node2 = node2; }
+    if (weight !== null) { newEdge.weight = weight; }
+  
+    // Update the Subject
+    this.newEdge$.next(newEdge);
   }
 
   resetNewEdge() {
-    this.newEdge.started = false;
-    this.newEdge.node1 = null;
-    this.newEdge.node2 = null;
-    this.newEdge.weight = 0;
+    this.newEdge$.next({
+      started: false,
+      node1: null,
+      node2: null,
+      weight: 0,
+    });
   }
-
   // #############
   // Utility functions
   calculateCenter(position: IPosition, size: ISize): IPosition {
@@ -269,20 +301,23 @@ export class GraphService {
   }
 
   graphToJSON() {
+    // get the nodes and edges as list
+    const nodesList = this.nodes$.getValue();
+    const edgesList = this.edges$.getValue();
 
     // Modify nodes to disclude some attributes
-    const modifiedNodes = this.nodes.map(node => {
+    const modifiedNodes = nodesList.map(node => {
       return this.adjustNodeAttributes(node);
     });
 
     // Modify edges to disclude some attributes
-    const modifiedEdges = this.edges.map(edge => {
+    const modifiedEdges = edgesList.map(edge => {
       return this.adjustEdgeAttributes(edge);
     });
   
     const graph = {
       structureType: 'graph',
-      configuration: this.graphConfiguration,
+      configuration: this.graphConfiguration$.getValue(),
       nodes: modifiedNodes,
       edges: modifiedEdges
     };
@@ -318,39 +353,23 @@ export class GraphService {
     }
 
     // reset the graph state
-    // remove nodes and edges
-    while (this.nodes.length !== 0) {
-      this.removeNode(this.nodes[0]); // will remove the edges too
-    }
-    this.idCounter = 0;
-    this.newEdge = { started: false, node1: null, node2: null, weight: 0 };
+    this.resetGraph();
     
-    // Configure graph with default graph values
+    // Configure graph
     this.configureGraph(graphJSON.configuration);
 
     // Add nodes
     graphJSON.nodes.forEach((nodeJSON: any) => {
 
-      const node: IGraphNode = {
-        nodeId: nodeJSON.nodeId,
-        value: nodeJSON.value,
-        position: nodeJSON.position,
-        size: nodeJSON.size,
-        center: nodeJSON.center,
-        visited: {
-          enabled: this.graphConfiguration.nodes.visited,
-          value: nodeJSON.visited
-        },
-        weight: {
-          enabled: this.graphConfiguration.nodes.weight,
-          value: nodeJSON.weight
-        }
-      }
-      this.nodes.push(node);
+      // TODO: node config etc. must be from graphConfig
+      this.addNode(nodeJSON);
       
       // Adjust idCounter
-      this.idCounter = Math.max(this.idCounter, node.nodeId);
+      this.idCounter = Math.max(this.idCounter, nodeJSON.nodeId);
     });
+
+    // get the nodes as list
+    const nodesList = this.nodes$.getValue();
   
     // Add edges
     graphJSON.edges.forEach((edgeJSON: any) => {
@@ -358,22 +377,14 @@ export class GraphService {
       // find nodes
       let node1: IGraphNode | null = null;
       let node2: IGraphNode | null = null;
-      this.nodes.forEach(node => {
+      nodesList.forEach(node => {
         if (node.nodeId === edgeJSON.node1Id) { node1 = node; }
         if (node.nodeId === edgeJSON.node2Id) { node2 = node; }
       });
 
       if (node1 !==  null && node2 !== null) {
-        const edge: IGraphEdge = {
-          node1, node2, 
-          directed: this.graphConfiguration.edges.directed,
-          weight: { enabled: this.graphConfiguration.edges.weight, value: edgeJSON.weight }
-        };
-
-        this.edges.push(edge);
+        this.addEdge(node1, node2, edgeJSON.weight);
       }
     });
-
   }
-
 }

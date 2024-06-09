@@ -11,6 +11,7 @@ import { IGraphEdge } from '../models/GraphEdge.interface';
 import { INewGraphEdge } from '../models/NewGraphEdge.interface';
 import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-graph',
@@ -40,10 +41,14 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
   mouseY: number;
 
   toolbarElements!: string[];
+  
+  private nodesSubscription!: Subscription;
+  private edgesSubscription!: Subscription;
+  private newEdgeSubscription!: Subscription;
+  
   nodes!: IGraphNode[];
   edges!: IGraphEdge[];
   newEdge!: INewGraphEdge;
-  
   
   // #############################
   // Constructor
@@ -81,9 +86,19 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
     // Initialize properties
     this.toolbarElements = ["Toolbar1"];  // TODO:
   
-    this.nodes = this.graphService.getNodes();
-    this.edges = this.graphService.getEdges();
-    this.newEdge = this.graphService.getNewEdge();
+    // #############################
+    // Subscribe to Observables from the graphService
+    this.nodesSubscription = this.graphService.getNodes().subscribe( nodes => {
+      this.nodes = nodes;
+    });
+    
+    this.edgesSubscription = this.graphService.getEdges().subscribe( edges => {
+      this.edges = edges;
+    });
+    
+    this.newEdgeSubscription = this.graphService.getNewEdge().subscribe( newEdge => {
+      this.newEdge = newEdge;
+    });
     
     this.calculateUI();
 
@@ -94,13 +109,25 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.calculateUI();
-    console.log(this.wsRelativeToTb)
   }
 
   ngOnDestroy() {
     // #############################
     // Remove event listeners
     window.removeEventListener('keydown', this.onKeyDown);
+
+    
+    // #############################
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    if (this.nodesSubscription) {
+      this.nodesSubscription.unsubscribe();
+    }
+    if (this.edgesSubscription) {
+      this.edgesSubscription.unsubscribe();
+    }
+    if (this.newEdgeSubscription) {
+      this.newEdgeSubscription.unsubscribe();
+    }
   }
 
   // #############################
