@@ -68,9 +68,7 @@ export class AssignmentContainerComponent implements OnInit {
         "edges": assignment.graphConfiguration?.edgeConfiguration,
       })
 
-      this.graphService.setNodes(assignment.graphConfiguration.initialNodeData);
-      this.graphService.setEdges(assignment.graphConfiguration.initialEdgeData);
-      
+      this.graphService.graphDataFromJSON(assignment.graphConfiguration.initialNodeData, assignment.graphConfiguration.initialEdgeData);    
     }
 
     // bianry-search-tree-assigment

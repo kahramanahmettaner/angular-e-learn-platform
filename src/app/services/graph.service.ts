@@ -6,6 +6,8 @@ import { ISize } from '../models/Size.interface';
 import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
+import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
 
 @Injectable({
   providedIn: 'root'
@@ -245,6 +247,32 @@ export class GraphService {
       throw new Error('Edge not found.');
     }
   }
+  
+  updateEdgeWeight(edge: IGraphEdge, newWeight: number) {
+    // Get the current list of edges
+    const edgesList = this.edges$.getValue();
+  
+    // Find the index of the edge that needs updating
+    const edgeIndex = edgesList.findIndex(existingEdge => existingEdge === edge);
+  
+    if (edgeIndex === -1) {
+      throw new Error('Edge not found');
+    }
+  
+    // Create a new edge object with the updated weight
+    const updatedEdge = {
+      ...edge,
+      weight: { ...edge.weight, value: newWeight }
+    };
+  
+    // Replace the old edge with the updated edge
+    const updatedEdgesList = [...edgesList];
+    updatedEdgesList[edgeIndex] = updatedEdge;
+  
+    // Update the BehaviorSubject with the new list of edges
+    this.edges$.next(updatedEdgesList);
+  }
+  
 
   updateNewEdge( newValues: Partial<IGraphNewEdge> ) {
     // Check input
@@ -281,7 +309,7 @@ export class GraphService {
     return center;
   }
 
-  private adjustNodeAttributes(node: IGraphNode) {
+  adjustNodeAttributes(node: IGraphNode): IGraphNodeJSON {
     // Destructure node object
     const { 
       visited: { value: visitedValue, ...visitedRest },
@@ -294,7 +322,7 @@ export class GraphService {
     };
   }
 
-  private adjustEdgeAttributes(edge: IGraphEdge) {
+  adjustEdgeAttributes(edge: IGraphEdge): IGraphEdgeJSON {
     // Destructure edge object
     const { 
       weight: { value: weightValue, ...weightRest },
@@ -349,6 +377,41 @@ export class GraphService {
     
     // Clean up
     window.URL.revokeObjectURL(link.href);
+  }
+
+  graphDataFromJSON(initialNodeData: IGraphNodeJSON[], initialEdgeData: IGraphEdgeJSON[]) {
+
+    // reset the graph state
+    //this.resetGraph();
+
+    // Add nodes
+    initialNodeData.forEach((nodeJSON: any) => {
+
+      // TODO: node config etc. must be from graphConfig
+      this.addNode(nodeJSON);
+      
+      // Adjust idCounter
+      this.idCounter = Math.max(this.idCounter, nodeJSON.nodeId);
+    });
+
+    // get the nodes as list
+    const nodesList = this.nodes$.getValue();
+  
+    // Add edges
+    initialEdgeData.forEach((edgeJSON: any) => {
+      
+      // find nodes
+      let node1: IGraphNode | null = null;
+      let node2: IGraphNode | null = null;
+      nodesList.forEach(node => {
+        if (node.nodeId === edgeJSON.node1Id) { node1 = node; }
+        if (node.nodeId === edgeJSON.node2Id) { node2 = node; }
+      });
+
+      if (node1 !==  null && node2 !== null) {
+        this.addEdge(node1, node2, edgeJSON.weight);
+      }
+    });
   }
 
   graphFromJSON(json: string) {

@@ -8,10 +8,10 @@ import { GraphComponent } from '../graph/graph.component';
 import { BinarySearchTreeComponent } from '../binary-search-tree/binary-search-tree.component';
 import { GraphService } from '../services/graph.service';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
-import { IGraphNode } from '../models/GraphNode.interface';
-import { IGraphEdge } from '../models/GraphEdge.interface';
+import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { Subscription } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
+import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
 
 @Component({
   selector: 'app-create-assignment',
@@ -29,8 +29,8 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
   workspaceIsActive = false;
   initialStructureSet = false;
 
-  graphNodes!: IGraphNode[];
-  graphEdges!: IGraphEdge[];
+  graphNodes!: IGraphNodeJSON[];
+  graphEdges!: IGraphEdgeJSON[];
   bstRootNode!: IBstNodeJSON | null;
 
   graphNodesSubscription!: Subscription;
@@ -53,6 +53,10 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       checkboxEdgeWeighted: [false],
       checkboxNodeWeighted: [false]
     });
+
+          
+    this.graphNodes = [];
+    this.graphEdges = [];
   }
 
   ngOnInit(): void {
@@ -61,11 +65,21 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     // #############################
     // Subscribe to Observables from the graphService and bstService
     this.graphNodesSubscription = this.graphService.getNodes().subscribe( nodes => {
-      this.graphNodes = nodes;
+      const tempNodes: IGraphNodeJSON[] = [];
+      nodes.forEach(node => {
+        const nodeJSON: IGraphNodeJSON = this.graphService.adjustNodeAttributes(node);
+        tempNodes.push(nodeJSON);
+      });
+      this.graphNodes = tempNodes;
     });
 
     this.graphEdgesSubscription = this.graphService.getEdges().subscribe( edges => {
-      this.graphEdges = edges;
+      const tempEdges: IGraphEdgeJSON[] = [];
+      edges.forEach(edge => {
+        const edgeJSON: IGraphEdgeJSON = this.graphService.adjustEdgeAttributes(edge);
+        tempEdges.push(edgeJSON);
+      });
+      this.graphEdges = tempEdges;
     });
 
     this.bstRootNodeSubscription = this.bstService.getRootNode().subscribe( root => {
@@ -105,6 +119,20 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     this.navigateToRoute('assignments');
   }
 
+  onDownloadAssignmentAsJSON(): void {
+    let newAssignment: IAssignment;
+    try {
+      newAssignment = this.getFormValuesAsAssignment();
+    } catch (err) {
+      console.error(err);
+      alert(err);
+      return;
+    }
+
+    // Add new assignment
+    this.downloadJSON(newAssignment, `${newAssignment.title}_assignment`);
+  }
+
   getFormValuesAsAssignment(): IAssignment {
     if (!this.form.valid) {
       throw new Error('Form is invalid.');
@@ -139,6 +167,65 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     }
     
     return newAssignment;
+  }
+
+  downloadJSON(assigment: IAssignment, fileName: string = 'assignment') {
+    const json = JSON.stringify(assigment, null, 2);
+    
+    const blob = new Blob([json], { type: 'application/json' });
+    
+    // download
+    const link = document.createElement('a');
+    link.download = `${fileName}.json`;
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
+  }
+
+  importAssignmentFromJSON(jsonString: string): void {
+    try {
+      const assignment: IAssignment = JSON.parse(jsonString);
+
+      // Update form controls
+      this.form.patchValue({
+        title: assignment.title,
+        stepsEnabled: assignment.stepsEnabled,
+        text: assignment.text,
+        selectedOption: assignment.dataStructure,
+        checkboxEdgeDirected: assignment.graphConfiguration?.edgeConfiguration.directed || false,
+        checkboxEdgeWeighted: assignment.graphConfiguration?.edgeConfiguration.weight || false,
+        checkboxNodeWeighted: assignment.graphConfiguration?.nodeConfiguration.weight || false
+      });
+
+      // Update graph or tree based on the data structure
+      if (assignment.dataStructure === 'graph') {
+        this.graphService.graphDataFromJSON(assignment.graphConfiguration!.initialNodeData, assignment.graphConfiguration!.initialEdgeData);
+        this.showCheckbox = true; // Show the checkboxes for graph
+      } else if (assignment.dataStructure === 'tree') {
+        this.bstService.createTreeFromJSON(assignment.binarySearchTreeConfiguration!.initialRootNode);
+        this.showCheckbox = false; // Hide the checkboxes for tree
+      }
+
+      // // Activate workspace
+      // this.activateWorkspace();
+    } catch (err) {
+      console.error('Error importing assignment from JSON', err);
+      alert('Invalid JSON format');
+    }
+  }
+
+  onLoadAssignmentFromJSON(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const jsonString = e.target!.result as string;
+        this.importAssignmentFromJSON(jsonString);
+      };
+      reader.readAsText(file);
+    }
   }
 
   navigateToRoute(route: string): void {

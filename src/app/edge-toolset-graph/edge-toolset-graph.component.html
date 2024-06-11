@@ -27,7 +27,7 @@
     @if (edge.weight.enabled) {
       <div [ngStyle]="{display: editEdgeWeight ? 'block' : 'none'}" class="edge-weight-value" (mouseenter)="onFieldHover($event)" >
         <form (submit)="editEdgeWeight=false">
-          <input #edgeWeightValueInput type="text" [(ngModel)]="edge.weight.value" name="value" placeholder="Wert eingeben"
+          <input #edgeWeightValueInput type="number" (change)="onInputValueChange($event)"  name="value" placeholder="Wert eingeben"
             (blur)="editEdgeWeight=false"
           />
         </form>

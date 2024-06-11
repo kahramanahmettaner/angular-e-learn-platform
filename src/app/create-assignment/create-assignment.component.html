@@ -1,76 +1,83 @@
 @if (!workspaceIsActive) {
-<div class="container" >
-
-    <form [formGroup]="form" (ngSubmit)="onCreateAssignment()" class="form">
+    <div class="container" >
         
-        <h2>Eine neue Aufgabe erstellen</h2>
-
         <div class="form-group">
-            <label for="title">Aufgabentitel:</label>
-            <input class="text-input" type="text" formControlName="title" id="title" placeholder="Titel eingeben">
+            <label for="uploadJson">Aufgabe von JSON importieren:</label>
+            <input type="file" (change)="onLoadAssignmentFromJSON($event)" id="uploadJson">
         </div>
-
-        <div class="form-group">
-            <label for="text">Aufgabenstellung:</label>
-            <textarea class="text-input" formControlName="text" id="text" rows="5" placeholder="Text eingeben"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="selectedOption">Eine Aufgabentyp auswählen:</label>
-            <select formControlName="selectedOption" (change)="onChangeOption($event)">
-                <option value="" disabled>Aufgabentyp auswählen</option>
-                <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-            </select>
-        </div>
-
-        <div *ngIf="showCheckbox" class="form-group checkboxes">
-            <label>
-                <input type="checkbox" formControlName="checkboxEdgeDirected"(change)="onChangeCheckbox($event)"> Gerichtete Kanten
-            </label>
-            <label>
-                <input type="checkbox" formControlName="checkboxEdgeWeighted" (change)="onChangeCheckbox($event)"> Kanten mit Gewichten
-            </label>
-            <label>
-                <input type="checkbox" formControlName="checkboxNodeWeighted" (change)="onChangeCheckbox($event)"> Knoten mit Gewichten
-            </label>
-        </div>
-
-        <div class="form-group">
-            <label>
-                <input type="checkbox" formControlName="stepsEnabled"> Lösung mit mehreren Schritten
-            </label>
-        </div>
-
-        <button 
-            type="button" 
-            (click)="activateWorkspace()" 
-            [disabled]="!form.controls['selectedOption'].value" 
-        >
-            Initialstruktur bearbeiten
-        </button>
-        <button type="submit" [disabled]="form.invalid" class="submit-btn">Aufgabe erstellen</button>
-    </form>
-
-</div>
-}
-@else {
-<div class="workspace-container">
-    <div class="solution box">
-        @if (form.controls['selectedOption'].value === 'graph') {
-            <app-graph />
-        }
-        @else if (form.controls['selectedOption'].value === 'tree') {
-            <app-binary-search-tree />
-        }
-        @else {
-            <p>No Structure</p>
-        }
+    
+        <form [formGroup]="form" (ngSubmit)="onCreateAssignment()" class="form">
+    
+            <h2>Eine neue Aufgabe erstellen</h2>
+    
+            <div class="form-group">
+                <label for="title">Aufgabentitel:</label>
+                <input class="text-input" type="text" formControlName="title" id="title" placeholder="Titel eingeben">
+            </div>
+    
+            <div class="form-group">
+                <label for="text">Aufgabenstellung:</label>
+                <textarea class="text-input" formControlName="text" id="text" rows="5" placeholder="Text eingeben"></textarea>
+            </div>
+    
+            <div class="form-group">
+                <label for="selectedOption">Eine Aufgabentyp auswählen:</label>
+                <select formControlName="selectedOption" (change)="onChangeOption($event)">
+                    <option value="" disabled>Aufgabentyp auswählen</option>
+                    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+    
+            <div *ngIf="showCheckbox" class="form-group checkboxes">
+                <label>
+                    <input type="checkbox" formControlName="checkboxEdgeDirected"(change)="onChangeCheckbox($event)"> Gerichtete Kanten
+                </label>
+                <label>
+                    <input type="checkbox" formControlName="checkboxEdgeWeighted" (change)="onChangeCheckbox($event)"> Kanten mit Gewichten
+                </label>
+                <label>
+                    <input type="checkbox" formControlName="checkboxNodeWeighted" (change)="onChangeCheckbox($event)"> Knoten mit Gewichten
+                </label>
+            </div>
+    
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" formControlName="stepsEnabled"> Lösung mit mehreren Schritten
+                </label>
+            </div>
+    
+            <button 
+                type="button" 
+                (click)="activateWorkspace()" 
+                [disabled]="!form.controls['selectedOption'].value" 
+            >
+                Initialstruktur bearbeiten
+            </button>
+            
+            <button type="button" (click)="onDownloadAssignmentAsJSON()" [disabled]="form.invalid" class="submit-btn">Als JSON downloaden</button>
+            <button type="submit" [disabled]="form.invalid" class="submit-btn">Aufgabe erstellen</button>
+        </form>
+    
     </div>
-    <div class="controls box">
-        <button
-            type="button" 
-            (click)="deactivateWorkspace()" 
-        > Bestätigen </button>
+    }
+    @else {
+    <div class="workspace-container">
+        <div class="solution box">
+            @if (form.controls['selectedOption'].value === 'graph') {
+                <app-graph />
+            }
+            @else if (form.controls['selectedOption'].value === 'tree') {
+                <app-binary-search-tree />
+            }
+            @else {
+                <p>No Structure</p>
+            }
+        </div>
+        <div class="controls box">
+            <button
+                type="button" 
+                (click)="deactivateWorkspace()" 
+            > Bestätigen </button>
+        </div>
     </div>
-</div>
 }

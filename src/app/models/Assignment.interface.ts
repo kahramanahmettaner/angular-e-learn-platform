@@ -1,6 +1,6 @@
-import { IGraphEdge } from "./GraphEdge.interface";
-import { IGraphNode } from "./GraphNode.interface";
 import { IBstNodeJSON } from "./BstNodeJSON.interface";
+import { IGraphEdgeJSON } from "./GraphEdgeJSON.nterface";
+import { IGraphNodeJSON } from "./GraphNodeJSON.interface";
 
 export default interface IAssignment {
     id: number,
@@ -9,8 +9,8 @@ export default interface IAssignment {
     stepsEnabled: boolean,
     dataStructure: 'graph' | 'tree',
     graphConfiguration?: {
-        initialNodeData: IGraphNode[],
-        initialEdgeData: IGraphEdge[],
+        initialNodeData: IGraphNodeJSON[],
+        initialEdgeData: IGraphEdgeJSON[],
         nodeConfiguration: {
             weight: boolean,
             visited: boolean            

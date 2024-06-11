@@ -1,7 +1,7 @@
 <div class="container">
     <div class="assignment" *ngFor="let assignment of assignments$ | async">
         <div class="title">
-            <p>{{ assignment.title }}</p>
+            <strong>{{ assignment.title }}</strong>
             <button (click)="onBtnClick(assignment.id)"> öffnen </button>
         </div>
         <div class="details">

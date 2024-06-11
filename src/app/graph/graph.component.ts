@@ -155,6 +155,14 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
     
   }
 
+  changeEdgeWeight(input :{ edgeIndex: number, newWeight: number }) {
+    try {
+      const edgeToUpdate = this.edges[input.edgeIndex];
+      this.graphService.updateEdgeWeight(edgeToUpdate, input.newWeight);
+    } catch (err) { console.error(err); } 
+    
+  }
+
 
   // #############################
   // Functions for interactions with UI

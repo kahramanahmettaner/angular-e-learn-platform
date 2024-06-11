@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IPosition } from '../models/Position.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { ISize } from '../models/Size.interface';
-
 @Component({
   selector: 'app-edge-toolset-graph',
   standalone: true,
@@ -30,6 +29,7 @@ export class EdgeToolsetGraphComponent implements OnInit {
   // Outputs for parent component
   @Output() removeEdge: EventEmitter<number> = new EventEmitter<number>();
   @Output() changeEdgeDirection: EventEmitter<number> = new EventEmitter<number>();
+  @Output() changeEdgeWeight: EventEmitter<{ edgeIndex: number, newWeight: number }> = new EventEmitter<{ edgeIndex: number, newWeight: number }>();
   
 
   // #############################
@@ -97,6 +97,17 @@ export class EdgeToolsetGraphComponent implements OnInit {
         this.edgeWeightValueInput.nativeElement.focus();
       }, 0);
     }
+  }
+
+  onInputValueChange(event: any) {
+    let intValue = Number(event.target.value);
+
+    intValue = isNaN(intValue) ? 0 : intValue;
+
+    this.changeEdgeWeight.emit({
+      edgeIndex: this.index,
+      newWeight: intValue
+    })
   }
 
     

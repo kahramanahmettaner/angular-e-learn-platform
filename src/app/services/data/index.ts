@@ -466,3311 +466,843 @@ export function dummyData(): IAssignment[] {
           }
         },
         {
-            "id": 3,
-            "title": "Graph Repräsentation",
-            "text": "Gegeben sei der folgende gerichtete Graph G mit V = { 1, 2, 3, 4, 5 }",
-            "stepsEnabled": false,
-            "dataStructure": "graph",
-            "graphConfiguration": {
-              "initialNodeData": [
-                {
-                  "nodeId": 0,
-                  "value": "1",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 339,
-                    "y": 122.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 389,
-                    "y": 172.203125
-                  }
+          "id": 3,
+          "title": "Graph Repräsentation",
+          "text": "Gegeben sei der folgende gerichtete Graph G mit V = { 1, 2, 3, 4, 5 }",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "1",
+                "position": {
+                  "x": 497,
+                  "y": 117.203125
                 },
-                {
-                  "nodeId": 1,
-                  "value": "2",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 631,
-                    "y": 119.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 681,
-                    "y": 169.203125
-                  }
+                "size": {
+                  "width": 100,
+                  "height": 100
                 },
-                {
-                  "nodeId": 2,
-                  "value": "4",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 766,
-                    "y": 374.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 816,
-                    "y": 424.203125
-                  }
+                "center": {
+                  "x": 543,
+                  "y": 165.203125
                 },
-                {
-                  "nodeId": 3,
-                  "value": "3",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 889,
-                    "y": 126.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 939,
-                    "y": 176.203125
-                  }
-                },
-                {
-                  "nodeId": 4,
-                  "value": "5",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 338,
-                    "y": 379.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 388,
-                    "y": 429.203125
-                  }
-                }
-              ],
-              "initialEdgeData": [
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 339,
-                      "y": 122.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 389,
-                      "y": 172.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 631,
-                      "y": 119.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 681,
-                      "y": 169.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 631,
-                      "y": 119.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 681,
-                      "y": 169.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 631,
-                      "y": 119.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 681,
-                      "y": 169.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 631,
-                      "y": 119.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 681,
-                      "y": 169.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 766,
-                      "y": 374.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 816,
-                      "y": 424.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 889,
-                      "y": 126.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 939,
-                      "y": 176.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 766,
-                      "y": 374.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 816,
-                      "y": 424.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 889,
-                      "y": 126.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 939,
-                      "y": 176.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 889,
-                      "y": 126.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 939,
-                      "y": 176.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 2,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 766,
-                      "y": 374.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 816,
-                      "y": 424.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 766,
-                      "y": 374.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 816,
-                      "y": 424.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 339,
-                      "y": 122.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 389,
-                      "y": 172.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 379.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 429.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 379.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 429.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 379.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 429.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 631,
-                      "y": 119.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 681,
-                      "y": 169.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 379.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 429.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 339,
-                      "y": 122.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 389,
-                      "y": 172.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 339,
-                      "y": 122.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 389,
-                      "y": 172.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                }
-              ],
-              "nodeConfiguration": {
-                "weight": false,
-                "visited": false
+                "visited": false,
+                "weight": -1
               },
-              "edgeConfiguration": {
-                "directed": true,
-                "weight": false
+              {
+                "nodeId": 1,
+                "value": "2",
+                "position": {
+                  "x": 761,
+                  "y": 118.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 811,
+                  "y": 168.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "4",
+                "position": {
+                  "x": 908,
+                  "y": 363.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 958,
+                  "y": 413.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "3",
+                "position": {
+                  "x": 1066,
+                  "y": 122.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1116,
+                  "y": 172.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 4,
+                "value": "5",
+                "position": {
+                  "x": 496,
+                  "y": 361.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 546,
+                  "y": 411.203125
+                },
+                "visited": false,
+                "weight": -1
               }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 3,
+                "weight": -1
+              },
+              {
+                "node1Id": 2,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 4,
+                "weight": -1
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 4,
+                "weight": -1
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 4,
+                "weight": -1
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 0,
+                "weight": -1
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": true,
+              "weight": false
             }
+          }
         },
         {
-            "id": 4,
-            "title": "Transitive Hülle",
-            "text": "Gegeben sei der folgende gerichtete Graph G mit V = {1, 2, 3, 4, 5}. Fügen Sie alle Kanten zu G hinzu, die zu dessen transitive Hülle gehören. Bereits vorhandene Kanten müssen nicht erneut eingezeichnet werden.",
-            "stepsEnabled": false,
-            "dataStructure": "graph",
-            "graphConfiguration": {
-              "initialNodeData": [
-                {
-                  "nodeId": 0,
-                  "value": "1",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 108,
-                    "y": 66.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 158,
-                    "y": 116.203125
-                  }
+          "id": 4,
+          "title": "Transitive Hülle",
+          "text": "Gegeben sei der folgende gerichtete Graph G mit V = {1, 2, 3, 4, 5}. Fügen Sie alle Kanten zu G hinzu, die zu dessen transitive Hülle gehören. Bereits vorhandene Kanten müssen nicht erneut eingezeichnet werden.",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "1",
+                "position": {
+                  "x": 377,
+                  "y": 52.203125
                 },
-                {
-                  "nodeId": 1,
-                  "value": "2",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 431,
-                    "y": 157.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 481,
-                    "y": 207.203125
-                  }
+                "size": {
+                  "width": 100,
+                  "height": 100
                 },
-                {
-                  "nodeId": 2,
-                  "value": "3",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 808,
-                    "y": 72.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 858,
-                    "y": 122.203125
-                  }
+                "center": {
+                  "x": 427,
+                  "y": 102.203125
                 },
-                {
-                  "nodeId": 3,
-                  "value": "4",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 115,
-                    "y": 481.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 165,
-                    "y": 531.203125
-                  }
-                },
-                {
-                  "nodeId": 4,
-                  "value": "5",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 530,
-                    "y": 461.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 580,
-                    "y": 511.203125
-                  }
-                }
-              ],
-              "initialEdgeData": [
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 108,
-                      "y": 66.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 158,
-                      "y": 116.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 431,
-                      "y": 157.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 481,
-                      "y": 207.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 108,
-                      "y": 66.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 158,
-                      "y": 116.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 808,
-                      "y": 72.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 858,
-                      "y": 122.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 108,
-                      "y": 66.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 158,
-                      "y": 116.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 115,
-                      "y": 481.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 165,
-                      "y": 531.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 530,
-                      "y": 461.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 580,
-                      "y": 511.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 431,
-                      "y": 157.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 481,
-                      "y": 207.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "1",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 108,
-                      "y": 66.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 158,
-                      "y": 116.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 530,
-                      "y": 461.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 580,
-                      "y": 511.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "5",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 530,
-                      "y": 461.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 580,
-                      "y": 511.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 808,
-                      "y": 72.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 858,
-                      "y": 122.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 115,
-                      "y": 481.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 165,
-                      "y": 531.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "2",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 431,
-                      "y": 157.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 481,
-                      "y": 207.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "4",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 115,
-                      "y": 481.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 165,
-                      "y": 531.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "3",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 808,
-                      "y": 72.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 858,
-                      "y": 122.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "directed": true
-                }
-              ],
-              "nodeConfiguration": {
-                "weight": false,
-                "visited": false
+                "visited": false,
+                "weight": -1
               },
-              "edgeConfiguration": {
-                "directed": true,
-                "weight": false
+              {
+                "nodeId": 1,
+                "value": "2",
+                "position": {
+                  "x": 713,
+                  "y": 125.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 763,
+                  "y": 175.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "3",
+                "position": {
+                  "x": 1080,
+                  "y": 59.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1130,
+                  "y": 109.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "4",
+                "position": {
+                  "x": 378,
+                  "y": 455.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 428,
+                  "y": 505.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 4,
+                "value": "5",
+                "position": {
+                  "x": 710,
+                  "y": 441.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 760,
+                  "y": 491.203125
+                },
+                "visited": false,
+                "weight": -1
               }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 3,
+                "weight": -1
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 4,
+                "weight": -1
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 2,
+                "weight": -1
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": true,
+              "weight": false
             }
+          }
         },
         {
-            "id": 5,
-            "title": "Dijkstra-Algorithmus",
-            "text": "Berechnen Sie den kürzesten Weg für alle Knoten ausgehend vom Startknoten A. Verwenden Sie den Dijkstra-Algorithmus und zeichnen Sie dabei jeden Schritt in ein eigenes Diagramm. Markieren Sie dabei den aktuell besuchten Knoten.",
-            "stepsEnabled": false,
-            "dataStructure": "graph",
-            "graphConfiguration": {
-              "initialNodeData": [
-                {
-                  "nodeId": 0,
-                  "value": "D",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 460,
-                    "y": 48.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 510,
-                    "y": 98.203125
-                  }
+          "id": 5,
+          "title": "Dijkstra-Algorithmus",
+          "text": "Berechnen Sie den kürzesten Weg für alle Knoten ausgehend vom Startknoten A. Verwenden Sie den Dijkstra-Algorithmus und zeichnen Sie dabei jeden Schritt in ein eigenes Diagramm. Markieren Sie dabei den aktuell besuchten Knoten.",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "D",
+                "position": {
+                  "x": 593,
+                  "y": 40.203125
                 },
-                {
-                  "nodeId": 1,
-                  "value": "C",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 805,
-                    "y": 293.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 855,
-                    "y": 343.203125
-                  }
+                "size": {
+                  "width": 100,
+                  "height": 100
                 },
-                {
-                  "nodeId": 2,
-                  "value": "F",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 464,
-                    "y": 622.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 514,
-                    "y": 672.203125
-                  }
+                "center": {
+                  "x": 808,
+                  "y": 82.203125
                 },
-                {
-                  "nodeId": 3,
-                  "value": "A",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 105,
-                    "y": 297.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 155,
-                    "y": 347.203125
-                  }
-                },
-                {
-                  "nodeId": 4,
-                  "value": "E",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 103,
-                    "y": 619.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 153,
-                    "y": 669.203125
-                  }
-                },
-                {
-                  "nodeId": 5,
-                  "value": "B",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 456,
-                    "y": 304.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 506,
-                    "y": 354.203125
-                  }
-                }
-              ],
-              "initialEdgeData": [
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 460,
-                      "y": 48.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 510,
-                      "y": 98.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 805,
-                      "y": 293.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 855,
-                      "y": 343.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 3
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 805,
-                      "y": 293.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 855,
-                      "y": 343.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 464,
-                      "y": 622.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 514,
-                      "y": 672.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 2
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 2,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 464,
-                      "y": 622.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 514,
-                      "y": 672.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 105,
-                      "y": 297.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 155,
-                      "y": 347.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 5
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 105,
-                      "y": 297.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 155,
-                      "y": 347.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 103,
-                      "y": 619.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 153,
-                      "y": 669.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 2
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 105,
-                      "y": 297.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 155,
-                      "y": 347.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 0,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 460,
-                      "y": 48.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 510,
-                      "y": 98.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 9
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 460,
-                      "y": 48.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 510,
-                      "y": 98.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 5,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 456,
-                      "y": 304.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 506,
-                      "y": 354.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 1
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 5,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 456,
-                      "y": 304.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 506,
-                      "y": 354.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 105,
-                      "y": 297.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 155,
-                      "y": 347.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 8
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 5,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 456,
-                      "y": 304.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 506,
-                      "y": 354.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 464,
-                      "y": 622.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 514,
-                      "y": 672.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 4
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 5,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 456,
-                      "y": 304.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 506,
-                      "y": 354.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 805,
-                      "y": 293.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 855,
-                      "y": 343.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 1
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 103,
-                      "y": 619.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 153,
-                      "y": 669.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 464,
-                      "y": 622.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 514,
-                      "y": 672.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 1
-                  },
-                  "directed": false
-                }
-              ],
-              "nodeConfiguration": {
-                "weight": false,
-                "visited": false
+                "visited": false,
+                "weight": -1
               },
-              "edgeConfiguration": {
-                "directed": false,
-                "weight": true
+              {
+                "nodeId": 1,
+                "value": "C",
+                "position": {
+                  "x": 957,
+                  "y": 303.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1155,
+                  "y": 345.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "F",
+                "position": {
+                  "x": 610,
+                  "y": 600.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 810,
+                  "y": 673.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "A",
+                "position": {
+                  "x": 231,
+                  "y": 297.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 466,
+                  "y": 339.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 4,
+                "value": "E",
+                "position": {
+                  "x": 230,
+                  "y": 601.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 463,
+                  "y": 661.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 5,
+                "value": "B",
+                "position": {
+                  "x": 599,
+                  "y": 295.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 806,
+                  "y": 338.203125
+                },
+                "visited": false,
+                "weight": -1
               }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": 3
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 2,
+                "weight": 2
+              },
+              {
+                "node1Id": 2,
+                "node2Id": 3,
+                "weight": 5
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 4,
+                "weight": 2
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 0,
+                "weight": 9
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 5,
+                "weight": 1
+              },
+              {
+                "node1Id": 5,
+                "node2Id": 3,
+                "weight": 8
+              },
+              {
+                "node1Id": 5,
+                "node2Id": 2,
+                "weight": 4
+              },
+              {
+                "node1Id": 5,
+                "node2Id": 1,
+                "weight": 1
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 2,
+                "weight": 1
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": false,
+              "weight": true
             }
+          }
         },
         {
-            "id": 6,
-            "title": "Minimaler Spannbaum",
-            "text": "Gegeben sei der folgende ungerichtete Graph G2 mit V = {A, B, C, D, E, F, G}.\nNutzen Sie den Algorithmus von Kruskal, um den Minimalen Spannbaum B zu erzeugen. Zeichnen Sie jeden Schritt in ein eigenes Diagramm.",
-            "stepsEnabled": false,
-            "dataStructure": "graph",
-            "graphConfiguration": {
-              "initialNodeData": [
-                {
-                  "nodeId": 0,
-                  "value": "A",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 62,
-                    "y": 254.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 112,
-                    "y": 304.203125
-                  }
+          "id": 6,
+          "title": "Minimaler Spannbaum",
+          "text": "Gegeben sei der folgende ungerichtete Graph G2 mit V = {A, B, C, D, E, F, G}.\nNutzen Sie den Algorithmus von Kruskal, um den Minimalen Spannbaum B zu erzeugen. Zeichnen Sie jeden Schritt in ein eigenes Diagramm.",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "A",
+                "position": {
+                  "x": 207,
+                  "y": 257.203125
                 },
-                {
-                  "nodeId": 1,
-                  "value": "C",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 338,
-                    "y": 165.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 388,
-                    "y": 215.203125
-                  }
+                "size": {
+                  "width": 100,
+                  "height": 100
                 },
-                {
-                  "nodeId": 2,
-                  "value": "G",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 577,
-                    "y": 55.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 627,
-                    "y": 105.203125
-                  }
+                "center": {
+                  "x": 483,
+                  "y": 296.203125
                 },
-                {
-                  "nodeId": 3,
-                  "value": "D",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 58,
-                    "y": 496.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 108,
-                    "y": 546.203125
-                  }
-                },
-                {
-                  "nodeId": 4,
-                  "value": "B",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 326,
-                    "y": 364.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 376,
-                    "y": 414.203125
-                  }
-                },
-                {
-                  "nodeId": 5,
-                  "value": "E",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 582,
-                    "y": 497.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 632,
-                    "y": 547.203125
-                  }
-                },
-                {
-                  "nodeId": 6,
-                  "value": "F",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 578,
-                    "y": 268.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 628,
-                    "y": 318.203125
-                  }
-                }
-              ],
-              "initialEdgeData": [
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 62,
-                      "y": 254.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 112,
-                      "y": 304.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 165.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 215.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 4
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 165.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 215.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "G",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 577,
-                      "y": 55.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 627,
-                      "y": 105.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 5
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 62,
-                      "y": 254.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 112,
-                      "y": 304.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 58,
-                      "y": 496.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 108,
-                      "y": 546.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 9
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 62,
-                      "y": 254.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 112,
-                      "y": 304.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 326,
-                      "y": 364.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 376,
-                      "y": 414.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 6
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 58,
-                      "y": 496.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 108,
-                      "y": 546.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 326,
-                      "y": 364.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 376,
-                      "y": 414.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 5
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 326,
-                      "y": 364.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 376,
-                      "y": 414.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 5,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 582,
-                      "y": 497.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 632,
-                      "y": 547.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 2
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 3,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 58,
-                      "y": 496.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 108,
-                      "y": 546.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 5,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 582,
-                      "y": 497.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 632,
-                      "y": 547.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 3
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 338,
-                      "y": 165.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 388,
-                      "y": 215.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 6,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 578,
-                      "y": 268.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 628,
-                      "y": 318.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 6
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 326,
-                      "y": 364.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 376,
-                      "y": 414.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 6,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 578,
-                      "y": 268.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 628,
-                      "y": 318.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 3
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 6,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 578,
-                      "y": 268.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 628,
-                      "y": 318.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 5,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 582,
-                      "y": 497.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 632,
-                      "y": 547.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 1
-                  },
-                  "directed": false
-                },
-                {
-                  "node1": {
-                    "nodeId": 2,
-                    "value": "G",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 577,
-                      "y": 55.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 627,
-                      "y": 105.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 6,
-                    "value": "F",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 578,
-                      "y": 268.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 628,
-                      "y": 318.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 7
-                  },
-                  "directed": false
-                }
-              ],
-              "nodeConfiguration": {
-                "weight": false,
-                "visited": false
+                "visited": false,
+                "weight": -1
               },
-              "edgeConfiguration": {
-                "directed": false,
-                "weight": true
+              {
+                "nodeId": 1,
+                "value": "C",
+                "position": {
+                  "x": 479,
+                  "y": 147.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 742,
+                  "y": 180.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "G",
+                "position": {
+                  "x": 677,
+                  "y": 33.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1023,
+                  "y": 72.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "D",
+                "position": {
+                  "x": 211,
+                  "y": 499.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 480,
+                  "y": 545.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 4,
+                "value": "B",
+                "position": {
+                  "x": 474,
+                  "y": 364.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 757,
+                  "y": 417.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 5,
+                "value": "E",
+                "position": {
+                  "x": 670,
+                  "y": 502.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1017,
+                  "y": 558.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 6,
+                "value": "F",
+                "position": {
+                  "x": 669,
+                  "y": 270.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1018,
+                  "y": 310.203125
+                },
+                "visited": false,
+                "weight": -1
               }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": 4
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 2,
+                "weight": 5
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 3,
+                "weight": 9
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 4,
+                "weight": 6
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 4,
+                "weight": 5
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 5,
+                "weight": 2
+              },
+              {
+                "node1Id": 3,
+                "node2Id": 5,
+                "weight": 3
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 6,
+                "weight": 6
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 6,
+                "weight": 3
+              },
+              {
+                "node1Id": 6,
+                "node2Id": 5,
+                "weight": 1
+              },
+              {
+                "node1Id": 2,
+                "node2Id": 6,
+                "weight": 7
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": false,
+              "weight": true
             }
+          }
         },
         {
-            "id": 7,
-            "title": "Floyd-Algorithmus",
-            "text": "Berechnen Sie den kürzesten Weg nach Verarbeitung der Knoten A, B, C in alphabetischer Reihenfolge unter Verwendung des Algorithmus von Floyd. Fügen Sie zugehörige Kantengewichte und falls erforderlich zusätzliche Kanten ein.\nÜbernehmen Sie bereits hinzugefügte Kanten und aktualisierte Kantengewichte in späteren Schritten.",
-            "stepsEnabled": false,
-            "dataStructure": "graph",
-            "graphConfiguration": {
-              "initialNodeData": [
-                {
-                  "nodeId": 0,
-                  "value": "D",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 125,
-                    "y": 132.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 175,
-                    "y": 182.203125
-                  }
+          "id": 7,
+          "title": "Floyd-Algorithmus",
+          "text": "Berechnen Sie den kürzesten Weg nach Verarbeitung der Knoten A, B, C in alphabetischer Reihenfolge unter Verwendung des Algorithmus von Floyd. Fügen Sie zugehörige Kantengewichte und falls erforderlich zusätzliche Kanten ein.\nÜbernehmen Sie bereits hinzugefügte Kanten und aktualisierte Kantengewichte in späteren Schritten.",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "D",
+                "position": {
+                  "x": 154,
+                  "y": 130.203125
                 },
-                {
-                  "nodeId": 1,
-                  "value": "A",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 551,
-                    "y": 136.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 601,
-                    "y": 186.203125
-                  }
+                "size": {
+                  "width": 100,
+                  "height": 100
                 },
-                {
-                  "nodeId": 2,
-                  "value": "B",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 898,
-                    "y": 134.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 948,
-                    "y": 184.203125
-                  }
+                "center": {
+                  "x": 421,
+                  "y": 179.203125
                 },
-                {
-                  "nodeId": 3,
-                  "value": "E",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 904,
-                    "y": 416.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 954,
-                    "y": 466.203125
-                  }
-                },
-                {
-                  "nodeId": 4,
-                  "value": "C",
-                  "visited": {
-                    "enabled": false,
-                    "value": false
-                  },
-                  "weight": {
-                    "enabled": false,
-                    "value": -1
-                  },
-                  "position": {
-                    "x": 554,
-                    "y": 427.203125
-                  },
-                  "size": {
-                    "width": 100,
-                    "height": 100
-                  },
-                  "center": {
-                    "x": 604,
-                    "y": 477.203125
-                  }
-                }
-              ],
-              "initialEdgeData": [
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 125,
-                      "y": 132.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 175,
-                      "y": 182.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 551,
-                      "y": 136.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 601,
-                      "y": 186.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 2
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 2,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 898,
-                      "y": 134.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 948,
-                      "y": 184.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 1,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 551,
-                      "y": 136.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 601,
-                      "y": 186.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 2
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 2,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 898,
-                      "y": 134.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 948,
-                      "y": 184.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 904,
-                      "y": 416.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 954,
-                      "y": 466.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 4
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 554,
-                      "y": 427.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 604,
-                      "y": 477.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 3,
-                    "value": "E",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 904,
-                      "y": 416.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 954,
-                      "y": 466.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 0
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 1,
-                    "value": "A",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 551,
-                      "y": 136.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 601,
-                      "y": 186.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 554,
-                      "y": 427.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 604,
-                      "y": 477.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 3
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 0,
-                    "value": "D",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 125,
-                      "y": 132.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 175,
-                      "y": 182.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 4,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 554,
-                      "y": 427.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 604,
-                      "y": 477.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 10
-                  },
-                  "directed": true
-                },
-                {
-                  "node1": {
-                    "nodeId": 4,
-                    "value": "C",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 554,
-                      "y": 427.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 604,
-                      "y": 477.203125
-                    }
-                  },
-                  "node2": {
-                    "nodeId": 2,
-                    "value": "B",
-                    "visited": {
-                      "enabled": false,
-                      "value": false
-                    },
-                    "weight": {
-                      "enabled": false,
-                      "value": -1
-                    },
-                    "position": {
-                      "x": 898,
-                      "y": 134.203125
-                    },
-                    "size": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "center": {
-                      "x": 948,
-                      "y": 184.203125
-                    }
-                  },
-                  "weight": {
-                    "enabled": true,
-                    "value": 9
-                  },
-                  "directed": true
-                }
-              ],
-              "nodeConfiguration": {
-                "weight": false,
-                "visited": false
+                "visited": false,
+                "weight": -1
               },
-              "edgeConfiguration": {
-                "directed": true,
-                "weight": true
+              {
+                "nodeId": 1,
+                "value": "A",
+                "position": {
+                  "x": 527,
+                  "y": 128.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 808,
+                  "y": 183.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "B",
+                "position": {
+                  "x": 925,
+                  "y": 128.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1211,
+                  "y": 187.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "E",
+                "position": {
+                  "x": 928,
+                  "y": 432.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 1209,
+                  "y": 479.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 4,
+                "value": "C",
+                "position": {
+                  "x": 530,
+                  "y": 429.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 802,
+                  "y": 480.203125
+                },
+                "visited": false,
+                "weight": -1
               }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": 2
+              },
+              {
+                "node1Id": 2,
+                "node2Id": 1,
+                "weight": 2
+              },
+              {
+                "node1Id": 2,
+                "node2Id": 3,
+                "weight": 4
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 3,
+                "weight": 0
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 4,
+                "weight": 3
+              },
+              {
+                "node1Id": 0,
+                "node2Id": 4,
+                "weight": 10
+              },
+              {
+                "node1Id": 4,
+                "node2Id": 2,
+                "weight": 9
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": true,
+              "weight": true
             }
-        },
+          }
+        }
     ]
 }
