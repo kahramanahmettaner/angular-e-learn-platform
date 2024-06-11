@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import IAssignment from '../models/Assignment.interface';
+import { dummyData } from './data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AssignmentService {
     // TODO: fetch assigments from backend and update assignments$
     
     // for now, use dummy data instead
-    const dummy_assignments: IAssignment[] = this.dummyData();
+    const dummy_assignments: IAssignment[] = dummyData();
     this.assignments$.next(dummy_assignments);
   }
 
@@ -45,49 +46,5 @@ export class AssignmentService {
       return assignment.id > max ? assignment.id : max;
     }, 0);
     return maxId + 1;
-  }
-
-  // TODO: delete this function
-  public dummyData(): IAssignment[] {
-    return [
-      { 
-        "id": 1,
-        "title": "Aufgabe 1",
-        "text": "Text für Aufgabe 1",
-        "stepsEnabled": false,
-        "dataStructure": "graph",
-        "graphConfiguration": {
-          "initialNodeData": [],
-          "initialEdgeData": [],
-          "nodeConfiguration": {
-            "weight": false,
-            "visited": false
-          },
-          "edgeConfiguration": {
-            "directed": true,
-            "weight": true
-          }
-        }
-      },
-      {
-        "id": 2,
-        "title": "Aufgabe 2",
-        "text": "Text für Aufgabe 2",
-        "stepsEnabled": false,
-        "dataStructure": "graph",
-        "graphConfiguration": {
-          "initialNodeData": [],
-          "initialEdgeData": [],
-          "nodeConfiguration": {
-            "weight": false,
-            "visited": false
-          },
-          "edgeConfiguration": {
-            "directed": false,
-            "weight": true
-          }
-        }
-      }
-    ]
   }
 }

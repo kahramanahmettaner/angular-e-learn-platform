@@ -10,8 +10,8 @@ import { GraphService } from '../services/graph.service';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
 import { IGraphNode } from '../models/GraphNode.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
-import { IBstNode } from '../models/BstNode.interface';
 import { Subscription } from 'rxjs';
+import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 
 @Component({
   selector: 'app-create-assignment',
@@ -31,11 +31,11 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
 
   graphNodes!: IGraphNode[];
   graphEdges!: IGraphEdge[];
-  bstNodes!: IBstNode[];
+  bstRootNode!: IBstNodeJSON | null;
 
   graphNodesSubscription!: Subscription;
   graphEdgesSubscription!: Subscription;
-  bstNodesSubscription!: Subscription;
+  bstRootNodeSubscription!: Subscription;
 
   constructor(
     private assignmentService: AssignmentService,
@@ -68,8 +68,8 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       this.graphEdges = edges;
     });
 
-    this.bstNodesSubscription = this.bstService.getNodes().subscribe( nodes => {
-      this.bstNodes = nodes;
+    this.bstRootNodeSubscription = this.bstService.getRootNode().subscribe( root => {
+      this.bstRootNode = this.bstService.getTreeStructure();
     });
   }
 
@@ -83,51 +83,62 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     if (this.graphEdgesSubscription) {
       this.graphEdgesSubscription.unsubscribe();
     }
-    if (this.bstNodesSubscription) {
-      this.bstNodesSubscription.unsubscribe();
+    if (this.bstRootNodeSubscription) {
+      this.bstRootNodeSubscription.unsubscribe();
     }
   }
 
-  onSubmit(): void {
-    if (this.form.valid) {
-
-      const newAssignment: IAssignment = {
-        id: this.assignmentService.generateDummyId(), // TODO: for now use this function but it should not be given here but in backend
-        title: this.form.value.title,
-        text: this.form.value.text,
-        stepsEnabled: this.form.value.stepsEnabled,
-        dataStructure: this.form.value.selectedOption,
-      };
-
-      // Set configuration for graph or tree according to the selected dataStructure
-      if (this.form.value.selectedOption === "graph") {
-        newAssignment.graphConfiguration = {
-          initialNodeData: this.graphNodes,
-          initialEdgeData: this.graphEdges,
-          nodeConfiguration: {
-            weight: this.form.value.checkboxNodeWeighted,
-            visited: false
-          },
-          edgeConfiguration: {
-            directed: this.form.value.checkboxEdgeDirected,
-            weight: this.form.value.checkboxEdgeWeighted
-          }
-        };
-      } else if (this.form.value.selectedOption === "tree") { 
-          newAssignment.binarySearchTreeConfiguration = {
-            initialNodeData: this.bstNodes,
-          };
-      }
-      
-      // Add new assignment
-      this.assignmentService.createAssignment(newAssignment);
-
-      // Route to the route 'assignments'
-      this.navigateToRoute('assignments');
-
-    } else { 
-        console.log("Not valid");
+  onCreateAssignment(): void {
+    let newAssignment: IAssignment;
+    try {
+      newAssignment = this.getFormValuesAsAssignment();
+    } catch (err) {
+      console.error(err);
+      alert(err);
+      return;
     }
+
+    // Add new assignment
+    this.assignmentService.createAssignment(newAssignment);
+
+    // Route to the route 'assignments'
+    this.navigateToRoute('assignments');
+  }
+
+  getFormValuesAsAssignment(): IAssignment {
+    if (!this.form.valid) {
+      throw new Error('Form is invalid.');
+    }
+
+    const newAssignment: IAssignment = {
+      id: this.assignmentService.generateDummyId(), // TODO: for now use this function but it should not be given here but in backend
+      title: this.form.value.title,
+      text: this.form.value.text,
+      stepsEnabled: this.form.value.stepsEnabled,
+      dataStructure: this.form.value.selectedOption,
+    };
+
+    // Set configuration for graph or tree according to the selected dataStructure
+    if (this.form.value.selectedOption === "graph") {
+      newAssignment.graphConfiguration = {
+        initialNodeData: this.graphNodes,
+        initialEdgeData: this.graphEdges,
+        nodeConfiguration: {
+          weight: this.form.value.checkboxNodeWeighted,
+          visited: false
+        },
+        edgeConfiguration: {
+          directed: this.form.value.checkboxEdgeDirected,
+          weight: this.form.value.checkboxEdgeWeighted
+        }
+      };
+    } else if (this.form.value.selectedOption === "tree") { 
+        newAssignment.binarySearchTreeConfiguration = {
+          initialRootNode: this.bstService.getTreeStructure(),
+        };
+    }
+    
+    return newAssignment;
   }
 
   navigateToRoute(route: string): void {

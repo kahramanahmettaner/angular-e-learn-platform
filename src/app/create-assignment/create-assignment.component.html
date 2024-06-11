@@ -1,8 +1,8 @@
 @if (!workspaceIsActive) {
 <div class="container" >
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
-
+    <form [formGroup]="form" (ngSubmit)="onCreateAssignment()" class="form">
+        
         <h2>Eine neue Aufgabe erstellen</h2>
 
         <div class="form-group">
@@ -48,7 +48,6 @@
         >
             Initialstruktur bearbeiten
         </button>
-
         <button type="submit" [disabled]="form.invalid" class="submit-btn">Aufgabe erstellen</button>
     </form>
 

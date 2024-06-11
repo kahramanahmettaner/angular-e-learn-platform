@@ -13,6 +13,7 @@ import { IBstNewEdge } from '../models/BstNewEdge.interface';
 import { BstChildRole } from '../models/BstChildRole.enum';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 
 @Component({
   selector: 'app-binary-search-tree',
@@ -136,8 +137,14 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
 
   onJSONToConsoleClick() {
     if (this.bstService.isTreeValid() === BstState.VALID) {
-      console.log('JSON Output for the tree:', this.bstService.getTreeStructure())
-      alert('Die Ausgabe ist in der Konsole')
+      const tree_structure: IBstNodeJSON | null = this.bstService.getTreeStructure();
+      if (tree_structure) {
+        console.log('JSON Output for the tree:', tree_structure);
+      }
+      else {
+        console.log('No nodes connected to each other to present a tree structure!');
+      }
+      alert('Die Ausgabe ist in der Konsole');
     } else if (this.bstService.isTreeValid() === BstState.INVALID) {
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nMöglicherweise gibt es Knoten, die ausgehend vom Wurzeknoten nicht erreichbar sind.")
     } else {

@@ -83,7 +83,7 @@ export class AssignmentContainerComponent implements OnInit {
       } 
 
       // Set bst state
-      this.bstService.setNodes(assignment.binarySearchTreeConfiguration.initialNodeData);
+      this.bstService.createTreeFromJSON(assignment.binarySearchTreeConfiguration.initialRootNode);
     }
   }
 }

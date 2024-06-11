@@ -7,6 +7,7 @@ import { IBstNewEdge } from '../models/BstNewEdge.interface';
 import { BstChildRole } from '../models/BstChildRole.enum';
 import { BstNodeRole } from '../models/BstNodeRole.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -211,21 +212,21 @@ export class BinarySearchTreeService {
   }
 
   // Function to return the JSON structure of the tree starting from the root node
-  getTreeStructure(): any {
+  getTreeStructure(): IBstNodeJSON |null {
     if (!this.rootNode$.getValue()) {
-      return 'No nodes connected to each other to present a tree structure!';
+      return null;
     }
 
     return this.constructTreeStructure(this.rootNode$.getValue());
   }
 
-  private constructTreeStructure(node: IBstNode | null): any {
+  private constructTreeStructure(node: IBstNode | null): IBstNodeJSON |null {
     if (!node) {
       return null; // If node is null, return null
     }
     
     // Construct JSON object for the current node
-    const nodeStructure: any = {
+    const nodeStructure: IBstNodeJSON = {
       nodeId: node.nodeId,
       value: node.value,
       // ###################
@@ -289,37 +290,41 @@ export class BinarySearchTreeService {
     window.URL.revokeObjectURL(link.href);
   }
 
-  createTreeFromJSON(json: string, parentId: number = -1) {
+  createTreeFromJSON(json: string|IBstNodeJSON|null, parentId: number = -1) {
 
-    let binarySearchTreeJSON;
-    try {
-      binarySearchTreeJSON = JSON.parse(json);
-    } catch (error) {
-      console.error('Error parsing JSON data:', error);
+    if (json === null) { return; }
+
+    let rootNodeJSON;
+
+    if (typeof(json)==='string') {
+      try {
+        rootNodeJSON = JSON.parse(json);
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+      }
+    } else {
+      rootNodeJSON = json;
     }
 
     // clean the current state 
     this.resetTree();
-
-    if (binarySearchTreeJSON != null) {
       
-      const rootNodeJSON = binarySearchTreeJSON.rootNode;
-      // create new Object because directly using the ones from json causes some issues
-      const rootNode = {
-        nodeId: rootNodeJSON.nodeId, 
-        value: rootNodeJSON.value,
-        parent: null,
-        leftChild: null,
-        rightChild: null,
-        position: rootNodeJSON.position,
-        size: rootNodeJSON.size,
-        center: rootNodeJSON.center
-      };
-      
-      this.rootNode$.next(rootNode);
+    // create new Object because directly using the ones from json causes some issues
+    const rootNode: IBstNode = {
+      nodeId: rootNodeJSON.nodeId, 
+      value: rootNodeJSON.value,
+      parent: null,
+      leftChild: null,
+      rightChild: null,
+      position: rootNodeJSON.position,
+      size: rootNodeJSON.size,
+      center: rootNodeJSON.center
+    };
+    
+    this.rootNode$.next(rootNode);
 
-      this.createTreeFromJSONRecursiv(rootNode, rootNodeJSON)
-    }
+    this.createTreeFromJSONRecursiv(rootNode, rootNodeJSON)
+    
   }
 
   private createTreeFromJSONRecursiv(parentNode: IBstNode, parentNodeJSON: IBstNode){
