@@ -8,6 +8,7 @@ import { GraphService } from '../services/graph.service';
 import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { Subscription } from 'rxjs';
+import { calculateShapeCenter } from '../utils';
 
 @Component({
   selector: 'app-node-graph',
@@ -116,7 +117,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     // Update node data (position, center)
     this.node.position.x = event.source.getFreeDragPosition().x;
     this.node.position.y = event.source.getFreeDragPosition().y;
-    this.node.center = this.graphService.calculateCenter(this.node.position, this.node.size);
+    this.node.center = calculateShapeCenter(this.node.position, this.node.size);
   }
 
 

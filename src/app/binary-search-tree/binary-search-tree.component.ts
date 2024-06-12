@@ -14,6 +14,7 @@ import { BstChildRole } from '../models/BstChildRole.enum';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
+import { calculateArrowPoints, calculateEdgeStart, calculateEdgeEnd } from '../utils';
 
 @Component({
   selector: 'app-binary-search-tree',
@@ -24,7 +25,12 @@ import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 })
 export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  
+  // #############################
+  // Expose the enums to the template
+  public calculateArrowPoints = calculateArrowPoints;
+  public calculateEdgeStart = calculateEdgeStart;
+  public calculateEdgeEnd = calculateEdgeEnd;
+
   // #############################
   // References for HTML Elements
   @ViewChild('workspace') workspace!: ElementRef;
@@ -296,90 +302,5 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   // #############################
   // Utility functions
   
-  calculateEdgeStart(parent: IBstNode, child: IBstNode): IPosition {
-    // Calculate the distance between the center of two nodes
-    const diffX = child.center.x - parent.center.x;
-    const diffY = child.center.y - parent.center.y;
-    const distance = Math.sqrt(diffX * diffX + diffY * diffY);
-
-    // Handle edge case where the distance is zero to avoid division by zero
-    if (distance === 0) { 
-      return parent.center; 
-    }
-
-    // Calculate the distance to the boundary so that the edge start is visible
-    let distanceToBoundary;
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        distanceToBoundary = parent.size.width / 2;
-    } else {
-        distanceToBoundary = parent.size.height / 2;
-    }
-
-    // Add 20 units to the boundary distance to extend the edge outside the node
-    const extendedDistance = distanceToBoundary + 10;
-    
-    // Return the position for the start of the edge
-    const x = parent.center.x + (diffX * extendedDistance) / distance;
-    const y = parent.center.y + (diffY * extendedDistance) / distance;
-    return { x, y };
-  }
-
-  calculateEdgeEnd(parent: IBstNode, child: IBstNode) {
-    // Calculate the distance between the center of two nodes
-    const diffX = parent.center.x - child.center.x;
-    const diffY = parent.center.y - child.center.y;
-    const distance = Math.sqrt(diffX * diffX + diffY * diffY);
-
-    // Handle edge case where the distance is zero to avoid division by zero
-    if (distance === 0) { 
-      return child.center; 
-    }
-    
-    // Calculate the distance to the boundary so that the arrow head is visible
-    let distanceToBoundary;
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        distanceToBoundary = child.size.width / 2;
-    } else {
-        distanceToBoundary = child.size.height / 2;
-    }
-
-    // Add 20 units to the boundary distance to extend the edge outside the node
-    const extendedDistance = distanceToBoundary + 10;
-    
-    // Return the position for the end of the edge
-    const x = child.center.x + (diffX * extendedDistance) / distance;
-    const y = child.center.y + (diffY * extendedDistance) / distance;
-    return { x, y };
-  }
-
-  calculateArrowPoints(parent: IBstNode, child: IBstNode) {
-    // Specify where the arrowhead starts and ends
-    let start: IPosition;  
-    let end: IPosition;  
-
-    start = parent.center; // to specify the direction of the startpoint
-    end = this.calculateEdgeEnd(parent, child);  
-
-    
-    // Size of the arrowhead
-    const arrowSize = 15; 
-
-    // Angle of the edgeline
-    const angle = Math.atan2(end.y - start.y, end.x - start.x);
-
-    // Points for the triangle (arrowhead)
-    const p1 = { x: end.x, y: end.y };
-    const p2 = {
-      x: end.x - arrowSize * Math.cos(angle - Math.PI / 6),
-      y: end.y - arrowSize * Math.sin(angle - Math.PI / 6)
-    };
-    const p3 = {
-      x: end.x - arrowSize * Math.cos(angle + Math.PI / 6),
-      y: end.y - arrowSize * Math.sin(angle + Math.PI / 6)
-    };
-
-    // Return the points
-    return `${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`;
-  }
 }
 

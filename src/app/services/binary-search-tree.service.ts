@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IBstNode } from '../models/BstNode.interface';
-import { IPosition } from '../models/Position.interface';
-import { ISize } from '../models/Size.interface';
 import { BstState } from '../models/BstState.enum';
 import { IBstNewEdge } from '../models/BstNewEdge.interface';
 import { BstChildRole } from '../models/BstChildRole.enum';
 import { BstNodeRole } from '../models/BstNodeRole.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
+import { calculateShapeCenter } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +73,7 @@ export class BinarySearchTreeService {
       rightChild: null,
       position: position,
       size: size,
-      center: this.calculateCenter(position, size)
+      center: calculateShapeCenter(position, size)
     }
 
     // Increment id counter for the next nodes
@@ -263,15 +262,6 @@ export class BinarySearchTreeService {
   isEmpty() {
     return (this.rootNode$.getValue() === null)
   }
-
-  calculateCenter(position: IPosition, size: ISize): IPosition {
-    const center: IPosition = {
-      x: position.x + (size.width / 2),
-      y: position.y + (size.height / 2)
-    };
-    return center;
-  }
-
 
   downloadTreeAsJSON() {
     // prepare

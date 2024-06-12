@@ -10,6 +10,7 @@ import { BstChildRole } from '../models/BstChildRole.enum';
 import { BstParentRole } from '../models/BstParentRole.enum';
 import { BstNodeRole } from '../models/BstNodeRole.enum';
 import { Subscription } from 'rxjs';
+import { calculateShapeCenter } from '../utils';
 
 @Component({
   selector: 'app-node-binary-search-tree',
@@ -110,7 +111,7 @@ export class NodeBinarySearchTreeComponent implements OnInit, OnDestroy {
     // Update node data (position, center)
     this.node.position.x = event.source.getFreeDragPosition().x;
     this.node.position.y = event.source.getFreeDragPosition().y;
-    this.node.center = this.bstService.calculateCenter(this.node.position, this.node.size);
+    this.node.center = calculateShapeCenter(this.node.position, this.node.size);
   }
 
 

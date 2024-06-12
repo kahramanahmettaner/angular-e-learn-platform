@@ -11,7 +11,7 @@ import { IGraphEdge } from '../models/GraphEdge.interface';
 import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-graph',

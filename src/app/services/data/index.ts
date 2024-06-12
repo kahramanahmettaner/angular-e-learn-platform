@@ -1170,16 +1170,16 @@ export function dummyData(): IAssignment[] {
                 "nodeId": 0,
                 "value": "D",
                 "position": {
-                  "x": 154,
-                  "y": 130.203125
+                  "x": 54,
+                  "y": 30.203125
                 },
                 "size": {
                   "width": 100,
                   "height": 100
                 },
                 "center": {
-                  "x": 421,
-                  "y": 179.203125
+                  "x": 321,
+                  "y": 79.203125
                 },
                 "visited": false,
                 "weight": -1
@@ -1188,16 +1188,16 @@ export function dummyData(): IAssignment[] {
                 "nodeId": 1,
                 "value": "A",
                 "position": {
-                  "x": 527,
-                  "y": 128.203125
+                  "x": 427,
+                  "y": 28.203125
                 },
                 "size": {
                   "width": 100,
                   "height": 100
                 },
                 "center": {
-                  "x": 808,
-                  "y": 183.203125
+                  "x": 708,
+                  "y": 83.203125
                 },
                 "visited": false,
                 "weight": -1
@@ -1206,16 +1206,16 @@ export function dummyData(): IAssignment[] {
                 "nodeId": 2,
                 "value": "B",
                 "position": {
-                  "x": 925,
-                  "y": 128.203125
+                  "x": 825,
+                  "y": 28.203125
                 },
                 "size": {
                   "width": 100,
                   "height": 100
                 },
                 "center": {
-                  "x": 1211,
-                  "y": 187.203125
+                  "x": 1111,
+                  "y": 87.203125
                 },
                 "visited": false,
                 "weight": -1
@@ -1224,16 +1224,16 @@ export function dummyData(): IAssignment[] {
                 "nodeId": 3,
                 "value": "E",
                 "position": {
-                  "x": 928,
-                  "y": 432.203125
+                  "x": 828,
+                  "y": 332.203125
                 },
                 "size": {
                   "width": 100,
                   "height": 100
                 },
                 "center": {
-                  "x": 1209,
-                  "y": 479.203125
+                  "x": 1109,
+                  "y": 379.203125
                 },
                 "visited": false,
                 "weight": -1
@@ -1242,16 +1242,16 @@ export function dummyData(): IAssignment[] {
                 "nodeId": 4,
                 "value": "C",
                 "position": {
-                  "x": 530,
-                  "y": 429.203125
+                  "x": 430,
+                  "y": 329.203125
                 },
                 "size": {
                   "width": 100,
                   "height": 100
                 },
                 "center": {
-                  "x": 802,
-                  "y": 480.203125
+                  "x": 702,
+                  "y": 380.203125
                 },
                 "visited": false,
                 "weight": -1

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IPosition } from '../models/Position.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
 import { ISize } from '../models/Size.interface';
+import { calculateLineCenter } from '../utils';
+
 @Component({
   selector: 'app-edge-toolset-graph',
   standalone: true,
@@ -122,13 +124,8 @@ export class EdgeToolsetGraphComponent implements OnInit {
         y: this.edge.node1.position.y - 20 - (this.componentSize.height / 2)
       }; 
     } else { // edges which connect two different nodes
-      return this.calculateEdgeCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
+      return calculateLineCenter(this.edge.node1.center, this.edge.node2.center, this.componentSize);
     }
   }
 
-  calculateEdgeCenter(start: IPosition, end: IPosition, size: ISize): IPosition{
-    const x = (start.x + end.x - size.width) / 2;
-    const y = (start.y + end.y - size.height) / 2;
-    return { x, y };
-  }
 }

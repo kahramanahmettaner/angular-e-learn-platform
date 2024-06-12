@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IGraphNode } from '../models/GraphNode.interface';
 import { IGraphEdge } from '../models/GraphEdge.interface';
-import { IPosition } from '../models/Position.interface';
-import { ISize } from '../models/Size.interface';
 import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
+import { calculateShapeCenter } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -118,7 +117,7 @@ export class GraphService {
       weight: weight,
       position: position,
       size: size,
-      center: this.calculateCenter(position, size)
+      center: calculateShapeCenter(position, size)
     };
 
     // TODO: Can different nodes have same value?
@@ -301,14 +300,6 @@ export class GraphService {
   }
   // #############
   // Utility functions
-  calculateCenter(position: IPosition, size: ISize): IPosition {
-    const center: IPosition = {
-      x: position.x + (size.width / 2),
-      y: position.y + (size.height / 2)
-    };
-    return center;
-  }
-
   adjustNodeAttributes(node: IGraphNode): IGraphNodeJSON {
     // Destructure node object
     const { 
