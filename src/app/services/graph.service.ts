@@ -6,7 +6,7 @@ import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
-import { calculateShapeCenter } from '../utils';
+import { calculateShapeCenter, downloadJSON } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -355,19 +355,8 @@ export class GraphService {
   }
 
   downloadGraphAsJSON() {
-    // prepare
     const graphAsJSON = this.graphToJSON();
-    
-    const blob = new Blob([graphAsJSON], { type: 'application/json' });
-    
-    // download
-    const link = document.createElement('a');
-    link.download = 'graph.json';
-    link.href = window.URL.createObjectURL(blob);
-    link.click();
-    
-    // Clean up
-    window.URL.revokeObjectURL(link.href);
+    downloadJSON(graphAsJSON, 'graph');
   }
 
   graphDataFromJSON(initialNodeData: IGraphNodeJSON[], initialEdgeData: IGraphEdgeJSON[]) {

@@ -128,3 +128,33 @@ export function calculateSelfLoopPath(edge: IGraphEdge): string {
         ${x + 30} ${y - 10}
     `;
 }
+
+
+
+export function readFile(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const fileContent = e.target.result;
+      resolve(fileContent);
+    };
+  
+    reader.readAsText(file);
+  });
+}
+
+export function downloadJSON(content: any, fileName: string = 'data') {
+  const json = JSON.stringify(content, null, 2);
+  
+  const blob = new Blob([json], { type: 'application/json' });
+  
+  // download
+  const link = document.createElement('a');
+  link.download = `${fileName}.json`;
+  link.href = window.URL.createObjectURL(blob);
+  link.click();
+  
+  // Clean up
+  window.URL.revokeObjectURL(link.href);
+}

@@ -6,7 +6,7 @@ import { BstChildRole } from '../models/BstChildRole.enum';
 import { BstNodeRole } from '../models/BstNodeRole.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
-import { calculateShapeCenter } from '../utils';
+import { calculateShapeCenter, downloadJSON } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -264,21 +264,9 @@ export class BinarySearchTreeService {
   }
 
   downloadTreeAsJSON() {
-    // prepare
     const treeStructure = this.getTreeStructure();
-    const json = JSON.stringify(treeStructure, null, 2);
-    
-    const blob = new Blob([json], { type: 'application/json' });
-    
-    // download
-    const link = document.createElement('a');
-    link.download = 'binary_search_tree.json';
-    link.href = window.URL.createObjectURL(blob);
-    link.click();
-    
-    // Clean up
-    window.URL.revokeObjectURL(link.href);
-  }
+    downloadJSON(treeStructure, 'tree');
+  }  
 
   createTreeFromJSON(json: string|IBstNodeJSON|null, parentId: number = -1) {
 

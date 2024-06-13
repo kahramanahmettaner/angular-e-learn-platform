@@ -14,7 +14,7 @@ import { BstChildRole } from '../models/BstChildRole.enum';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
-import { calculateArrowPoints, calculateEdgeStart, calculateEdgeEnd } from '../utils';
+import { calculateArrowPoints, calculateEdgeStart, calculateEdgeEnd, readFile } from '../utils';
 
 @Component({
   selector: 'app-binary-search-tree',
@@ -167,23 +167,15 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
       alert("Die Aktion kann nicht durchgeführt werden, da die Baumstruktur ungültig ist.\nEntweder existiert kein Wurzelknoten oder es gibt keine Knoten die miteinander verbunden sind.")
     }
   }
-
   onJSONFileSelected(event: any) {
     const file: File = event.target.files[0];
+
     if (file) {
-      this.readFile(file);
+      readFile(file)
+      .then( (fileContent) => {
+        this.bstService.createTreeFromJSON(fileContent);
+      })  
     }
-  }
-
-  private readFile(file: File) {
-    const reader = new FileReader();
-
-    reader.onload = (e: any) => {
-      const fileContent = e.target.result;
-      this.bstService.createTreeFromJSON(fileContent);
-    };
-
-    reader.readAsText(file);
   }
 
   // TODO: for the functioanlities which are not implemented

@@ -12,6 +12,7 @@ import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { EdgeToolsetGraphComponent } from '../edge-toolset-graph/edge-toolset-graph.component';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { readFile } from '../utils';
 
 @Component({
   selector: 'app-graph',
@@ -182,20 +183,13 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
 
   onJSONFileSelected(event: any) {
     const file: File = event.target.files[0];
+
     if (file) {
-      this.readFile(file);
+      readFile(file)
+      .then( (fileContent) => {
+        this.graphService.graphFromJSON(fileContent);
+      })  
     }
-  }
-
-  private readFile(file: File) {
-    const reader = new FileReader();
-
-    reader.onload = (e: any) => {
-      const fileContent = e.target.result;
-      this.graphService.graphFromJSON(fileContent);
-    };
-
-    reader.readAsText(file);
   }
 
 

@@ -12,6 +12,7 @@ import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { Subscription } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
+import { readFile, downloadJSON } from '../utils';
 
 @Component({
   selector: 'app-create-assignment',
@@ -129,8 +130,8 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Add new assignment
-    this.downloadJSON(newAssignment, `${newAssignment.title}_assignment`);
+    // Download new assignment as json file
+    downloadJSON(newAssignment, `${newAssignment.title}_assignment`);
   }
 
   getFormValuesAsAssignment(): IAssignment {
@@ -169,21 +170,6 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     return newAssignment;
   }
 
-  downloadJSON(assigment: IAssignment, fileName: string = 'assignment') {
-    const json = JSON.stringify(assigment, null, 2);
-    
-    const blob = new Blob([json], { type: 'application/json' });
-    
-    // download
-    const link = document.createElement('a');
-    link.download = `${fileName}.json`;
-    link.href = window.URL.createObjectURL(blob);
-    link.click();
-    
-    // Clean up
-    window.URL.revokeObjectURL(link.href);
-  }
-
   importAssignmentFromJSON(jsonString: string): void {
     try {
       const assignment: IAssignment = JSON.parse(jsonString);
@@ -218,13 +204,12 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
 
   onLoadAssignmentFromJSON(event: any): void {
     const file = event.target.files[0];
+
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const jsonString = e.target!.result as string;
-        this.importAssignmentFromJSON(jsonString);
-      };
-      reader.readAsText(file);
+      readFile(file)
+      .then( (fileContent) => {
+        this.importAssignmentFromJSON(fileContent);
+      })  
     }
   }
 
