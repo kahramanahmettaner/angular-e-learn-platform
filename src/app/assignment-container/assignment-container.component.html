@@ -7,7 +7,8 @@
     </div>
     <div class="evaluation box">
         <h2>Bewertung der Lösung</h2>   
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi modi laudantium voluptate quae amet tenetur non eligendi, facilis aperiam quisquam consectetur adipisci repudiandae nulla asperiores voluptatem error harum praesentium mollitia.</p>
+        <!-- <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi modi laudantium voluptate quae amet tenetur non eligendi, facilis aperiam quisquam consectetur adipisci repudiandae nulla asperiores voluptatem error harum praesentium mollitia.</p> -->
+        <p>{{ submissionJSON }}</p>
     </div>
     <div class="solution box">
         @if (assignment.dataStructure === 'graph') {
@@ -21,7 +22,10 @@
         }
     </div>
     <div class="controls box">
-        
+        <button
+        type="button"
+        (click)="onSubmitButtonClick()"
+        > Abgeben </button>
     </div>
 </div>
 

@@ -84,7 +84,7 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
     });
 
     this.bstRootNodeSubscription = this.bstService.getRootNode().subscribe( root => {
-      this.bstRootNode = this.bstService.getTreeStructure();
+      this.bstRootNode = this.bstService.treeToJSON();
     });
   }
 
@@ -163,7 +163,7 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       };
     } else if (this.form.value.selectedOption === "tree") { 
         newAssignment.binarySearchTreeConfiguration = {
-          initialRootNode: this.bstService.getTreeStructure(),
+          initialRootNode: this.bstService.treeToJSON(),
         };
     }
     

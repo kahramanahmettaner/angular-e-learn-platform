@@ -6,7 +6,8 @@ import { BstChildRole } from '../models/BstChildRole.enum';
 import { BstNodeRole } from '../models/BstNodeRole.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
-import { calculateShapeCenter, downloadJSON } from '../utils';
+import { binarySearchTreeSemantic, binarySearchTreeToJSON, calculateShapeCenter, downloadJSON } from '../utils';
+import { IBstNodeSemantic } from '../models/BstNodeSemantic.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -210,63 +211,27 @@ export class BinarySearchTreeService {
     }
   }
 
-  // Function to return the JSON structure of the tree starting from the root node
-  getTreeStructure(): IBstNodeJSON |null {
-    if (!this.rootNode$.getValue()) {
+  treeToJSON(): IBstNodeJSON | null {
+    const root = this.rootNode$.getValue();
+    if (root === null) {
       return null;
     }
 
-    return this.constructTreeStructure(this.rootNode$.getValue());
+    return binarySearchTreeToJSON(root);
   }
 
-  private constructTreeStructure(node: IBstNode | null): IBstNodeJSON |null {
-    if (!node) {
-      return null; // If node is null, return null
+  treeSemantic(): IBstNodeSemantic | null {
+    const root = this.rootNode$.getValue();
+    if (root === null) {
+      return null;
     }
-    
-    // Construct JSON object for the current node
-    const nodeStructure: IBstNodeJSON = {
-      nodeId: node.nodeId,
-      value: node.value,
-      // ###################
-      // TODO: all three attributes are necessary?
-      position: node.position,
-      size: node.size,
-      center: node.center,
-      // ###################
-      leftChild: this.constructTreeStructure(node.leftChild), // Recursively construct JSON for left child
-      rightChild: this.constructTreeStructure(node.rightChild) // Recursively construct JSON for right child
-    };
 
-    return nodeStructure;
+    return binarySearchTreeSemantic(root);
   }
-
   
   // ############################################
   // extra functionalities to use in future
   // ############################################
-
-  preOrder() {
-    this.preOrderRecursive(this.rootNode$.getValue())
-  }
-
-  private preOrderRecursive(currentNode: IBstNode | null) {
-    if (currentNode!=null) {
-      // Implement doSomething()
-      
-      this.preOrderRecursive(currentNode.leftChild)
-      this.preOrderRecursive(currentNode.rightChild)
-    }
-  }
-
-  isEmpty() {
-    return (this.rootNode$.getValue() === null)
-  }
-
-  downloadTreeAsJSON() {
-    const treeStructure = this.getTreeStructure();
-    downloadJSON(treeStructure, 'tree');
-  }  
 
   createTreeFromJSON(json: string|IBstNodeJSON|null, parentId: number = -1) {
 
@@ -283,6 +248,8 @@ export class BinarySearchTreeService {
     } else {
       rootNodeJSON = json;
     }
+
+    if (rootNodeJSON === null) { return; }
 
     // clean the current state 
     this.resetTree();
@@ -341,7 +308,7 @@ export class BinarySearchTreeService {
   }
 
   isTreeValid(): BstState {
-    if (this.isEmpty()) { return BstState.NO_ROOT }
+    if (this.rootNode$.getValue() === null) { return BstState.NO_ROOT }
 
     if (this.getNumberOfConnectedNodes(this.rootNode$.getValue()) !== this.nodes$.getValue().length) { return BstState.INVALID }
 
@@ -353,10 +320,4 @@ export class BinarySearchTreeService {
 
     return 1 + this.getNumberOfConnectedNodes(currentNode.leftChild) + this.getNumberOfConnectedNodes(currentNode.rightChild)
   }
-
-  getRecentNode() {
-    return this.nodes$.getValue()[this.nodes$.getValue().length - 1]
-  }
-
-
 }

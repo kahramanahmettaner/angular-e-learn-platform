@@ -1,4 +1,6 @@
 import { IBstNode } from "../models/BstNode.interface";
+import { IBstNodeJSON } from "../models/BstNodeJSON.interface";
+import { IBstNodeSemantic } from "../models/BstNodeSemantic.interface";
 import { IGraphEdge } from "../models/GraphEdge.interface";
 import { IGraphNode } from "../models/GraphNode.interface";
 import { IPosition } from "../models/Position.interface";
@@ -157,4 +159,24 @@ export function downloadJSON(content: any, fileName: string = 'data') {
   
   // Clean up
   window.URL.revokeObjectURL(link.href);
+}
+
+export function binarySearchTreeSemantic(node: IBstNode | IBstNodeJSON): IBstNodeSemantic {
+  return {
+    value: node.value,
+    leftChild: node.leftChild ? binarySearchTreeSemantic(node.leftChild) : null,
+    rightChild: node.rightChild ? binarySearchTreeSemantic(node.rightChild) : null,
+  };
+}
+
+export function binarySearchTreeToJSON(node: IBstNode): IBstNodeJSON {
+  return {
+    nodeId: node.nodeId,
+    value: node.value,
+    leftChild: node.leftChild ? binarySearchTreeToJSON(node.leftChild) : null,
+    rightChild: node.rightChild ? binarySearchTreeToJSON(node.rightChild) : null,
+    position: node.position,
+    size: node.size,
+    center: node.center,
+  };
 }

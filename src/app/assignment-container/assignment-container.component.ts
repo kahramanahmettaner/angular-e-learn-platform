@@ -18,7 +18,10 @@ import { BinarySearchTreeService } from '../services/binary-search-tree.service'
 })
 export class AssignmentContainerComponent implements OnInit {
 
-  public assignment$!: Observable<IAssignment | undefined>;
+  public assignment$!: Observable<IAssignment | null>;
+
+  // TODO: Delete this
+  public submissionJSON: string = '';
 
   constructor(
     private assignmentService: AssignmentService,
@@ -29,14 +32,14 @@ export class AssignmentContainerComponent implements OnInit {
 
   }
 
-  
   ngOnInit(): void {
     // get assignment id from url
     const idStr = this.route.snapshot.paramMap.get('id') || '-1';
     const id = parseInt(idStr);
 
     // get assignment observable by id
-    this.assignment$ = this.assignmentService.getAssignmentById(id);
+    this.assignmentService.setCurrentAssignment(id);
+    this.assignment$ = this.assignmentService.getCurrentAssignment();
 
     // reset the state of the graph and bst
     this.graphService.resetGraph();
@@ -44,7 +47,7 @@ export class AssignmentContainerComponent implements OnInit {
 
     // subscribe to get assignment data
     this.assignment$.subscribe((assignment) => {
-      if (assignment !== undefined) {
+      if (assignment !== null) {
         // set the state of the graph and bst
         this.setAssignmentState(assignment);
       }
@@ -83,5 +86,12 @@ export class AssignmentContainerComponent implements OnInit {
       // Set bst state
       this.bstService.createTreeFromJSON(assignment.binarySearchTreeConfiguration.initialRootNode);
     }
+  }
+
+  onSubmitButtonClick() {
+    const rootNode = this.bstService.treeSemantic();
+    this.assignmentService.updateSolution(rootNode);
+
+    this.submissionJSON = this.assignmentService.checkSolution();
   }
 }
