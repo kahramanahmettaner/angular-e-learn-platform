@@ -23,6 +23,9 @@ export class AssignmentContainerComponent implements OnInit {
   // TODO: Delete this
   public submissionJSON: string = '';
 
+  // TODO: Delete this
+  public promptCopied: boolean = false;
+
   constructor(
     private assignmentService: AssignmentService,
     private graphService: GraphService,
@@ -93,5 +96,15 @@ export class AssignmentContainerComponent implements OnInit {
     this.assignmentService.updateSolution(rootNode);
 
     this.submissionJSON = this.assignmentService.checkSolution();
+  }
+
+  onCopyPromptClick() {
+    navigator.clipboard.writeText(this.submissionJSON).then(() => {
+      this.promptCopied = true;
+
+      setTimeout( () => { this.promptCopied = false; }, 2000)
+    }).catch(err => {
+      console.error('Could not copy text: ', err);
+    })
   }
 }

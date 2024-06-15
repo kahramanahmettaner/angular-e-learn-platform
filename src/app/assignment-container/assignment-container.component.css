@@ -73,3 +73,18 @@
     background-color: rgb(86, 142, 255);
     cursor: pointer;
 }
+
+.copy-button {
+    position: relative;
+    background-color: #eee;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    border-radius: .5em;
+    border: none;
+}
+
+.copy-button:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
