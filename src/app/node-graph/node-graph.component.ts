@@ -246,4 +246,9 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
       this.nodeValueInput.nativeElement.focus();
     }, 0);
   }
+
+  onInputValueChange(event: any) {
+    const newValue = event.target.value;
+    this.graphService.updateNode(this.node, { value: newValue });
+  }
 }

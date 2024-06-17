@@ -208,6 +208,30 @@ export class GraphService {
     this.edges$.next(edgesList);
   }
 
+  updateNode(node: IGraphNode, newValues: Partial<IGraphNode>) {
+
+    let { 
+      value = null,
+      visited = null, 
+      weight = null,
+      position = null,
+    } = newValues;
+
+    if (value !== null) {
+      node.value = value;
+    }
+
+    // TODO: update also the attributes visited and weight
+
+    if (position !== null) {
+      node.position = position;
+    }
+
+    // TODO: if i replace the object in the list with a new object, how will this effect the edges etc. ???
+    // for subscribers // TODO: is this required?  
+    this.nodes$.next(this.nodes$.getValue());
+  }
+
   changeEdgeDirection(edge: IGraphEdge) {
     // get the edges as list
     const edgesList = this.edges$.getValue();

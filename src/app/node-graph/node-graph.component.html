@@ -17,7 +17,7 @@
     <!-- Input to edit node value -->
     <div [ngStyle]="{display: editNodeValue ? 'block' : 'none'}" class="node-value" (mouseenter)="onFieldHover($event)" >
       <form (submit)="editNodeValue=false">
-        <input #nodeValueInput type="text" [(ngModel)]="node.value" name="value" placeholder="Wert eingeben"
+        <input #nodeValueInput type="text" [(ngModel)]="node.value" (change)="onInputValueChange($event)" name="value" placeholder="Wert eingeben"
           (blur)="editNodeValue=false"
         />
       </form>
