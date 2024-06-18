@@ -4,8 +4,11 @@ import IAssignment from '../models/Assignment.interface';
 import { dummyData } from './data';
 import { ISubmission } from '../models/Submission.interface';
 import { IBstNodeSemantic } from '../models/BstNodeSemantic.interface';
-import { binarySearchTreeSemantic, downloadJSON } from '../utils';
+import { binarySearchTreeSemantic, downloadJSON, graphEdgeJSONToSemantic, graphJSONToSemantic, graphNodeJSONToSemantic, graphNodeToSemantic } from '../utils';
 import { BinarySearchTreeService } from './binary-search-tree.service';
+import { IGraphDataSemantic } from '../models/GraphDataSemantic.interface';
+import { IGraphNodeSemantic } from '../models/GraphNodeSemantic.interface';
+import { IGraphEdgeSemantic } from '../models/GraphEdgeSemantic.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class AssignmentService {
   },
     assignmentTitle: '',
     assignmentDescription: '',
-    initialStructure: null,
+    dataStructure: '',
     solution: null 
   });
   
@@ -61,19 +64,73 @@ export class AssignmentService {
     const assignment: IAssignment | undefined = assignments.find( assignment => assignment.id === id )
     if (assignment !== undefined) {
       this.currentAssignment$.next(assignment);
-      const initialStructureJSON = assignment.binarySearchTreeConfiguration?.initialRootNode;
-      let initialStructureSemantic = null;
-      if (initialStructureJSON !== null && initialStructureJSON !== undefined) {
-       initialStructureSemantic = binarySearchTreeSemantic(initialStructureJSON);
+
+      // binary search tree
+      if (assignment.dataStructure === 'tree') {
+        const initialStructureJSON = assignment.binarySearchTreeConfiguration?.initialRootNode;
+        let initialStructureSemantic = null;
+        if (initialStructureJSON !== null && initialStructureJSON !== undefined) {
+         initialStructureSemantic = binarySearchTreeSemantic(initialStructureJSON);
+        }
+
+        this.submission$.next({
+          ...this.submission$.getValue(),
+          assignmentTitle: assignment.title,
+          assignmentDescription: assignment.text,
+          dataStructure: assignment.dataStructure,
+          binarySearchTree: {
+            initialStructure: initialStructureSemantic,
+          },
+          solution: null
+        })
       }
 
-      this.submission$.next({
-        ...this.submission$.getValue(),
-        assignmentTitle: assignment.title,
-        assignmentDescription: assignment.text,
-        initialStructure: initialStructureSemantic,
-        solution: null
-      })
+      // graph
+      else if (assignment.dataStructure === 'graph') {
+        const initialNodesJSON = assignment.graphConfiguration?.initialNodeData;
+        const initialEdgesJSON = assignment.graphConfiguration?.initialEdgeData;
+        
+
+        // TODO: fix so that it is not required to check this here 
+        if (initialNodesJSON === undefined || initialEdgesJSON === undefined) {
+          throw new Error('No graph data.')
+        }
+
+        const nodeConfig = assignment.graphConfiguration?.nodeConfiguration;
+        const edgeConfig = assignment.graphConfiguration?.edgeConfiguration;
+        
+        // TODO: fix so that it is not required to check this here 
+        if (nodeConfig === undefined || edgeConfig === undefined) {
+          throw new Error('No graph configuration.')
+        }
+
+        const initialStructureSemantic: IGraphDataSemantic = graphJSONToSemantic({ 
+          nodes: initialNodesJSON, edges: initialEdgesJSON 
+        })
+
+        this.submission$.next({
+          ...this.submission$.getValue(),
+          assignmentTitle: assignment.title,
+          assignmentDescription: assignment.text,
+          dataStructure: assignment.dataStructure,
+          graph: {
+            configuration: {
+              nodes: nodeConfig,
+              edges: edgeConfig,
+            },
+            initialStructure: initialStructureSemantic,
+          },
+          solution: null
+        })
+      }
+
+      // TODO: handle this case better
+      else {
+        throw new Error('Unknown data structure.')
+      }
+      
+
+
       return;
     }
     
@@ -96,7 +153,7 @@ export class AssignmentService {
     return this.submission$;
   }
 
-  updateSolution(solution: IBstNodeSemantic | null): void {
+  updateSolution(solution: IBstNodeSemantic | null | IGraphDataSemantic): void {
     const currentSubmission = this.submission$.getValue();
     
     this.submission$.next({ 

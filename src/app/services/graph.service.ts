@@ -5,8 +5,9 @@ import { IGraphNewEdge } from '../models/GraphNewEdge.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
-import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
-import { calculateShapeCenter, downloadJSON } from '../utils';
+import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.interface';
+import { calculateShapeCenter, downloadJSON, graphToSemantic } from '../utils';
+import { IGraphDataSemantic } from '../models/GraphDataSemantic.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -109,6 +110,8 @@ export class GraphService {
       this.idCounter += 1;
     }
 
+    // TODO: Check if the value is unique
+    
     // Generate new node
     const newNode: IGraphNode = {
       nodeId: nodeId,
@@ -218,8 +221,10 @@ export class GraphService {
     } = newValues;
 
     if (value !== null) {
+      // TODO: Check if the value is unique
       node.value = value;
     }
+
 
     // TODO: update also the attributes visited and weight
 
@@ -376,6 +381,18 @@ export class GraphService {
     const json = JSON.stringify(graph, null, 2);
     
     return json;
+  }
+
+  graphToSemantic(): IGraphDataSemantic {
+    // get the nodes and edges as list
+    const nodesList = this.nodes$.getValue();
+    const edgesList = this.edges$.getValue();
+
+    const graphSemantic: IGraphDataSemantic = graphToSemantic({ 
+      nodes: nodesList, edges: edgesList
+    });
+
+    return graphSemantic;
   }
 
   downloadGraphAsJSON() {

@@ -1,8 +1,15 @@
 import { IBstNode } from "../models/BstNode.interface";
 import { IBstNodeJSON } from "../models/BstNodeJSON.interface";
 import { IBstNodeSemantic } from "../models/BstNodeSemantic.interface";
+import { IGraphData } from "../models/GraphData.interface";
+import { IGraphDataJSON } from "../models/GraphDataJSON.interface";
+import { IGraphDataSemantic } from "../models/GraphDataSemantic.interface";
 import { IGraphEdge } from "../models/GraphEdge.interface";
+import { IGraphEdgeJSON } from "../models/GraphEdgeJSON.interface";
+import { IGraphEdgeSemantic } from "../models/GraphEdgeSemantic.interface";
 import { IGraphNode } from "../models/GraphNode.interface";
+import { IGraphNodeJSON } from "../models/GraphNodeJSON.interface";
+import { IGraphNodeSemantic } from "../models/GraphNodeSemantic.interface";
 import { IPosition } from "../models/Position.interface";
 import { ISize } from "../models/Size.interface";
 
@@ -161,6 +168,9 @@ export function downloadJSON(content: any, fileName: string = 'data') {
   window.URL.revokeObjectURL(link.href);
 }
 
+// ############################################ 
+// ############ binary-search-tree ############ 
+
 export function binarySearchTreeSemantic(node: IBstNode | IBstNodeJSON): IBstNodeSemantic {
   return {
     value: node.value,
@@ -179,4 +189,119 @@ export function binarySearchTreeToJSON(node: IBstNode): IBstNodeJSON {
     size: node.size,
     center: node.center,
   };
+}
+
+// ############################### 
+// ############ graph ############ 
+
+// Graph -> Semantic
+export function graphToSemantic(graphData: IGraphData): IGraphDataSemantic {
+  const nodesSemantic: IGraphNodeSemantic[] = [];
+  const edgesSemantic: IGraphEdgeSemantic[] = [];
+
+  graphData.nodes.forEach( node => {
+    const nodeSemantic: IGraphNodeSemantic = graphNodeToSemantic(node);
+    nodesSemantic.push(nodeSemantic);
+  });
+
+  graphData.edges.forEach( edge => {
+    const edgeSemantic: IGraphEdgeSemantic = graphEdgeToSemantic(edge);
+    edgesSemantic.push(edgeSemantic);
+  });
+
+  return {
+    nodes: nodesSemantic,
+    edges: edgesSemantic
+  };
+}
+
+export function graphNodeToSemantic(node: IGraphNode): IGraphNodeSemantic {
+  const nodeSemantic: IGraphNodeSemantic = {
+    value: node.value,
+  };
+
+  if (node.weight.enabled) {
+    nodeSemantic.weight = node.weight.value;
+  }
+  if (node.visited.enabled) {
+    nodeSemantic.visited = node.visited.value;
+  }
+
+  return nodeSemantic;
+}
+
+export function graphEdgeToSemantic(edge: IGraphEdge): IGraphEdgeSemantic {
+  const edgeSemantic: IGraphEdgeSemantic = {
+    node1Value: edge.node1.value,
+    node2Value: edge.node2.value,
+  };
+
+  if (edge.weight.enabled) {
+    edgeSemantic.weight = edge.weight.value;
+  }
+
+  return edgeSemantic;
+}
+
+
+// GraphJSON -> Semantic
+export function graphJSONToSemantic(graphData: IGraphDataJSON): IGraphDataSemantic {
+  const nodesSemantic: IGraphNodeSemantic[] = [];
+  const edgesSemantic: IGraphEdgeSemantic[] = [];
+
+  graphData.nodes.forEach( node => {
+    const nodeSemantic: IGraphNodeSemantic = graphNodeJSONToSemantic(node);
+    nodesSemantic.push(nodeSemantic);
+  });
+
+  graphData.edges.forEach( edge => {
+    const edgeSemantic: IGraphEdgeSemantic = graphEdgeJSONToSemantic(edge, graphData.nodes);
+    edgesSemantic.push(edgeSemantic);
+  });
+
+  return {
+    nodes: nodesSemantic,
+    edges: edgesSemantic
+  };
+}
+
+export function graphNodeJSONToSemantic(node: IGraphNodeJSON): IGraphNodeSemantic {
+  const nodeSemantic: IGraphNodeSemantic = {
+    value: node.value,
+  };
+
+  // TODO: FIX: This does not work appropriately
+  // if (node.weight.enabled) {
+  //   nodeSemantic.weight = node.weight.value;
+  // }
+  // if (node.visited.enabled) {
+  //   nodeSemantic.visited = node.visited.value;
+  // }
+
+  return nodeSemantic;
+}
+
+export function graphEdgeJSONToSemantic(edge: IGraphEdgeJSON, nodesList: IGraphNodeJSON[]): IGraphEdgeSemantic {
+  let node1Value: string = 'no-value'
+  let node2Value: string = 'no-value'
+  nodesList.forEach(node => {
+    if (node.nodeId === edge.node1Id) {
+      node1Value = node.value;
+    }
+    if (node.nodeId === edge.node2Id) {
+      node2Value = node.value;
+    }
+  });
+
+  const edgeSemantic: IGraphEdgeSemantic = {
+    node1Value: node1Value,
+    node2Value: node2Value,
+  };
+
+  // TODO: find a better way
+  if (edge.weight !== -1) {
+    edgeSemantic.weight = edge.weight;
+  }
+
+  return edgeSemantic;
 }

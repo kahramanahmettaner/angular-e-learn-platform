@@ -629,6 +629,114 @@ export function dummyData(): IAssignment[] {
         {
           "id": 4,
           "title": "Transitive Hülle",
+          "text": "Gegeben sei der folgende gerichtete Graph G mit V = {A, B, C, D}. Fügen Sie alle Kanten zu G hinzu, die zu dessen transitive Hülle gehören.",
+          "stepsEnabled": false,
+          "dataStructure": "graph",
+          "graphConfiguration": {
+            "initialNodeData": [
+              {
+                "nodeId": 0,
+                "value": "A",
+                "position": {
+                  "x": 178,
+                  "y": 80.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 228,
+                  "y": 130.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 1,
+                "value": "B",
+                "position": {
+                  "x": 518,
+                  "y": 185.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 568,
+                  "y": 235.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 2,
+                "value": "C",
+                "position": {
+                  "x": 520,
+                  "y": 437.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 570,
+                  "y": 487.203125
+                },
+                "visited": false,
+                "weight": -1
+              },
+              {
+                "nodeId": 3,
+                "value": "D",
+                "position": {
+                  "x": 739,
+                  "y": 37.203125
+                },
+                "size": {
+                  "width": 100,
+                  "height": 100
+                },
+                "center": {
+                  "x": 813,
+                  "y": 54.203125
+                },
+                "visited": false,
+                "weight": -1
+              }
+            ],
+            "initialEdgeData": [
+              {
+                "node1Id": 0,
+                "node2Id": 1,
+                "weight": -1
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 2,
+                "weight": -1
+              },
+              {
+                "node1Id": 1,
+                "node2Id": 3,
+                "weight": -1
+              }
+            ],
+            "nodeConfiguration": {
+              "weight": false,
+              "visited": false
+            },
+            "edgeConfiguration": {
+              "directed": true,
+              "weight": false
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Transitive Hülle",
           "text": "Gegeben sei der folgende gerichtete Graph G mit V = {1, 2, 3, 4, 5}. Fügen Sie alle Kanten zu G hinzu, die zu dessen transitive Hülle gehören. Bereits vorhandene Kanten müssen nicht erneut eingezeichnet werden.",
           "stepsEnabled": false,
           "dataStructure": "graph",
@@ -778,7 +886,7 @@ export function dummyData(): IAssignment[] {
           }
         },
         {
-          "id": 5,
+          "id": 6,
           "title": "Dijkstra-Algorithmus",
           "text": "Berechnen Sie den kürzesten Weg für alle Knoten ausgehend vom Startknoten A. Verwenden Sie den Dijkstra-Algorithmus und zeichnen Sie dabei jeden Schritt in ein eigenes Diagramm. Markieren Sie dabei den aktuell besuchten Knoten.",
           "stepsEnabled": false,
@@ -957,7 +1065,7 @@ export function dummyData(): IAssignment[] {
           }
         },
         {
-          "id": 6,
+          "id": 7,
           "title": "Minimaler Spannbaum",
           "text": "Gegeben sei der folgende ungerichtete Graph G2 mit V = {A, B, C, D, E, F, G}.\nNutzen Sie den Algorithmus von Kruskal, um den Minimalen Spannbaum B zu erzeugen. Zeichnen Sie jeden Schritt in ein eigenes Diagramm.",
           "stepsEnabled": false,
@@ -1159,7 +1267,7 @@ export function dummyData(): IAssignment[] {
           }
         },
         {
-          "id": 7,
+          "id": 8,
           "title": "Floyd-Algorithmus",
           "text": "Berechnen Sie den kürzesten Weg nach Verarbeitung der Knoten A, B, C in alphabetischer Reihenfolge unter Verwendung des Algorithmus von Floyd. Fügen Sie zugehörige Kantengewichte und falls erforderlich zusätzliche Kanten ein.\nÜbernehmen Sie bereits hinzugefügte Kanten und aktualisierte Kantengewichte in späteren Schritten.",
           "stepsEnabled": false,

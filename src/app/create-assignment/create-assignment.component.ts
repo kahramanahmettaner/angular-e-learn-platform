@@ -11,7 +11,7 @@ import { BinarySearchTreeService } from '../services/binary-search-tree.service'
 import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { Subscription } from 'rxjs';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
-import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.nterface';
+import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.interface';
 import { readFile, downloadJSON } from '../utils';
 
 @Component({

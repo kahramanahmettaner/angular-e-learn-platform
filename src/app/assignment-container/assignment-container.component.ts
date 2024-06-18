@@ -20,6 +20,9 @@ export class AssignmentContainerComponent implements OnInit {
 
   public assignment$!: Observable<IAssignment | null>;
 
+  // TODO: Is this required?
+  public assignment: IAssignment | null = null;
+
   // TODO: Delete this
   public submissionJSON: string = '';
 
@@ -52,50 +55,62 @@ export class AssignmentContainerComponent implements OnInit {
     this.assignment$.subscribe((assignment) => {
       if (assignment !== null) {
         // set the state of the graph and bst
-        this.setAssignmentState(assignment);
+        this.assignment = assignment;
+        this.setAssignmentState(/*assignment*/);
       }
     })
   }
 
-  setAssignmentState(assignment: IAssignment) {
+  setAssignmentState(/*assignment: IAssignment*/) {
 
     // graph-assigment
-    if (assignment?.dataStructure === 'graph') {
+    if (this.assignment?.dataStructure === 'graph') {
         
       // No configuration
-      if (assignment.graphConfiguration === undefined) {
+      if (this.assignment.graphConfiguration === undefined) {
         alert('Keine Konfiguration für Graph gefunden.');
         return
       } 
             
       // Set graph state
       this.graphService.configureGraph({
-        "nodes": assignment.graphConfiguration?.nodeConfiguration,
-        "edges": assignment.graphConfiguration?.edgeConfiguration,
+        "nodes": this.assignment.graphConfiguration?.nodeConfiguration,
+        "edges": this.assignment.graphConfiguration?.edgeConfiguration,
       })
 
-      this.graphService.graphDataFromJSON(assignment.graphConfiguration.initialNodeData, assignment.graphConfiguration.initialEdgeData);    
+      this.graphService.graphDataFromJSON(this.assignment.graphConfiguration.initialNodeData, this.assignment.graphConfiguration.initialEdgeData);    
     }
 
-    // bianry-search-tree-assigment
-    else if (assignment?.dataStructure === 'tree') {
+    // binary-search-tree-assigment
+    else if (this.assignment?.dataStructure === 'tree') {
 
       // No configuration
-      if (assignment.binarySearchTreeConfiguration === undefined) {
+      if (this.assignment.binarySearchTreeConfiguration === undefined) {
         alert('Keine Konfiguration für Binären Suchbaum gefunden.');
         return
       } 
 
       // Set bst state
-      this.bstService.createTreeFromJSON(assignment.binarySearchTreeConfiguration.initialRootNode);
+      this.bstService.createTreeFromJSON(this.assignment.binarySearchTreeConfiguration.initialRootNode);
     }
   }
 
   onSubmitButtonClick() {
-    const rootNode = this.bstService.treeSemantic();
-    this.assignmentService.updateSolution(rootNode);
+    // graph-assigment
+    if (this.assignment?.dataStructure === 'graph') {
+      const graphDataSemantic = this.graphService.graphToSemantic();
+      this.assignmentService.updateSolution(graphDataSemantic);
+  
+      this.submissionJSON = this.assignmentService.checkSolution();
+    }
 
-    this.submissionJSON = this.assignmentService.checkSolution();
+    // binary-search-tree-assigment
+    else if (this.assignment?.dataStructure === 'tree') {
+      const rootNode = this.bstService.treeSemantic();
+      this.assignmentService.updateSolution(rootNode);
+  
+      this.submissionJSON = this.assignmentService.checkSolution();
+    }
   }
 
   onCopyPromptClick() {
