@@ -55,7 +55,14 @@ export class AssignmentContainerComponent implements OnInit {
     this.assignment$.subscribe((assignment) => {
       if (assignment !== null) {
         // set the state of the graph and bst
-        this.assignment = assignment;
+
+        // TODO: Find a proper solution to prevent this
+        // added this line to use only values from the assignment and not to overwrite the assignment content from service
+        // e.g. position atribute is being overwritten when using assignment object directly
+        const clonedAssignment = JSON.parse(JSON.stringify(assignment));
+        this.assignment = clonedAssignment;
+        
+        
         this.setAssignmentState(/*assignment*/);
       }
     })
