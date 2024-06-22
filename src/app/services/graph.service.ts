@@ -232,6 +232,10 @@ export class GraphService {
       node.position = position;
     }
 
+    if (weight !== null) {
+      node.weight.value = weight.value;
+    }
+
     // TODO: if i replace the object in the list with a new object, how will this effect the edges etc. ???
     // for subscribers // TODO: is this required?  
     this.nodes$.next(this.nodes$.getValue());
@@ -407,6 +411,14 @@ export class GraphService {
 
     // Add nodes
     initialNodeData.forEach((nodeJSON: any) => {
+
+      // TODO: this is not proper to do but to fix the issue with weight temporarily
+      if (typeof nodeJSON.weight === 'number') {
+        nodeJSON.weight = {
+          enabled: this.graphConfiguration$.getValue().nodes.weight,
+          value: nodeJSON.weight
+        }
+      } 
 
       // TODO: node config etc. must be from graphConfig
       this.addNode(nodeJSON);

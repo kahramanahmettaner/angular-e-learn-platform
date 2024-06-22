@@ -22,6 +22,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   // #############################
   // References for HTML Elements
   @ViewChild('nodeValueInput') nodeValueInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('nodeWeightInput') nodeWeightInput!: ElementRef<HTMLInputElement>;
 
 
   // #############################
@@ -35,6 +36,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   nodeZIndex: number;
   displayNodeToolset: boolean;
   editNodeValue: boolean;
+  editNodeWeight: boolean;
 
   private newEdgeSubscription!: Subscription;
   private graphConfigurationSubscription!: Subscription;
@@ -49,6 +51,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     this.nodeZIndex = 1;
     this.displayNodeToolset = false;
     this.editNodeValue = false;
+    this.editNodeWeight = false;
   }
 
 
@@ -84,6 +87,10 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
 
   // #############################
   // Functions for interactions with node
+  onNodeDoubleClick() {
+    this.onEditNodeValueClick();
+  }
+
   onFieldHover(event: any) {
   
     // Activate the toolset for the node and adjust z index
@@ -246,9 +253,28 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
       this.nodeValueInput.nativeElement.focus();
     }, 0);
   }
+  
+  onEditNodeWeightClick() {
+    this.editNodeWeight = true;
 
-  onInputValueChange(event: any) {
+    // Ensure that the input element is mounted
+    // 1 ms helps to focus on weight input after than the value input 
+    // so that it stays focused whenever user clicks on div.node-weight
+    // TODO: find a proper way to do this
+    setTimeout(() => {
+      this.nodeWeightInput.nativeElement.focus();
+    }, 1);
+  }
+
+  onNodeValueChange(event: any) {
     const newValue = event.target.value;
     this.graphService.updateNode(this.node, { value: newValue });
+  }
+
+  onNodeWeightChange(event: any) {
+    let intValue = Number(event.target.value);
+    intValue = isNaN(intValue) ? 0 : intValue;
+
+    this.graphService.updateNode(this.node, { weight: { enabled: true, value: intValue } });
   }
 }

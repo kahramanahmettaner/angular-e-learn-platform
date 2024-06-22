@@ -8,26 +8,60 @@
     (cdkDragEnded)="nodeOnDragEnd($event)"
     (mouseenter)="onFieldHover($event)"
     (click)="onClick($event)"
-    (dblclick)="onEditNodeValueClick()"
+    (dblclick)="onNodeDoubleClick()"
     [style.zIndex]="nodeZIndex"
 >
 
 
     <!-- ################### -->
-    <!-- Input to edit node value -->
-    <div [ngStyle]="{display: editNodeValue ? 'block' : 'none'}" class="node-value" (mouseenter)="onFieldHover($event)" >
-      <form (submit)="editNodeValue=false">
-        <input #nodeValueInput type="text" [(ngModel)]="node.value" (change)="onInputValueChange($event)" name="value" placeholder="Wert eingeben"
-          (blur)="editNodeValue=false"
-        />
-      </form>
+    <!-- Inputs to edit node properties -->
+    <div class="node-properties">
+
+
+        <!-- ################### -->
+        <!-- Node value -->
+        <div class="node-value form" (mouseenter)="onFieldHover($event)" >
+        <form (submit)="editNodeValue=false" [ngStyle]="{display: editNodeValue ? 'block' : 'none'}">
+            <input #nodeValueInput type="text" [(ngModel)]="node.value" (change)="onNodeValueChange($event)" name="value" placeholder="Wert eingeben"
+            (blur)="editNodeValue=false"
+            />
+        </form>
+        </div>
+        <div [ngStyle]="{display: !editNodeValue ? 'block' : 'none'}" class="node-value display" (mouseenter)="onFieldHover($event)" >
+        <span style="display: flex; justify-content: center;">{{ node.value }}</span>
+        </div>
+        <!-- End - Input -->
+        <!-- ################### -->
+
+
+        <!-- Display if the node is weighted --> 
+        @if (graphConfiguration.nodes.weight) {
+
+            <!-- ################### -->
+            <!-- Node weight -->
+            <div class="node-weight form" (mouseenter)="onFieldHover($event)">
+                <form (submit)="editNodeWeight=false" [ngStyle]="{display: editNodeWeight ? 'block' : 'none'}">
+                <input #nodeWeightInput  type="number" [(ngModel)]="node.weight.value" (change)="onNodeWeightChange($event)" name="weight" placeholder="Gewicht eingeben"
+                    (blur)="editNodeWeight=false"
+                />
+                </form>
+            </div>
+            <div 
+                [ngStyle]="{display: !editNodeWeight ? 'block' : 'none'}" 
+                class="node-weight display" 
+                (mouseenter)="onFieldHover($event)" 
+                (dblclick)="onEditNodeWeightClick()"
+            >
+                <span style="display: flex; justify-content: center;">Gewicht: {{ node.weight.value }}</span>
+            </div>
+            <!-- End - Input -->
+            <!-- ################### -->
+        }
+
     </div>
-    <div [ngStyle]="{display: !editNodeValue ? 'block' : 'none'}" class="node-value" (mouseenter)="onFieldHover($event)" >
-      <span style="display: flex; justify-content: center;">{{ node.value }}</span>
-    </div>
-    <!-- End - Input -->
+    <!-- End - Node Properties -->
     <!-- ################### -->
-    
+
     
     <!-- ################### -->
     <!-- Toolset -->
@@ -124,6 +158,21 @@
         
         <!-- ################### -->
         <!-- Extra functionalities -->
+        
+        @if (graphConfiguration.nodes.weight) {
+        <div 
+        [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
+        class="edit-weight container-item" 
+        title="Das Gewicht ändern" 
+        (click)="onEditNodeWeightClick()"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exposure" viewBox="0 0 16 16">
+                <path d="M8.5 4a.5.5 0 0 0-1 0v2h-2a.5.5 0 0 0 0 1h2v2a.5.5 0 0 0 1 0V7h2a.5.5 0 0 0 0-1h-2zm-3 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8"/>
+            </svg>
+        </div>
+        }
+
         <div 
             [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
             class="delete container-item" 
@@ -138,7 +187,7 @@
 
         <div 
             [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
-            class="edit container-item" 
+            class="edit-value container-item" 
             title="Den Wert ändern" 
             (click)="onEditNodeValueClick()"
             >

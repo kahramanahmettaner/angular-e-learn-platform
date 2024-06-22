@@ -23,11 +23,29 @@
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-.node-value {
+.node-properties {
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+    margin: 0;
+    padding: .2em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.node-value, .node-weight {
     width: 100%;
     z-index: 1;
 }
-.node-value input {    
+
+.node-weight.display {
+    padding: .5em 0;
+    border-top: .1em solid #919191;
+}
+
+.node-properties input {    
     width: 100%;
 }
 
@@ -67,13 +85,23 @@
     transform: translate(-50%, -50%) scale(1.2, 1.2);
 }
 
-.edit {
+.edit-value {
     top: 50%;
     left: 100%;
     transform: translate(-50%, -50%);
 }
 
-.edit:hover {
+.edit-value:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
+.edit-weight {
+    top: 20%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+}
+
+.edit-weight:hover {
     transform: translate(-50%, -50%) scale(1.2, 1.2);
 }
 
