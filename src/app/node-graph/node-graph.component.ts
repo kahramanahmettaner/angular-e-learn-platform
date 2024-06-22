@@ -60,7 +60,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   
     // Activate the input field for the node
-    this.onEditNodeValueClick();
+    this.activateEditNodeValueInput();
   
     // #############################
     // Subscribe to Observables from the graphService
@@ -88,7 +88,12 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   // #############################
   // Functions for interactions with node
   onNodeDoubleClick() {
-    this.onEditNodeValueClick();
+    this.activateEditNodeValueInput();
+  }
+
+  onNodeWeightDoubleClick(event: MouseEvent) {
+    event.stopPropagation();
+    this.activateEditNodeWeightInput();
   }
 
   onFieldHover(event: any) {
@@ -245,7 +250,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     this.graphService.removeNode(this.node);
   }
   
-  onEditNodeValueClick() {
+  activateEditNodeValueInput() {
     this.editNodeValue = true;
 
     // Ensure that the input element is mounted 
@@ -254,16 +259,13 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     }, 0);
   }
   
-  onEditNodeWeightClick() {
+  activateEditNodeWeightInput() {
     this.editNodeWeight = true;
 
     // Ensure that the input element is mounted
-    // 1 ms helps to focus on weight input after than the value input 
-    // so that it stays focused whenever user clicks on div.node-weight
-    // TODO: find a proper way to do this
     setTimeout(() => {
       this.nodeWeightInput.nativeElement.focus();
-    }, 1);
+    }, 0);
   }
 
   onNodeValueChange(event: any) {
