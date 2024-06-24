@@ -52,7 +52,8 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       selectedOption: ['', Validators.required],
       checkboxEdgeDirected: [false],
       checkboxEdgeWeighted: [false],
-      checkboxNodeWeighted: [false]
+      checkboxNodeWeighted: [false],
+      checkboxNodeVisited: [false]
     });
 
           
@@ -154,7 +155,7 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
         initialEdgeData: this.graphEdges,
         nodeConfiguration: {
           weight: this.form.value.checkboxNodeWeighted,
-          visited: false
+          visited: this.form.value.checkboxNodeVisited
         },
         edgeConfiguration: {
           directed: this.form.value.checkboxEdgeDirected,
@@ -182,7 +183,8 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
         selectedOption: assignment.dataStructure,
         checkboxEdgeDirected: assignment.graphConfiguration?.edgeConfiguration.directed || false,
         checkboxEdgeWeighted: assignment.graphConfiguration?.edgeConfiguration.weight || false,
-        checkboxNodeWeighted: assignment.graphConfiguration?.nodeConfiguration.weight || false
+        checkboxNodeWeighted: assignment.graphConfiguration?.nodeConfiguration.weight || false,
+        checkboxNodeVisited: assignment.graphConfiguration?.nodeConfiguration.visited || false
       });
 
       // Update graph or tree based on the data structure
@@ -251,7 +253,7 @@ export class CreateAssignmentComponent implements OnInit, OnDestroy {
       // Set Graph Configuration
       this.graphService.configureGraph({
         nodes: {
-          visited: false,
+          visited: this.form.value.checkboxNodeVisited,
           weight: this.form.value.checkboxNodeWeighted
         },
         edges: {

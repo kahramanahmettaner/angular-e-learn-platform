@@ -236,6 +236,10 @@ export class GraphService {
       node.weight.value = weight.value;
     }
 
+    if (visited !== null) {
+      node.visited.value = visited.value;
+    }
+
     // TODO: if i replace the object in the list with a new object, how will this effect the edges etc. ???
     // for subscribers // TODO: is this required?  
     this.nodes$.next(this.nodes$.getValue());
@@ -405,7 +409,7 @@ export class GraphService {
   }
 
   graphDataFromJSON(initialNodeData: IGraphNodeJSON[], initialEdgeData: IGraphEdgeJSON[]) {
-
+    
     // reset the graph state
     //this.resetGraph();
 
@@ -417,6 +421,13 @@ export class GraphService {
         nodeJSON.weight = {
           enabled: this.graphConfiguration$.getValue().nodes.weight,
           value: nodeJSON.weight
+        }
+      } 
+      // TODO: this is not proper to do but to fix the issue with visited temporarily
+      if (typeof nodeJSON.visited === 'boolean') {
+        nodeJSON.visited = {
+          enabled: this.graphConfiguration$.getValue().nodes.visited,
+          value: nodeJSON.visited
         }
       } 
 

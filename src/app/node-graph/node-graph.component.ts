@@ -96,6 +96,11 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     this.activateEditNodeWeightInput();
   }
 
+  onNodeVisitedDoubleClick(event: MouseEvent) {
+    event.stopPropagation();
+    this.updateNodeVisited();
+  }
+
   onFieldHover(event: any) {
   
     // Activate the toolset for the node and adjust z index
@@ -268,15 +273,20 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  onNodeValueChange(event: any) {
+  updateNodeValue(event: any) {
     const newValue = event.target.value;
     this.graphService.updateNode(this.node, { value: newValue });
   }
 
-  onNodeWeightChange(event: any) {
+  updateNodeWeight(event: any) {
     let intValue = Number(event.target.value);
     intValue = isNaN(intValue) ? 0 : intValue;
 
     this.graphService.updateNode(this.node, { weight: { enabled: true, value: intValue } });
+  }
+
+  updateNodeVisited(){
+    const current: boolean = this.node.visited.value;
+    this.graphService.updateNode(this.node, { visited: { enabled: true, value: !current } })
   }
 }

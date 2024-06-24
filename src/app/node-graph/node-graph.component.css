@@ -31,16 +31,16 @@
     padding: .2em 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
-.node-value, .node-weight {
+.node-value, .node-weight, .node-visited {
     width: 100%;
     z-index: 1;
 }
 
-.node-weight.display {
+.node-weight.display, .node-visited.display {
     padding: .5em 0;
     border-top: .1em solid #919191;
 }
@@ -96,14 +96,26 @@
 }
 
 .edit-weight {
-    top: 20%;
-    left: 90%;
+    top: 25%;
+    left: 95%;
     transform: translate(-50%, -50%);
 }
 
 .edit-weight:hover {
     transform: translate(-50%, -50%) scale(1.2, 1.2);
 }
+
+.edit-visited {
+    top: 75%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+}
+
+.edit-visited:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
+
 
 /* For directed edges */
 .new-node-incoming {
