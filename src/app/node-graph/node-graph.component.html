@@ -15,7 +15,20 @@
 
     <!-- ################### -->
     <!-- Inputs to edit node properties -->
-    <div class="node-properties">
+    <div 
+        class="node-properties" 
+        [ngStyle]="{ 
+            'justify-content': 
+                graphConfiguration.nodes.weight && graphConfiguration.nodes.visited
+                    ? 'end'
+                    : graphConfiguration.nodes.weight || graphConfiguration.nodes.visited
+                        ? 'end' : 'center',
+            'gap': graphConfiguration.nodes.weight && graphConfiguration.nodes.visited
+                    ? 0
+                    : graphConfiguration.nodes.weight || graphConfiguration.nodes.visited
+                        ? '.7rem' : 0
+        }"
+    >
 
 
         <!-- ################### -->
@@ -68,10 +81,10 @@
                 (dblclick)="onNodeVisitedDoubleClick($event)"
             >
                 @if (node.visited.value) {
-                <span style="display: flex; justify-content: center;">besucht</span>
+                <span style="display: flex; justify-content: center;">Besucht</span>
                 }
                 @else {
-                <span style="display: flex; justify-content: center;">nicht besucht</span>
+                <span style="display: flex; justify-content: center;">Nicht Besucht</span>
                 }
             </div>
             <!-- End - Input -->
