@@ -108,6 +108,8 @@ export class GraphService {
 
       // Increment id counter for the next nodes
       this.idCounter += 1;
+    } else {
+      this.idCounter = nodeId + 1;
     }
 
     // TODO: Check if the value is unique
@@ -385,10 +387,10 @@ export class GraphService {
       nodes: modifiedNodes,
       edges: modifiedEdges
     };
-
-    const json = JSON.stringify(graph, null, 2);
+    return graph;
+    //const json = JSON.stringify(graph, null, 2);
     
-    return json;
+    //return json;
   }
 
   graphToSemantic(): IGraphDataSemantic {

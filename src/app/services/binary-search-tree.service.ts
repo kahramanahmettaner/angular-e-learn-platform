@@ -235,6 +235,7 @@ export class BinarySearchTreeService {
 
   createTreeFromJSON(json: string|IBstNodeJSON|null, parentId: number = -1) {
 
+    // TODO: If json is null should be resetTree() called or just returned as now
     if (json === null) { return; }
 
     let rootNodeJSON;

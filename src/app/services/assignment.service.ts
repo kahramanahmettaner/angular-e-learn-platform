@@ -9,6 +9,8 @@ import { BinarySearchTreeService } from './binary-search-tree.service';
 import { IGraphDataSemantic } from '../models/GraphDataSemantic.interface';
 import { IGraphNodeSemantic } from '../models/GraphNodeSemantic.interface';
 import { IGraphEdgeSemantic } from '../models/GraphEdgeSemantic.interface';
+import { IGraphDataJSON } from '../models/GraphDataJSON.interface';
+import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,10 @@ export class AssignmentService {
 
   private assignments$ = new BehaviorSubject<IAssignment[]>([]);
   private currentAssignment$: BehaviorSubject<IAssignment | null> = new BehaviorSubject<IAssignment | null>(null);
+  
+  private solutionGraph$: BehaviorSubject<IGraphDataJSON[]> = new BehaviorSubject<IGraphDataJSON[]>([]);
+  private solutionBst$: BehaviorSubject<(null | IBstNodeJSON)[]> = new BehaviorSubject<(null | IBstNodeJSON)[]>([]);
+
   private submission$: BehaviorSubject<ISubmission> = new BehaviorSubject<ISubmission>({ 
     promptForLLM: {
       role: "E-Tutor für Informatik-Studenten",
@@ -24,8 +30,7 @@ export class AssignmentService {
   },
     assignmentTitle: '',
     assignmentDescription: '',
-    dataStructure: '',
-    solution: null 
+    dataStructure: ''
   });
   
   constructor(private bstService: BinarySearchTreeService) {
@@ -59,6 +64,7 @@ export class AssignmentService {
   }
 
   setCurrentAssignment(id: number): void {
+  
     const assignments = this.assignments$.getValue();
     
     const assignment: IAssignment | undefined = assignments.find( assignment => assignment.id === id )
@@ -73,6 +79,7 @@ export class AssignmentService {
          initialStructureSemantic = binarySearchTreeSemantic(initialStructureJSON);
         }
 
+        this.solutionBst$.next([null]);
         this.submission$.next({
           ...this.submission$.getValue(),
           assignmentTitle: assignment.title,
@@ -80,8 +87,8 @@ export class AssignmentService {
           dataStructure: assignment.dataStructure,
           binarySearchTree: {
             initialStructure: initialStructureSemantic,
-          },
-          solution: null
+            solution: []
+          }
         })
       }
 
@@ -119,23 +126,21 @@ export class AssignmentService {
               edges: edgeConfig,
             },
             initialStructure: initialStructureSemantic,
-          },
-          solution: null
+            solution: []
+          }
         })
+        this.solutionGraph$.next([{nodes: [], edges: []}]);
       }
 
       // TODO: handle this case better
       else {
         throw new Error('Unknown data structure.')
       }
-      
-
-
+  
       return;
     }
     
     this.currentAssignment$.next(null);
-  
   }
 
   getAssignmentById(id: number): Observable<IAssignment | undefined> {
@@ -149,21 +154,60 @@ export class AssignmentService {
   // Solution
 
   
-  getSubmission(): Observable<ISubmission> {
-    return this.submission$;
+  // getSubmission(): Observable<ISubmission> {
+  //   return this.submission$;
+  // }
+
+  getSolutionBst(): Observable<(null | IBstNodeJSON)[]> {
+    return this.solutionBst$;
+  }
+  
+  getSolutionGraph(): Observable<IGraphDataJSON[]> {
+    return this.solutionGraph$;
   }
 
-  updateSolution(solution: IBstNodeSemantic | null | IGraphDataSemantic): void {
-    const currentSubmission = this.submission$.getValue();
-    
-    this.submission$.next({ 
-      ...currentSubmission,
-      solution 
-    });
+  updateSolutionBst(newSolution: IBstNodeJSON | null , stepIndex: number = 0): void {
+    this.solutionBst$.getValue()[stepIndex] = newSolution;
+    this.solutionBst$.next(this.solutionBst$.getValue());
+  }
+
+  updateSolutionGraph(newSolution: IGraphDataJSON , stepIndex: number = 0): void {
+    this.solutionGraph$.getValue()[stepIndex] = newSolution;
+    this.solutionGraph$.next(this.solutionGraph$.getValue());
+  }
+
+  addNewSolutionStep() {
+    if (this.currentAssignment$.getValue()?.dataStructure === 'tree') {
+      this.solutionBst$.next([...this.solutionBst$.getValue(), null]);
+    } 
+    else if (this.currentAssignment$.getValue()?.dataStructure === 'graph') {
+      this.solutionGraph$.next([...this.solutionGraph$.getValue(), { nodes: [], edges: [] }]);
+    }
   }
 
   checkSolution(): string {
     const submission = this.submission$.getValue();
+  
+    // TODO: do not update submission here to add solution: 
+    if (submission.dataStructure === 'tree') {
+
+      if (submission.binarySearchTree) { 
+        submission.binarySearchTree.solution = this.solutionBst$.getValue()  
+      }
+
+    } else if (submission.dataStructure === 'graph') {
+
+      if (submission.graph) { 
+        const solutionGraphSemantic: IGraphDataSemantic[] = []
+        this.solutionGraph$.getValue().forEach(graphData => {
+          const graphDataSemantic = graphJSONToSemantic(graphData);
+          solutionGraphSemantic.push(graphDataSemantic);
+        });
+        submission.graph.solution = solutionGraphSemantic;  
+      }
+
+    } 
+
     //downloadJSON(submission);
     return JSON.stringify(submission, null, 2);
   }

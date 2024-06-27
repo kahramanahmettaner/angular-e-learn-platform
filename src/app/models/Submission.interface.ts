@@ -11,9 +11,10 @@ export interface ISubmission {
     graph?: {
         configuration: IGraphConfiguration
         initialStructure: IGraphDataSemantic
+        solution: IGraphDataSemantic[]
     }
     binarySearchTree?: {
         initialStructure: IBstNodeSemantic | null
+        solution: (IBstNodeSemantic | null)[]
     }
-    solution: IBstNodeSemantic | null | IGraphDataSemantic
 }
