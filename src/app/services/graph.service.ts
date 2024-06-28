@@ -91,13 +91,13 @@ export class GraphService {
     if (this.graphConfiguration$.getValue().nodes.weight) {
       weight = { enabled: true, value: weight?.value || 0 };
     } else {
-      weight = { enabled: false, value: -1 };
+      weight = { enabled: false, value: null };
     }
     
     if (this.graphConfiguration$.getValue().nodes.visited) {
       visited = { enabled: true, value: visited?.value || false };
     } else {
-      visited = { enabled: false, value: false };
+      visited = { enabled: false, value: null };
     }
 
     // Check if nodeId is provided
@@ -160,11 +160,12 @@ export class GraphService {
     });
 
     // Adjust the properties according to the graphConfiguration  
-    let weight: { enabled: boolean, value: number };
+    // TODO: use pre-defined type instead defining the type here 
+    let weight: { enabled: boolean, value: number | null };
     if (this.graphConfiguration$.getValue().edges.weight) {
       weight = { enabled: true, value: weightValue || 0 };
     } else {
-      weight = { enabled: false, value: -1 };
+      weight = { enabled: false, value: null };
     }
 
     // Generate new edge
@@ -218,7 +219,7 @@ export class GraphService {
     let { 
       value = null,
       visited = null, 
-      weight = null,
+      weight, // TODO: just adjusted to be undefined if no value is assigned to be able to assign null value but this not consistent
       position = null,
     } = newValues;
 
@@ -234,7 +235,8 @@ export class GraphService {
       node.position = position;
     }
 
-    if (weight !== null) {
+    // TODO: just adjusted to be undefined if no value is assigned to be able to assign null value but this not consistent
+    if (weight !== undefined) {
       node.weight.value = weight.value;
     }
 
@@ -286,7 +288,7 @@ export class GraphService {
     }
   }
   
-  updateEdgeWeight(edge: IGraphEdge, newWeight: number) {
+  updateEdgeWeight(edge: IGraphEdge, newWeight: number | null) {
     // Get the current list of edges
     const edgesList = this.edges$.getValue();
   
@@ -477,6 +479,21 @@ export class GraphService {
 
     // Add nodes
     graphJSON.nodes.forEach((nodeJSON: any) => {
+
+      // TODO: this is not proper to do but to fix the issue with weight temporarily
+      if (typeof nodeJSON.weight === 'number') {
+        nodeJSON.weight = {
+          enabled: this.graphConfiguration$.getValue().nodes.weight,
+          value: nodeJSON.weight
+        }
+      } 
+      // TODO: this is not proper to do but to fix the issue with visited temporarily
+      if (typeof nodeJSON.visited === 'boolean') {
+        nodeJSON.visited = {
+          enabled: this.graphConfiguration$.getValue().nodes.visited,
+          value: nodeJSON.visited
+        }
+      } 
 
       // TODO: node config etc. must be from graphConfig
       this.addNode(nodeJSON);

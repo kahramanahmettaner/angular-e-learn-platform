@@ -141,14 +141,21 @@ export class AssignmentContainerComponent implements OnInit {
       // Graph
       if (this.assignment?.dataStructure === 'graph') {
         const graphContent = this.solutionGraph[this.solutionStepCurrent];
-        this.loadWorkspaceContent({graphContent});
+
+        // TODO: Find a proper solution to prevent this
+        // added this line to use only values and not the references
+        const clonedGraphContent: IGraphDataJSON = JSON.parse(JSON.stringify(graphContent));
+        this.loadWorkspaceContent({graphContent: clonedGraphContent});
       }
 
       // Tree
       else if (this.assignment?.dataStructure === 'tree') {
         const bstContent = this.solutionBst[this.solutionStepCurrent];
-        console.log(bstContent)
-        this.loadWorkspaceContent({bstContent});
+
+        // TODO: Find a proper solution to prevent this
+        // added this line to use only values and not the references
+        const clonedBstContent: IBstNodeJSON = JSON.parse(JSON.stringify(bstContent));
+        this.loadWorkspaceContent({bstContent: clonedBstContent});
       }
 
     } 

@@ -6,6 +6,6 @@ export interface IGraphEdge {
     directed: boolean,
     weight: {
         enabled: boolean,
-        value: number
+        value: number | null
     }
 }

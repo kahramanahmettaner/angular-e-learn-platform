@@ -220,10 +220,10 @@ export function graphNodeToSemantic(node: IGraphNode): IGraphNodeSemantic {
     value: node.value,
   };
 
-  if (node.weight.enabled) {
+  if (node.weight.enabled && node.weight.value !== null) {
     nodeSemantic.weight = node.weight.value;
   }
-  if (node.visited.enabled) {
+  if (node.visited.enabled && node.visited.value !== null) {
     nodeSemantic.visited = node.visited.value;
   }
 
@@ -236,7 +236,7 @@ export function graphEdgeToSemantic(edge: IGraphEdge): IGraphEdgeSemantic {
     node2Value: edge.node2.value,
   };
 
-  if (edge.weight.enabled) {
+  if (edge.weight.enabled &&  edge.weight.value !== null) {
     edgeSemantic.weight = edge.weight.value;
   }
 
@@ -270,13 +270,12 @@ export function graphNodeJSONToSemantic(node: IGraphNodeJSON): IGraphNodeSemanti
     value: node.value,
   };
 
-  // TODO: FIX: This does not work appropriately
-  // if (node.weight.enabled) {
-  //   nodeSemantic.weight = node.weight.value;
-  // }
-  // if (node.visited.enabled) {
-  //   nodeSemantic.visited = node.visited.value;
-  // }
+  if (node.weight !== null) {
+    nodeSemantic.weight = node.weight;
+  }
+  if (node.visited !== null) {
+    nodeSemantic.visited = node.visited;
+  }
 
   return nodeSemantic;
 }
@@ -298,8 +297,7 @@ export function graphEdgeJSONToSemantic(edge: IGraphEdgeJSON, nodesList: IGraphN
     node2Value: node2Value,
   };
 
-  // TODO: find a better way
-  if (edge.weight !== -1) {
+  if (edge.weight !== null) {
     edgeSemantic.weight = edge.weight;
   }
 

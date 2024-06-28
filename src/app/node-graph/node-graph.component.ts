@@ -286,7 +286,9 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   }
 
   updateNodeVisited(){
-    const current: boolean = this.node.visited.value;
-    this.graphService.updateNode(this.node, { visited: { enabled: true, value: !current } })
+    if (this.node.visited.value !== null) {
+      const current: boolean = this.node.visited.value;
+      this.graphService.updateNode(this.node, { visited: { enabled: true, value: !current } })
+    }
   }
 }

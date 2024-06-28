@@ -4,8 +4,8 @@ import { ISize } from "./Size.interface";
 export interface IGraphNodeJSON {
     nodeId: number;
     value: string;
-    visited: boolean;
-    weight: number
+    visited: boolean | null;
+    weight: number | null;
     position: IPosition;
     size: ISize;
     center: IPosition;

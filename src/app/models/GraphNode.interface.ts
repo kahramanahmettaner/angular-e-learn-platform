@@ -6,11 +6,11 @@ export interface IGraphNode {
     value: string;
     visited: {
         enabled: boolean,
-        value: boolean,
+        value: boolean | null,
     };
     weight: {
         enabled: boolean,
-        value: number
+        value: number | null
     },
     position: IPosition;
     size: ISize;
