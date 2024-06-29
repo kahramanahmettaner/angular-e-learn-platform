@@ -79,7 +79,9 @@ export class AssignmentService {
          initialStructureSemantic = binarySearchTreeSemantic(initialStructureJSON);
         }
 
-        this.solutionBst$.next([null]);
+        //this.solutionBst$.next([null]);
+        this.solutionBst$.next([]);
+        this.addNewSolutionStep();
         this.submission$.next({
           ...this.submission$.getValue(),
           assignmentTitle: assignment.title,
@@ -129,7 +131,9 @@ export class AssignmentService {
             solution: []
           }
         })
-        this.solutionGraph$.next([{nodes: [], edges: []}]);
+        //this.solutionGraph$.next([{nodes: [], edges: []}]);
+        this.solutionGraph$.next([]);
+        this.addNewSolutionStep();
       }
 
       // TODO: handle this case better
@@ -178,10 +182,59 @@ export class AssignmentService {
 
   addNewSolutionStep() {
     if (this.currentAssignment$.getValue()?.dataStructure === 'tree') {
-      this.solutionBst$.next([...this.solutionBst$.getValue(), null]);
+      
+      // Use the data of the last step for the new step if exists ; else use assignment data
+      let last: IBstNodeJSON | null;
+
+      const bstSolutions = this.solutionBst$.getValue();
+      if (bstSolutions.length !== 0) {
+        last = bstSolutions[bstSolutions.length - 1];
+      } 
+      else {
+        const root = this.currentAssignment$.getValue()?.binarySearchTreeConfiguration?.initialRootNode;
+        if (root !== undefined) {
+          last = root
+        } else {
+          last = null;
+        }
+      }
+
+      // Clone the data to use values and not references
+      const cloned = JSON.parse(JSON.stringify(last));
+
+      // Add it to the solution steps
+      this.solutionBst$.next([...this.solutionBst$.getValue(), cloned]);
     } 
     else if (this.currentAssignment$.getValue()?.dataStructure === 'graph') {
-      this.solutionGraph$.next([...this.solutionGraph$.getValue(), { nodes: [], edges: [] }]);
+      
+      // Use the data of the last step for the new step if exists ; else use assignment data
+      let last: IGraphDataJSON;
+
+      const graphSolutions = this.solutionGraph$.getValue();
+      if (graphSolutions.length !== 0) {
+        last = graphSolutions[graphSolutions.length - 1];
+      } 
+      else {
+        const graphNodes = this.currentAssignment$.getValue()?.graphConfiguration?.initialNodeData;
+        const graphEdges = this.currentAssignment$.getValue()?.graphConfiguration?.initialEdgeData;
+        if (graphNodes !== undefined && graphEdges !== undefined) {
+          last = {
+            nodes: graphNodes,
+            edges: graphEdges
+          }
+        } else {
+          last = {
+            nodes: [],
+            edges: []
+          };
+        }
+      }
+
+      // Clone the data to use values and not references
+      const cloned = JSON.parse(JSON.stringify(last));
+
+      // Add it to the solution steps
+      this.solutionGraph$.next([...this.solutionGraph$.getValue(), cloned]);
     }
   }
 

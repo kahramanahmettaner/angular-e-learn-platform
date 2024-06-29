@@ -120,7 +120,24 @@ export class AssignmentContainerComponent implements OnInit {
   }
 
   addNewSolutionStep() {
+    // Before adding new step, the current step need to be saved
+    this.saveWorkspaceContent();
+
+    // Add new solution
     this.assignmentService.addNewSolutionStep();
+
+    // Set the current step
+    // bst?
+    if (this.assignment?.dataStructure === 'tree') {
+      this.solutionStepCurrent = this.solutionBst.length - 1;
+    }
+    // graph?
+    if (this.assignment?.dataStructure === 'graph') {
+      this.solutionStepCurrent = this.solutionGraph.length - 1;
+    }
+
+    // call updateWorkspace function for other needed updates required related to the step change
+    this.updateWorkspace();
   }
 
   updateWorkspace() {
