@@ -71,6 +71,8 @@ export class AssignmentService {
     if (assignment !== undefined) {
       this.currentAssignment$.next(assignment);
 
+
+
       // binary search tree
       if (assignment.dataStructure === 'tree') {
         const initialStructureJSON = assignment.binarySearchTreeConfiguration?.initialRootNode;
@@ -83,7 +85,7 @@ export class AssignmentService {
         this.solutionBst$.next([]);
         this.addNewSolutionStep();
         this.submission$.next({
-          ...this.submission$.getValue(),
+          promptForLLM: this.submission$.getValue().promptForLLM,
           assignmentTitle: assignment.title,
           assignmentDescription: assignment.text,
           dataStructure: assignment.dataStructure,
@@ -118,7 +120,7 @@ export class AssignmentService {
         })
 
         this.submission$.next({
-          ...this.submission$.getValue(),
+          promptForLLM: this.submission$.getValue().promptForLLM,
           assignmentTitle: assignment.title,
           assignmentDescription: assignment.text,
           dataStructure: assignment.dataStructure,
