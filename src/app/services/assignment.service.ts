@@ -247,7 +247,15 @@ export class AssignmentService {
     if (submission.dataStructure === 'tree') {
 
       if (submission.binarySearchTree) { 
-        submission.binarySearchTree.solution = this.solutionBst$.getValue()  
+        const solutionBstSemantic: (IBstNodeSemantic | null)[] = []
+        this.solutionBst$.getValue().forEach(bstData => {
+          let bstDataSemantic = null;
+          if (bstData !== null) {
+            bstDataSemantic = binarySearchTreeSemantic(bstData);
+          }
+          solutionBstSemantic.push(bstDataSemantic);
+        });
+        submission.binarySearchTree.solution = solutionBstSemantic;  
       }
 
     } else if (submission.dataStructure === 'graph') {
