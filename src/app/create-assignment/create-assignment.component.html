@@ -77,6 +77,18 @@
             }
         </div>
         <div class="controls box">
+
+            <mat-button-toggle-group 
+                name="mode" 
+                aria-label="mode" 
+                [(ngModel)]="workspaceModeCurrent"
+                [hideSingleSelectionIndicator]="true"
+                (ngModelChange)="updateWorkspace()"
+            >
+                <mat-button-toggle value="assignment">Aufgabenstellung</mat-button-toggle>
+                <mat-button-toggle value="solution">Musterlösung</mat-button-toggle>
+            </mat-button-toggle-group>
+
             <button
                 type="button" 
                 (click)="deactivateWorkspace()" 

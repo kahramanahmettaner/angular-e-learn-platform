@@ -11,6 +11,8 @@ export default interface IAssignment {
     graphConfiguration?: {
         initialNodeData: IGraphNodeJSON[],
         initialEdgeData: IGraphEdgeJSON[],
+        exampleSolutionNodeData: IGraphNodeJSON[],
+        exampleSolutionEdgeData: IGraphEdgeJSON[], 
         nodeConfiguration: {
             weight: boolean,
             visited: boolean            
@@ -21,6 +23,7 @@ export default interface IAssignment {
         },
     },
     binarySearchTreeConfiguration?: {
-        initialRootNode: IBstNodeJSON | null
+        initialRootNode: IBstNodeJSON | null,
+        exampleSolutionRootNode: IBstNodeJSON | null
     }
 }
