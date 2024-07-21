@@ -1,4 +1,5 @@
 import { IBstNodeJSON } from "./BstNodeJSON.interface";
+import { IGraphDataJSON } from "./GraphDataJSON.interface";
 import { IGraphEdgeJSON } from "./GraphEdgeJSON.interface";
 import { IGraphNodeJSON } from "./GraphNodeJSON.interface";
 
@@ -11,8 +12,7 @@ export default interface IAssignment {
     graphConfiguration?: {
         initialNodeData: IGraphNodeJSON[],
         initialEdgeData: IGraphEdgeJSON[],
-        exampleSolutionNodeData: IGraphNodeJSON[],
-        exampleSolutionEdgeData: IGraphEdgeJSON[], 
+        exampleSolutionSteps: IGraphDataJSON[],
         nodeConfiguration: {
             weight: boolean,
             visited: boolean            
@@ -24,6 +24,6 @@ export default interface IAssignment {
     },
     binarySearchTreeConfiguration?: {
         initialRootNode: IBstNodeJSON | null,
-        exampleSolutionRootNode: IBstNodeJSON | null
+        exampleSolutionSteps: (IBstNodeJSON | null)[]
     }
 }

@@ -78,16 +78,65 @@
         </div>
         <div class="controls box">
 
-            <mat-button-toggle-group 
-                name="mode" 
-                aria-label="mode" 
-                [(ngModel)]="workspaceModeCurrent"
-                [hideSingleSelectionIndicator]="true"
-                (ngModelChange)="updateWorkspace()"
-            >
-                <mat-button-toggle value="assignment">Aufgabenstellung</mat-button-toggle>
-                <mat-button-toggle value="solution">Musterlösung</mat-button-toggle>
-            </mat-button-toggle-group>
+            <div style="display: flex; justify-content: start; align-items: center; gap: 1em; height: 100%;">
+            
+                <mat-button-toggle-group 
+                    name="mode" 
+                    aria-label="mode" 
+                    [(ngModel)]="workspaceModeCurrent"
+                    [hideSingleSelectionIndicator]="true"
+                    (ngModelChange)="updateWorkspace()"
+                >
+                    <mat-button-toggle value="assignment">Aufgabenstellung</mat-button-toggle>
+                    <mat-button-toggle value="solution">Musterlösung</mat-button-toggle>
+                </mat-button-toggle-group>
+     
+                
+                @if (this.form.value.stepsEnabled && workspaceModeCurrent === 'solution') {
+                    <mat-button-toggle-group
+                        name="solution-step"
+                        aria-label="solution-step" 
+                        [(ngModel)]="solutionStepCurrent"
+                        [hideSingleSelectionIndicator]="true"
+                        (ngModelChange)="updateWorkspace()"
+                    >
+                        @if (this.form.value.selectedOption === 'tree') {
+                            
+                            <mat-button-toggle 
+                                *ngFor="let step of solutionBstStructure; let index = index"    
+                                [value]="index"
+                            >
+                                Schritt {{ index + 1 }}
+                            </mat-button-toggle>
+    
+                        } @else if (this.form.value.selectedOption === 'graph') {
+                            
+                            <mat-button-toggle 
+                                *ngFor="let step of solutionGraphStructure; let index = index"    
+                                [value]="index"
+                            >
+                                Schritt {{ index + 1 }}
+                            </mat-button-toggle>
+    
+                        }
+    
+    
+    
+                    </mat-button-toggle-group>
+    
+                    <button
+                        class="image-button"
+                        type="button"
+                        (click)="addNewSolutionStep()"
+                    > 
+                        <!-- Neuen Schritt -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </button>
+                }
+    
+            </div>
 
             <button
                 type="button" 
