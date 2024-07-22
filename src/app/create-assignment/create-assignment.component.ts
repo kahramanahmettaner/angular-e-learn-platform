@@ -230,8 +230,12 @@ export class CreateAssignmentComponent implements OnInit {
     // ## CASE 1: Graph -> get data from GraphService
     if (this.form.value.selectedOption === 'graph') {
       
+      // graphToJSON returns also the configuration and structureType
+      // Use only nodes and edges
+      const graph = this.graphService.graphToJSON();
+      const graphDataJSON: IGraphDataJSON = { nodes: graph.nodes, edges: graph.edges };
+
       // Clone GraphService content
-      const graphDataJSON = this.graphService.graphToJSON();
       const clonedGraphContent: IGraphDataJSON = JSON.parse(JSON.stringify(graphDataJSON));
 
       // Update the graph structure according to the mode. It can be initial structure or example solution
