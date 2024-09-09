@@ -11,6 +11,7 @@ import { IGraphNodeSemantic } from '../models/GraphNodeSemantic.interface';
 import { IGraphEdgeSemantic } from '../models/GraphEdgeSemantic.interface';
 import { IGraphDataJSON } from '../models/GraphDataJSON.interface';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,10 @@ export class AssignmentService {
     dataStructure: ''
   });
   
-  constructor(private bstService: BinarySearchTreeService) {
+  constructor(
+    private bstService: BinarySearchTreeService,
+    private httpClient: HttpClient
+  ) {
     this.init();
   }
 
@@ -41,9 +45,92 @@ export class AssignmentService {
     // TODO: fetch assigments from backend and update assignments$
     
     // for now, use dummy data instead
-    const dummy_assignments: IAssignment[] = dummyData();
-    this.assignments$.next(dummy_assignments);
+    // const dummy_assignments: IAssignment[] = dummyData();
+    // this.assignments$.next(dummy_assignments);
+
+    this.fetchAssignments()
+
   }
+
+  // ##########
+  // API Calls
+  private fetchAssignments() {
+    this.httpClient.get<any[]>('http://localhost:3000/assignments').subscribe( data => {
+      console.log(data)
+      // Adjust data
+      const assigments: IAssignment[] = [];
+      data.forEach((assignmentFetched:any) => {
+
+        const assigment: IAssignment = {
+          id: assignmentFetched.id,
+          title: assignmentFetched.title,
+          text: assignmentFetched.text,
+          dataStructure: assignmentFetched.dataStructure,
+          stepsEnabled: assignmentFetched.stepsEnabled,
+        };
+
+        if (assigment.dataStructure === 'tree') {
+          assigment.binarySearchTreeConfiguration = {
+            initialRootNode: assignmentFetched.initialStructure,
+            exampleSolutionSteps: assignmentFetched.expectedStructure,
+          } 
+        }
+
+        else if (assigment.dataStructure === 'graph') {
+          assigment.graphConfiguration = {
+            initialNodeData: assignmentFetched.initialStructure.nodes,
+            initialEdgeData: assignmentFetched.initialStructure.edges,
+            nodeConfiguration: {
+              weight: assignmentFetched.graphConfiguration.nodeWeight,
+              visited: assignmentFetched.graphConfiguration.nodeVisited
+            },
+            edgeConfiguration: {
+              weight: assignmentFetched.graphConfiguration.edgeWeight,
+              directed: assignmentFetched.graphConfiguration.edgeDirected,
+            },
+            exampleSolutionSteps: assignmentFetched.expectedStructure,
+          } 
+        }
+        
+        assigments.push(assigment);
+      });
+
+      this.assignments$.next(assigments);
+    })
+    
+  }  
+
+  createAssignment(newAssignment: IAssignment) {
+
+    const assigmentAdjusted: any = {
+      title: newAssignment.title,
+      text: newAssignment.text,
+      dataStructure: newAssignment.dataStructure,
+      stepsEnabled: newAssignment.stepsEnabled,
+    };
+
+    if (assigmentAdjusted.dataStructure === 'tree') {
+      assigmentAdjusted.initialStructure = newAssignment.binarySearchTreeConfiguration?.initialRootNode;
+      assigmentAdjusted.expectedStructure = newAssignment.binarySearchTreeConfiguration?.exampleSolutionSteps;
+    }
+    else if (assigmentAdjusted.dataStructure === 'graph') {
+      assigmentAdjusted.initialStructure = {
+        nodes: newAssignment.graphConfiguration?.initialNodeData,
+        edges: newAssignment.graphConfiguration?.initialEdgeData
+      }
+      assigmentAdjusted.expectedStructure = newAssignment.graphConfiguration?.exampleSolutionSteps;
+      assigmentAdjusted.graphConfiguration = {
+        nodeWeight: newAssignment.graphConfiguration?.nodeConfiguration.weight,
+        nodeVisited: newAssignment.graphConfiguration?.nodeConfiguration.visited,
+        edgeWeight: newAssignment.graphConfiguration?.edgeConfiguration.weight,
+        edgeDirected: newAssignment.graphConfiguration?.edgeConfiguration.directed,
+      }
+    }
+
+    return this.httpClient.post('http://localhost:3000/assignments', assigmentAdjusted).subscribe( a => {
+      console.log(a.toString())
+    })
+  }  
 
   // ##########
   // Assignment
@@ -56,12 +143,12 @@ export class AssignmentService {
     return this.currentAssignment$;
   } 
 
-  createAssignment(newAssignment: IAssignment) {
-    // TODO:  Send a POST request to the backend to create a new assignment
+  // createAssignment(newAssignment: IAssignment) {
+  //   // TODO:  Send a POST request to the backend to create a new assignment
     
-    // for now, add new assignment to the list
-    this.assignments$.next([ ...this.assignments$.getValue(), newAssignment]);
-  }
+  //   // for now, add new assignment to the list
+  //   this.assignments$.next([ ...this.assignments$.getValue(), newAssignment]);
+  // }
 
   setCurrentAssignment(id: number): void {
   
