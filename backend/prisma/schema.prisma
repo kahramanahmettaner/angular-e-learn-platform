@@ -21,12 +21,12 @@ enum DataStructure {
 
 // Models
 model Assignment {
-  id Int @id @default(autoincrement())
-  title String
-  text  String
-  stepsEnabled Boolean
-  dataStructure DataStructure
-  initialStructure Json
-  expectedStructure Json
-  graphConfiguration Json
+  id                  Int               @id @default(autoincrement())
+  title               String
+  text                String
+  stepsEnabled        Boolean           @default(false)
+  dataStructure       DataStructure
+  initialStructure    Json              
+  expectedStructure   Json              
+  graphConfiguration  Json              
 }
