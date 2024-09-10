@@ -1,10 +1,6 @@
 export interface IGraphConfiguration {
-    nodes: {
-        weight: boolean,
-        visited: boolean
-    },
-    edges: {
-        directed: boolean,
-        weight: boolean
-    }
+    nodeWeight: boolean,
+    nodeVisited: boolean,
+    edgeWeight: boolean
+    edgeDirected: boolean,
 }

@@ -108,14 +108,11 @@ export class CreateAssignmentComponent implements OnInit {
         this.loadWorkspaceContent({
           graphContent: clonedGraphContent,
           graphConfiguration: {
-            nodes: {
-              visited: this.form.value.checkboxNodeVisited,
-              weight: this.form.value.checkboxNodeWeighted
-            },
-            edges: {
-              directed: this.form.value.checkboxEdgeDirected,
-              weight: this.form.value.checkboxEdgeWeighted
-            }}
+            nodeVisited: this.form.value.checkboxNodeVisited,
+            nodeWeight: this.form.value.checkboxNodeWeighted,
+            edgeWeight: this.form.value.checkboxEdgeWeighted,
+            edgeDirected: this.form.value.checkboxEdgeDirected,
+            }
         });
       }
 
@@ -147,14 +144,11 @@ export class CreateAssignmentComponent implements OnInit {
         this.loadWorkspaceContent({
           graphContent: clonedGraphContent,
           graphConfiguration: {
-            nodes: {
-              visited: this.form.value.checkboxNodeVisited,
-              weight: this.form.value.checkboxNodeWeighted
-            },
-            edges: {
-              directed: this.form.value.checkboxEdgeDirected,
-              weight: this.form.value.checkboxEdgeWeighted
-            }}
+            nodeVisited: this.form.value.checkboxNodeVisited,
+            nodeWeight: this.form.value.checkboxNodeWeighted,
+            edgeWeight: this.form.value.checkboxEdgeWeighted,
+            edgeDirected: this.form.value.checkboxEdgeDirected,
+          }
         });
       }
 
@@ -192,10 +186,7 @@ export class CreateAssignmentComponent implements OnInit {
 
       // If graph configuration is provided, set it 
       if (graphConfiguration) {
-        this.graphService.configureGraph({
-          "nodes": graphConfiguration.nodes,
-          "edges": graphConfiguration.edges
-        })
+        this.graphService.configureGraph(graphConfiguration);
       } else {
         throw new Error('No Graph Configuration.')
       }
@@ -277,14 +268,10 @@ export class CreateAssignmentComponent implements OnInit {
 
       // Get Graph Configuration from form data
       this.graphService.configureGraph({
-        nodes: {
-          visited: this.form.value.checkboxNodeVisited,
-          weight: this.form.value.checkboxNodeWeighted
-        },
-        edges: {
-          directed: this.form.value.checkboxEdgeDirected,
-          weight: this.form.value.checkboxEdgeWeighted
-        }
+        nodeVisited: this.form.value.checkboxNodeVisited,
+        nodeWeight: this.form.value.checkboxNodeWeighted,
+        edgeWeight: this.form.value.checkboxEdgeWeighted,
+        edgeDirected: this.form.value.checkboxEdgeDirected, 
       })
 
       // Clone the graph structure according to the mode. It can be initial structure or example solution
@@ -299,14 +286,11 @@ export class CreateAssignmentComponent implements OnInit {
       this.loadWorkspaceContent({
         graphContent: clonedGraphContent,
         graphConfiguration: {
-          nodes: {
-            visited: this.form.value.checkboxNodeVisited,
-            weight: this.form.value.checkboxNodeWeighted
-          },
-          edges: {
-            directed: this.form.value.checkboxEdgeDirected,
-            weight: this.form.value.checkboxEdgeWeighted
-          }}
+          nodeVisited: this.form.value.checkboxNodeVisited,
+          nodeWeight: this.form.value.checkboxNodeWeighted,
+          edgeWeight: this.form.value.checkboxEdgeWeighted,
+          edgeDirected: this.form.value.checkboxEdgeDirected,
+          }
       });
     }
 
@@ -439,7 +423,7 @@ export class CreateAssignmentComponent implements OnInit {
   // Assignment Content Related
 
   onCreateAssignment(): void {
-    let newAssignment: IAssignment;
+    let newAssignment: Partial<IAssignment>;
     try {
       newAssignment = this.getFormValuesAsAssignment();
     } catch (err) {
@@ -456,7 +440,7 @@ export class CreateAssignmentComponent implements OnInit {
   }
 
   onDownloadAssignmentAsJSON(): void {
-    let newAssignment: IAssignment;
+    let newAssignment: Partial<IAssignment>;
     try {
       newAssignment = this.getFormValuesAsAssignment();
     } catch (err) {
@@ -469,13 +453,12 @@ export class CreateAssignmentComponent implements OnInit {
     downloadJSON(newAssignment, `${newAssignment.title}_assignment`);
   }
 
-  getFormValuesAsAssignment(): IAssignment {
+  getFormValuesAsAssignment(): Partial<IAssignment> {
     if (!this.form.valid) {
       throw new Error('Form is invalid.');
     }
 
-    const newAssignment: IAssignment = {
-      id: this.assignmentService.generateDummyId(), // TODO: for now use this function but id should not be given here but in backend
+    const newAssignment: Partial<IAssignment> = {
       title: this.form.value.title,
       text: this.form.value.text,
       stepsEnabled: this.form.value.stepsEnabled,
@@ -485,25 +468,24 @@ export class CreateAssignmentComponent implements OnInit {
     // Set configuration for graph or tree according to the selected dataStructure
     if (this.form.value.selectedOption === "graph") {
       
-      newAssignment.graphConfiguration = {
-        initialNodeData: this.assignmentGraphStructure.nodes,
-        initialEdgeData: this.assignmentGraphStructure.edges,
-        exampleSolutionSteps: this.solutionGraphStructure,
-        nodeConfiguration: {
-          weight: this.form.value.checkboxNodeWeighted,
-          visited: this.form.value.checkboxNodeVisited
-        },
-        edgeConfiguration: {
-          directed: this.form.value.checkboxEdgeDirected,
-          weight: this.form.value.checkboxEdgeWeighted
-        }
-      };
+      newAssignment.initialStructure = {
+        nodes: this.assignmentGraphStructure.nodes,
+        edges: this.assignmentGraphStructure.edges,
+      }
 
-    } else if (this.form.value.selectedOption === "tree") { 
-        newAssignment.binarySearchTreeConfiguration = {
-          initialRootNode: this.assignmentBstStructure,
-          exampleSolutionSteps: this.solutionBstStructure
-        };
+      newAssignment.expectedSolution = this.solutionGraphStructure;
+      
+      newAssignment.graphConfiguration = {
+        nodeWeight: this.form.value.checkboxNodeWeighted,
+        nodeVisited: this.form.value.checkboxNodeVisited,
+        edgeWeight: this.form.value.checkboxEdgeWeighted,
+        edgeDirected: this.form.value.checkboxEdgeDirected,
+      }
+
+    } 
+    else if (this.form.value.selectedOption === "tree") { 
+      newAssignment.initialStructure = this.assignmentBstStructure;
+      newAssignment.expectedSolution = this.solutionBstStructure;
     }
     
     return newAssignment;
@@ -521,29 +503,26 @@ export class CreateAssignmentComponent implements OnInit {
         stepsEnabled: assignment.stepsEnabled,
         text: assignment.text,
         selectedOption: assignment.dataStructure,
-        checkboxEdgeDirected: assignment.graphConfiguration?.edgeConfiguration.directed || false,
-        checkboxEdgeWeighted: assignment.graphConfiguration?.edgeConfiguration.weight || false,
-        checkboxNodeWeighted: assignment.graphConfiguration?.nodeConfiguration.weight || false,
-        checkboxNodeVisited: assignment.graphConfiguration?.nodeConfiguration.visited || false
+        checkboxEdgeDirected: assignment.graphConfiguration?.edgeDirected || false,
+        checkboxEdgeWeighted: assignment.graphConfiguration?.edgeWeight || false,
+        checkboxNodeWeighted: assignment.graphConfiguration?.nodeWeight || false,
+        checkboxNodeVisited: assignment.graphConfiguration?.nodeVisited || false
       });
 
       // Update graph or tree based on the data structure
       if (assignment.dataStructure === 'graph') {
         // assignment.graphConfiguration!.initialNodeData, assignment.graphConfiguration!.initialEdgeData
-        const clonedAssignmentGraphNodes: IGraphNodeJSON[] = JSON.parse(JSON.stringify(assignment.graphConfiguration!.initialNodeData))
-        const clonedAssignmentGraphEdges: IGraphEdgeJSON[] = JSON.parse(JSON.stringify(assignment.graphConfiguration!.initialEdgeData))
-        this.assignmentGraphStructure = {
-          nodes: clonedAssignmentGraphNodes,
-          edges: clonedAssignmentGraphEdges,
-        }
-        const clonedExSolGraphSteps: IGraphDataJSON[] = JSON.parse(JSON.stringify(assignment.graphConfiguration!.exampleSolutionSteps))
+        const clonedInitialStructure: IGraphDataJSON = JSON.parse(JSON.stringify(assignment.initialStructure))
+        this.assignmentGraphStructure = clonedInitialStructure;
+        
+        const clonedExSolGraphSteps: IGraphDataJSON[] = JSON.parse(JSON.stringify(assignment.expectedSolution))
         this.solutionGraphStructure = clonedExSolGraphSteps;
 
         this.showCheckbox = true; // Show the checkboxes for graph
 
       } else if (assignment.dataStructure === 'tree') {
-        const clonedAssignmentBstContent: IBstNodeJSON = JSON.parse(JSON.stringify(assignment.binarySearchTreeConfiguration!.initialRootNode))        
-        const clonedExSolBstContent: (IBstNodeJSON | null)[] = JSON.parse(JSON.stringify(assignment.binarySearchTreeConfiguration!.exampleSolutionSteps))  
+        const clonedAssignmentBstContent: IBstNodeJSON = JSON.parse(JSON.stringify(assignment.initialStructure))        
+        const clonedExSolBstContent: (IBstNodeJSON | null)[] = JSON.parse(JSON.stringify(assignment.expectedSolution))  
         this.assignmentBstStructure = clonedAssignmentBstContent;      
         this.solutionBstStructure = clonedExSolBstContent;      
         this.showCheckbox = false; // Hide the checkboxes for tree

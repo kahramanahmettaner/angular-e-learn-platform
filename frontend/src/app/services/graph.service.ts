@@ -25,8 +25,7 @@ export class GraphService {
     // ##############
     // Initialize
     this.graphConfiguration$ = new BehaviorSubject<IGraphConfiguration>({
-      nodes: { weight: true, visited: true },
-      edges: { weight: true, directed: true },
+      nodeWeight: true, nodeVisited: true, edgeWeight: true, edgeDirected: true
     });
     this.nodes$ = new BehaviorSubject<IGraphNode[]>([]);
     this.edges$ = new BehaviorSubject<IGraphEdge[]>([]);
@@ -88,13 +87,13 @@ export class GraphService {
     } = newNodeAttributes;
 
     // Adjust the properties according to the graphConfiguration
-    if (this.graphConfiguration$.getValue().nodes.weight) {
+    if (this.graphConfiguration$.getValue().nodeWeight) {
       weight = { enabled: true, value: weight?.value || 0 };
     } else {
       weight = { enabled: false, value: null };
     }
     
-    if (this.graphConfiguration$.getValue().nodes.visited) {
+    if (this.graphConfiguration$.getValue().nodeVisited) {
       visited = { enabled: true, value: visited?.value || false };
     } else {
       visited = { enabled: false, value: null };
@@ -146,10 +145,10 @@ export class GraphService {
         // Check if an edge already exist which aconnects these two nodes
     // TODO: Is this allowed, or must it be prevented?
     this.edges$.getValue().forEach(existingEdge => {
-      if (this.graphConfiguration$.getValue().edges.directed && existingEdge.node1 === node1 && existingEdge.node2 === node2) {
+      if (this.graphConfiguration$.getValue().edgeDirected && existingEdge.node1 === node1 && existingEdge.node2 === node2) {
         throw new Error('These two nodes already are connected with an edge in the same direction.')
       }
-      if (!this.graphConfiguration$.getValue().edges.directed && 
+      if (!this.graphConfiguration$.getValue().edgeDirected && 
           (
           (existingEdge.node1 === node1 && existingEdge.node2 === node2) || 
           (existingEdge.node2 === node1 && existingEdge.node1 === node2) 
@@ -162,7 +161,7 @@ export class GraphService {
     // Adjust the properties according to the graphConfiguration  
     // TODO: use pre-defined type instead defining the type here 
     let weight: { enabled: boolean, value: number | null };
-    if (this.graphConfiguration$.getValue().edges.weight) {
+    if (this.graphConfiguration$.getValue().edgeWeight) {
       weight = { enabled: true, value: weightValue || 0 };
     } else {
       weight = { enabled: false, value: null };
@@ -170,7 +169,7 @@ export class GraphService {
 
     // Generate new edge
     const newEdge: IGraphEdge = {
-      node1, node2, weight, directed: this.graphConfiguration$.getValue().edges.directed
+      node1, node2, weight, directed: this.graphConfiguration$.getValue().edgeDirected
     };
 
     // Add edge to the list of edges
@@ -254,7 +253,7 @@ export class GraphService {
     const edgesList = this.edges$.getValue();
 
     // Check if the edges are directed according to graphConfiguration 
-    if (!this.graphConfiguration$.getValue().edges.directed) {
+    if (!this.graphConfiguration$.getValue().edgeDirected) {
       throw new Error('The edge is not directed.');
     };
 
@@ -423,14 +422,14 @@ export class GraphService {
       // TODO: this is not proper to do but to fix the issue with weight temporarily
       if (typeof nodeJSON.weight === 'number') {
         nodeJSON.weight = {
-          enabled: this.graphConfiguration$.getValue().nodes.weight,
+          enabled: this.graphConfiguration$.getValue().nodeWeight,
           value: nodeJSON.weight
         }
       } 
       // TODO: this is not proper to do but to fix the issue with visited temporarily
       if (typeof nodeJSON.visited === 'boolean') {
         nodeJSON.visited = {
-          enabled: this.graphConfiguration$.getValue().nodes.visited,
+          enabled: this.graphConfiguration$.getValue().nodeVisited,
           value: nodeJSON.visited
         }
       } 
@@ -483,14 +482,14 @@ export class GraphService {
       // TODO: this is not proper to do but to fix the issue with weight temporarily
       if (typeof nodeJSON.weight === 'number') {
         nodeJSON.weight = {
-          enabled: this.graphConfiguration$.getValue().nodes.weight,
+          enabled: this.graphConfiguration$.getValue().nodeWeight,
           value: nodeJSON.weight
         }
       } 
       // TODO: this is not proper to do but to fix the issue with visited temporarily
       if (typeof nodeJSON.visited === 'boolean') {
         nodeJSON.visited = {
-          enabled: this.graphConfiguration$.getValue().nodes.visited,
+          enabled: this.graphConfiguration$.getValue().nodeVisited,
           value: nodeJSON.visited
         }
       } 

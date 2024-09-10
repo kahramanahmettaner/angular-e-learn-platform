@@ -19,13 +19,13 @@
         class="node-properties" 
         [ngStyle]="{ 
             'justify-content': 
-                graphConfiguration.nodes.weight && graphConfiguration.nodes.visited
+                graphConfiguration.nodeWeight && graphConfiguration.nodeVisited
                     ? 'end'
-                    : graphConfiguration.nodes.weight || graphConfiguration.nodes.visited
+                    : graphConfiguration.nodeWeight || graphConfiguration.nodeVisited
                         ? 'end' : 'center',
-            'gap': graphConfiguration.nodes.weight && graphConfiguration.nodes.visited
+            'gap': graphConfiguration.nodeWeight && graphConfiguration.nodeVisited
                     ? 0
-                    : graphConfiguration.nodes.weight || graphConfiguration.nodes.visited
+                    : graphConfiguration.nodeWeight || graphConfiguration.nodeVisited
                         ? '.7rem' : 0
         }"
     >
@@ -48,7 +48,7 @@
 
 
         <!-- Display if the node is weighted --> 
-        @if (graphConfiguration.nodes.weight) {
+        @if (graphConfiguration.nodeWeight) {
 
             <!-- ################### -->
             <!-- Node weight -->
@@ -72,7 +72,7 @@
         }
 
         <!-- Display if the node can be visited --> 
-        @if (graphConfiguration.nodes.visited) {
+        @if (graphConfiguration.nodeVisited) {
 
             <!-- ################### -->
             <div 
@@ -101,7 +101,7 @@
     <div [ngStyle]="{display: displayNodeToolset ? 'block' : 'none'}" (mouseleave)="onFieldLeave($event)" class="container">  
 
         <!-- Display if the edge is directed --> 
-        @if (graphConfiguration.edges.directed) {
+        @if (graphConfiguration.edgeDirected) {
 
         <!-- ################### -->
         <!-- Generate new node connected to current node -->
@@ -192,7 +192,7 @@
         <!-- ################### -->
         <!-- Extra functionalities -->
         
-        @if (graphConfiguration.nodes.weight) {
+        @if (graphConfiguration.nodeWeight) {
         <div 
         [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
         class="edit-weight container-item" 
@@ -206,7 +206,7 @@
         </div>
         }
 
-        @if (graphConfiguration.nodes.visited) {
+        @if (graphConfiguration.nodeVisited) {
             @if(!node.visited.value) {
                 <div 
                 [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"

@@ -10,8 +10,6 @@ import { BinarySearchTreeComponent } from '../binary-search-tree/binary-search-t
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
-import { IGraphDataSemantic } from '../models/GraphDataSemantic.interface';
-import { graphNodeJSONToSemantic } from '../utils';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
 import { IGraphDataJSON } from '../models/GraphDataJSON.interface';
 import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
@@ -26,25 +24,21 @@ import { IGraphConfiguration } from '../models/GraphConfiguration.interface';
 })
 export class AssignmentContainerComponent implements OnInit {
 
-  public assignment$!: Observable<IAssignment | null>;
-  public solutionBst$!: Observable<(IBstNodeJSON | null)[]>;
-  public solutionGraph$!: Observable<IGraphDataJSON[]>;
-  
   public workspaceModePrevious: string = 'assignment';
   public workspaceModeCurrent: string = 'assignment';
   public solutionStepPrevious: number = 0;
   public solutionStepCurrent: number = 0;
 
-  // TODO: Is this required?
+  public assignment$!: Observable<IAssignment | undefined>;
   public assignment: IAssignment | null = null;
+
+  assignmentBstStructure: IBstNodeJSON | null = null;
+  assignmentGraphStructure: IGraphDataJSON = {
+    nodes: [], edges: []
+  };
+
   public solutionBst: (IBstNodeJSON | null)[] = [];
   public solutionGraph: IGraphDataJSON[] = [];
-
-  // TODO: Delete this
-  public submissionJSON: string = '';
-
-  // TODO: Delete this
-  public promptCopied: boolean = false;
 
   constructor(
     private assignmentService: AssignmentService,
@@ -61,13 +55,7 @@ export class AssignmentContainerComponent implements OnInit {
     const id = parseInt(idStr);
 
     // get assignment observable by id
-    this.assignmentService.setCurrentAssignment(id);
-    this.assignment$ = this.assignmentService.getCurrentAssignment();
-
-    // get solution observable
-    this.solutionBst$ = this.assignmentService.getSolutionBst();
-    this.solutionGraph$ = this.assignmentService.getSolutionGraph();
-
+    this.assignment$ = this.assignmentService.getAssignmentById(id);
 
     // reset the state of the graph and bst
     this.graphService.resetGraph();
@@ -75,39 +63,52 @@ export class AssignmentContainerComponent implements OnInit {
 
     // subscribe to get assignment data
     this.assignment$.subscribe((assignment) => {
-      if (assignment !== null) {
+
+      if (assignment) {
         // set the state of the graph and bst
 
         // TODO: Find a proper solution to prevent this
         // added this line to use only values from the assignment and not to overwrite the assignment content from service
         // e.g. position atribute is being overwritten when using assignment object directly
-        const clonedAssignment = JSON.parse(JSON.stringify(assignment));
+        const clonedAssignment: IAssignment = JSON.parse(JSON.stringify(assignment));
         this.assignment = clonedAssignment;
 
-        // configure
+
+        // TODO: ##############
+        // TODO: Temporary placeholder functions for type checking. 
+        // These functions always return true and should be replaced with 
+        // proper type guards to validate IGraphDataJSON and IBstNodeJSON structures.
+        function isGraphStructure(obj: any): obj is IGraphDataJSON {
+          return true
+        }
+        function isBstStructure(obj: any): obj is IBstNodeJSON {
+          return true
+        }
+
+        if (this.assignment.dataStructure === 'graph' && isGraphStructure(this.assignment.initialStructure)) {
+          this.assignmentGraphStructure = this.assignment?.initialStructure
+        }
+        if (this.assignment.dataStructure === 'tree' && (isBstStructure(this.assignment.initialStructure) || this.assignment.initialStructure === null)) {
+          this.assignmentBstStructure = this.assignment?.initialStructure
+        }
         
+
+        // configure
+
         this.updateWorkspace();
         //this.setAssignmentState(/*assignment*/);
       }
     })
 
-    // subscribe to get solution data
-    this.solutionBst$.subscribe((solution) => {
-      this.solutionBst = solution;
-    })
-    
-    this.solutionGraph$.subscribe((solution) => {
-      this.solutionGraph = solution;
-    })
   }
 
   onSubmitButtonClick() {
+
     // graph-assigment
     if (this.assignment?.dataStructure === 'graph') {
       // To save workspace content if it is in solution mode
       this.updateWorkspace();
   
-      this.submissionJSON = this.assignmentService.checkSolution();
     }
 
     // binary-search-tree-assigment
@@ -115,30 +116,90 @@ export class AssignmentContainerComponent implements OnInit {
       // To save workspace content if it is in solution mode
       this.updateWorkspace();
   
-      this.submissionJSON = this.assignmentService.checkSolution();
     }
   }
 
   addNewSolutionStep() {
     // Before adding new step, the current step need to be saved
-    this.saveWorkspaceContent();
+    if (this.workspaceModePrevious === 'solution'){
+      this.saveWorkspaceContent();
+    }
 
-    // Add new solution
-    this.assignmentService.addNewSolutionStep();
+    // ###
+    // Add new solution step
 
-    // Set the current step
-    // bst?
     if (this.assignment?.dataStructure === 'tree') {
-      this.solutionStepCurrent = this.solutionBst.length - 1;
-    }
-    // graph?
-    if (this.assignment?.dataStructure === 'graph') {
-      this.solutionStepCurrent = this.solutionGraph.length - 1;
-    }
 
+      // Use the data of the last step for the new step if exists ; else use assignment data
+      let last: IBstNodeJSON | null;
+      const numberOfSolutionSteps = this.solutionBst.length;
+
+      if (numberOfSolutionSteps !== 0) {
+        last = this.solutionBst[numberOfSolutionSteps - 1];
+      } 
+      else {
+        const root = this.assignmentBstStructure
+        
+        if (root !== undefined) {
+          last = root
+        } else {
+          last = null;
+        }
+
+      }
+
+      // Clone the data to use values and not references
+      const cloned = JSON.parse(JSON.stringify(last));
+
+      // Add it to the solution steps
+      this.solutionBst.push(cloned);
+
+      // Set the current step
+      this.solutionStepCurrent = this.solutionBst.length - 1;
+      this.solutionStepPrevious = this.solutionStepCurrent;
+
+
+    } else if (this.assignment?.dataStructure === 'graph') {
+
+      // Use the data of the last step for the new step if exists ; else use assignment data
+      let last: IGraphDataJSON;
+
+      const numberOfSolutionSteps = this.solutionGraph.length;
+
+      if (numberOfSolutionSteps !== 0) {
+        last = this.solutionGraph[numberOfSolutionSteps - 1];
+      } 
+      else {
+        const graphNodes = this.assignmentGraphStructure.nodes;
+        const graphEdges = this.assignmentGraphStructure.edges;
+        if (graphNodes !== undefined && graphEdges !== undefined) {
+          last = {
+            nodes: graphNodes,
+            edges: graphEdges
+          }
+        } else {
+          last = {
+            nodes: [],
+            edges: []
+          };
+        }
+      }
+      
+      // Clone the data to use values and not references
+      const cloned = JSON.parse(JSON.stringify(last));
+
+      // Add it to the solution steps
+      this.solutionGraph.push(cloned);
+
+      // Set the current step
+      this.solutionStepCurrent = this.solutionGraph.length - 1;
+      this.solutionStepPrevious = this.solutionStepCurrent;
+
+  }
     // call updateWorkspace function for other needed updates required related to the step change
     this.updateWorkspace();
   }
+
 
   updateWorkspace() {
 
@@ -149,30 +210,39 @@ export class AssignmentContainerComponent implements OnInit {
       this.saveWorkspaceContent();
     }
 
-    // Update the previous mode for the future changes
-    this.workspaceModePrevious = this.workspaceModeCurrent;
-
     // Load solution to the workspace
     if (this.workspaceModeCurrent === 'solution') {
 
       // Graph
       if (this.assignment?.dataStructure === 'graph') {
-        const graphContent = this.solutionGraph[this.solutionStepCurrent];
+        // If there is no step yet, add the first step
+        if (this.solutionGraph.length === 0) {
+          this.addNewSolutionStep()
+        }
+
+        // Get Current Step
+        const graphContent: IGraphDataJSON = this.solutionGraph[this.solutionStepCurrent];
 
         // TODO: Find a proper solution to prevent this
         // added this line to use only values and not the references
         const clonedGraphContent: IGraphDataJSON = JSON.parse(JSON.stringify(graphContent));
-        this.loadWorkspaceContent({graphContent: clonedGraphContent});
+        this.loadWorkspaceContent({ graphStructure: clonedGraphContent });
       }
 
       // Tree
       else if (this.assignment?.dataStructure === 'tree') {
+        // If there is no step yet, add the first step
+        if (this.solutionBst.length === 0) {
+          this.addNewSolutionStep()
+        }
+
+        // Get Current Step
         const bstContent = this.solutionBst[this.solutionStepCurrent];
 
         // TODO: Find a proper solution to prevent this
         // added this line to use only values and not the references
         const clonedBstContent: IBstNodeJSON = JSON.parse(JSON.stringify(bstContent));
-        this.loadWorkspaceContent({bstContent: clonedBstContent});
+        this.loadWorkspaceContent({ bstStructure: clonedBstContent });
       }
 
     } 
@@ -184,21 +254,15 @@ export class AssignmentContainerComponent implements OnInit {
       if (this.assignment?.dataStructure === 'graph') {
 
         // No configuration
-        if (this.assignment.graphConfiguration === undefined) {
+        if (!this.assignment.graphConfiguration) {
           alert('Keine Konfiguration für Graph gefunden.');
           return
         }
 
         // Load content and configuration
         this.loadWorkspaceContent({
-          graphContent: {
-            nodes: this.assignment.graphConfiguration.initialNodeData,
-            edges: this.assignment.graphConfiguration.initialEdgeData
-          },
-          graphConfiguration: {
-            nodes: this.assignment.graphConfiguration.nodeConfiguration,
-            edges: this.assignment.graphConfiguration.edgeConfiguration,
-          }
+          graphStructure: JSON.parse(JSON.stringify(this.assignmentGraphStructure)),
+          graphConfiguration: this.assignment.graphConfiguration
         })    
       }
 
@@ -206,56 +270,53 @@ export class AssignmentContainerComponent implements OnInit {
       else if (this.assignment?.dataStructure === 'tree') {
       
         // No configuration
-        if (this.assignment.binarySearchTreeConfiguration === undefined) {
-          alert('Keine Konfiguration für Binären Suchbaum gefunden.');
-          return
-        } 
+        // if (this.assignment.binarySearchTreeConfiguration === undefined) {
+        //   alert('Keine Konfiguration für Binären Suchbaum gefunden.');
+        //   return
+        // } 
 
         this.loadWorkspaceContent({
-          bstContent: this.assignment.binarySearchTreeConfiguration.initialRootNode
+          bstStructure: JSON.parse(JSON.stringify(this.assignmentBstStructure))
         })
       }
     }
 
+
+    // Update the previous mode for the future changes
+    this.workspaceModePrevious = this.workspaceModeCurrent;
     this.solutionStepPrevious = this.solutionStepCurrent;
   }
 
-  loadWorkspaceContent(params: Partial<{
-    graphContent: IGraphDataJSON;
-    bstContent: IBstNodeJSON | null,
-    graphConfiguration: IGraphConfiguration | null
-  }>) {
+  loadWorkspaceContent(params: {
+    bstStructure?: IBstNodeJSON | null,
+    graphStructure?: IGraphDataJSON,
+    graphConfiguration?: IGraphConfiguration
+  }
+  ) {
 
-    let {
-      graphContent,
-      bstContent = null,
-      graphConfiguration
-    } = params;
-    
+    let { bstStructure, graphStructure, graphConfiguration } = params;
+
     // Graph
     if (this.assignment?.dataStructure === 'graph') {
-
+      
       // Reset
       this.graphService.resetGraph();
 
       if (graphConfiguration) {
         // TODO: does configuration need to set here or better somewhere else?
-        this.graphService.configureGraph({
-          "nodes": graphConfiguration.nodes,
-          "edges": graphConfiguration.edges
-        })
+        this.graphService.configureGraph(graphConfiguration);
       }
 
       // Set data
-      if (graphContent === undefined) {
-        graphContent = { nodes: [], edges: [] }
+      if (graphStructure === undefined || graphStructure === null) {
+        graphStructure = { nodes: [], edges: [] }
       }
-      this.graphService.graphDataFromJSON(graphContent.nodes, graphContent.edges);
+      this.graphService.graphDataFromJSON(graphStructure.nodes, graphStructure.edges);
     }
     
     // Tree
     else if (this.assignment?.dataStructure === 'tree') {
-      console.log(bstContent)
+
       // Reset
       this.bstService.resetTree();
 
@@ -265,8 +326,8 @@ export class AssignmentContainerComponent implements OnInit {
       // this.bstService.createTreeFromJSON(bstContent);
 
       // if there is bst data than set it 
-      if (bstContent !== null && bstContent !== undefined) {
-        this.bstService.createTreeFromJSON(bstContent);
+      if (bstStructure !== null && bstStructure !== undefined) {
+        this.bstService.createTreeFromJSON(bstStructure);
       }
     }
   }
@@ -275,22 +336,13 @@ export class AssignmentContainerComponent implements OnInit {
     
     if (this.assignment?.dataStructure === 'graph') {
       const graphDataJSON = this.graphService.graphToJSON();
-      this.assignmentService.updateSolutionGraph(graphDataJSON, this.solutionStepPrevious);
+      this.solutionGraph[this.solutionStepPrevious] = graphDataJSON;
     }
 
     else if (this.assignment?.dataStructure === 'tree') {
       const rootNodeJSON = this.bstService.treeToJSON();
-      this.assignmentService.updateSolutionBst(rootNodeJSON, this.solutionStepPrevious);
+      this.solutionBst[this.solutionStepPrevious] = rootNodeJSON;
     }
   }
 
-  onCopyPromptClick() {
-    navigator.clipboard.writeText(this.submissionJSON).then(() => {
-      this.promptCopied = true;
-
-      setTimeout( () => { this.promptCopied = false; }, 2000)
-    }).catch(err => {
-      console.error('Could not copy text: ', err);
-    })
-  }
 }

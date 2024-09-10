@@ -27,6 +27,6 @@ model Assignment {
   stepsEnabled        Boolean           @default(false)
   dataStructure       DataStructure
   initialStructure    Json              
-  expectedStructure   Json              
+  expectedSolution    Json              
   graphConfiguration  Json              
 }

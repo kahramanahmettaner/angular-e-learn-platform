@@ -9,14 +9,14 @@
             @if (assignment.dataStructure === 'graph') {
                 <p>
                     Node Config( 
-                    weight: {{ assignment.graphConfiguration?.nodeConfiguration?.weight }}
-                    visited: {{ assignment.graphConfiguration?.nodeConfiguration?.visited }}
+                    weight: {{ assignment.graphConfiguration?.nodeWeight }}
+                    visited: {{ assignment.graphConfiguration?.nodeVisited }}
                     )
                 </p>
                 <p>
                     Edge Config( 
-                    weight: {{ assignment.graphConfiguration?.edgeConfiguration?.weight }}
-                    directed: {{ assignment.graphConfiguration?.edgeConfiguration?.directed }}
+                    weight: {{ assignment.graphConfiguration?.edgeWeight }}
+                    directed: {{ assignment.graphConfiguration?.edgeDirected }}
                     )
                 </p>
             }

@@ -10,7 +10,7 @@ export class AssignmentsService {
 
     const {
       title, text, dataStructure, stepsEnabled, 
-      initialStructure, expectedStructure, graphConfiguration
+      initialStructure, expectedSolution, graphConfiguration
     } = createAssignmentDto;
 
     if (title === undefined || typeof title !== 'string') {
@@ -44,12 +44,12 @@ export class AssignmentsService {
 
     // TODO: check type
     // If expectedStructure is not valid, assign default value
-    if (!expectedStructure) {
+    if (!expectedSolution) {
       if (dataStructure === 'tree') {
-        createAssignmentDto.expectedStructure = null;
+        createAssignmentDto.expectedSolution = null;
       }
       else {
-        createAssignmentDto.expectedStructure = { nodes: [], edges: []};
+        createAssignmentDto.expectedSolution = { nodes: [], edges: []};
       }
     }
 

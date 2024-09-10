@@ -141,7 +141,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
   // #############################
   // Functions for interactions with node toolset
   onNewNodeClick(event:any, isIncoming: boolean | null = null) {
-    if (this.graphConfiguration.edges.directed && isIncoming === null) {
+    if (this.graphConfiguration.edgeDirected && isIncoming === null) {
       throw new Error('The edges must be undirected')
     }
     
