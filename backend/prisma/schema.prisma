@@ -19,9 +19,19 @@ enum DataStructure {
   tree
 }
 
+enum AssignmentType {
+  bst_insert
+  bst_remove
+  dijkstra
+  floyd
+  kruskal
+  transitive_closure
+}
+
 // Models
 model Assignment {
   id                  Int               @id @default(autoincrement())
+  type                AssignmentType
   title               String
   text                String
   stepsEnabled        Boolean           @default(false)
@@ -29,4 +39,5 @@ model Assignment {
   initialStructure    Json              
   expectedSolution    Json              
   graphConfiguration  Json              
+  maxPoints           Int
 }

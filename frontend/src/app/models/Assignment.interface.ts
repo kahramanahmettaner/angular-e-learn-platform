@@ -4,6 +4,7 @@ import { IGraphDataJSON } from "./GraphDataJSON.interface";
 
 export default interface IAssignment {
     id: number,
+    type: 'bst_insert' | 'bst_remove' | 'dijkstra' | 'floyd' | 'kruskal' | 'transitive_closure',
     title: string,
     text: string,
     stepsEnabled: boolean,
@@ -11,4 +12,5 @@ export default interface IAssignment {
     initialStructure: IGraphDataJSON | IBstNodeJSON | null;
     expectedSolution: IGraphDataJSON[] | (IBstNodeJSON | null)[];
     graphConfiguration: IGraphConfiguration | null;
+    maxPoints: number;
 }

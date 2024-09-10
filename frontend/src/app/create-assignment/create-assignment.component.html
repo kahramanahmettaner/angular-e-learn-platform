@@ -19,12 +19,20 @@
                 <label for="text">Aufgabenstellung:</label>
                 <textarea class="text-input" formControlName="text" id="text" rows="5" placeholder="Text eingeben"></textarea>
             </div>
+
+            <div class="form-group">
+                <label for="selectedAssignmentType">Einen Aufgabentyp auswählen:</label>
+                <select formControlName="selectedAssignmentType" (change)="onChangeAssignmentType($event)">
+                    <option value="" disabled>Aufgabentyp auswählen</option>
+                    <option *ngFor="let assignmentType of assignmentTypes" [value]="assignmentType">{{ assignmentType }}</option>
+                </select>
+            </div>
     
             <div class="form-group">
-                <label for="selectedOption">Eine Aufgabentyp auswählen:</label>
-                <select formControlName="selectedOption" (change)="onChangeOption($event)">
-                    <option value="" disabled>Aufgabentyp auswählen</option>
-                    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+                <label for="selectedDataStructure">Datenstruktur auswählen:</label>
+                <select formControlName="selectedDataStructure" (change)="onChangeDataStructure($event)">
+                    <option value="" disabled>Datenstruktur auswählen</option>
+                    <option *ngFor="let dataStructure of dataStructures" [value]="dataStructure">{{ dataStructure }}</option>
                 </select>
             </div>
     
@@ -48,15 +56,20 @@
                     <input type="checkbox" formControlName="stepsEnabled"> Lösung mit mehreren Schritten
                 </label>
             </div>
-    
+
             <button 
                 type="button" 
                 (click)="activateWorkspace()" 
-                [disabled]="!form.controls['selectedOption'].value" 
+                [disabled]="!form.controls['selectedDataStructure'].value" 
             >
                 Initialstruktur bearbeiten
             </button>
-            
+        
+            <div class="form-group">
+                <label for="maxPoints">Maximale Punktanzahl: </label>
+                <input class="text-input" type="number" formControlName="maxPoints" id="maxPoints" placeholder="Maximale Punktanzahl eingeben">
+            </div>
+                
             <button type="button" (click)="onDownloadAssignmentAsJSON()" [disabled]="form.invalid" class="submit-btn">Als JSON downloaden</button>
             <button type="submit" [disabled]="form.invalid" class="submit-btn">Aufgabe erstellen</button>
         </form>
@@ -66,10 +79,10 @@
     @else {
     <div class="workspace-container">
         <div class="solution box">
-            @if (form.controls['selectedOption'].value === 'graph') {
+            @if (form.controls['selectedDataStructure'].value === 'graph') {
                 <app-graph />
             }
-            @else if (form.controls['selectedOption'].value === 'tree') {
+            @else if (form.controls['selectedDataStructure'].value === 'tree') {
                 <app-binary-search-tree />
             }
             @else {
@@ -100,7 +113,7 @@
                         [hideSingleSelectionIndicator]="true"
                         (ngModelChange)="updateWorkspace()"
                     >
-                        @if (this.form.value.selectedOption === 'tree') {
+                        @if (this.form.value.selectedDataStructure === 'tree') {
                             
                             <mat-button-toggle 
                                 *ngFor="let step of solutionBstStructure; let index = index"    
@@ -109,7 +122,7 @@
                                 Schritt {{ index + 1 }}
                             </mat-button-toggle>
     
-                        } @else if (this.form.value.selectedOption === 'graph') {
+                        } @else if (this.form.value.selectedDataStructure === 'graph') {
                             
                             <mat-button-toggle 
                                 *ngFor="let step of solutionGraphStructure; let index = index"    

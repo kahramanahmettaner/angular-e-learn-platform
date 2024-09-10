@@ -8,9 +8,7 @@ import { GraphComponent } from '../graph/graph.component';
 import { BinarySearchTreeComponent } from '../binary-search-tree/binary-search-tree.component';
 import { GraphService } from '../services/graph.service';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
-import { IGraphNodeJSON } from '../models/GraphNodeJSON.interface';
 import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
-import { IGraphEdgeJSON } from '../models/GraphEdgeJSON.interface';
 import { readFile, downloadJSON } from '../utils';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { IGraphDataJSON } from '../models/GraphDataJSON.interface';
@@ -30,7 +28,21 @@ export class CreateAssignmentComponent implements OnInit {
 
   // Form related properties 
   form: FormGroup;
-  options = ['tree', 'graph'];
+  dataStructures = [
+    'tree', 'graph'
+  ];
+    // { title: 'Binärer Suchbaum', value: 'tree' },
+    // { title: 'Graph', value: 'graph' }
+  assignmentTypes = [
+    'bst_insert', 'bst_remove',
+    'dijkstra', 'floyd', 'kruskal', 'transitive_closure'
+  ];
+    // { title: 'Binärer Suchbaum - Einfügen', value: 'bst_insert' },
+    // { title: 'Binärer Suchbaum - Löschen', value: 'bst_remove' },
+    // { title: 'Dijkstra Algorithmus', value: 'dijkstra' },
+    // { title: 'Floyd Algorithmus', value: 'floyd' },
+    // { title: 'Kruskal Algorithmus', value: 'kruskal' },
+    // { title: 'Transitive Hülle', value: 'transitive_closure' },
   showCheckbox = false;
 
   // Workspace related properties
@@ -69,7 +81,9 @@ export class CreateAssignmentComponent implements OnInit {
       title: ['', Validators.required],
       stepsEnabled: [false],
       text: ['', Validators.required],
-      selectedOption: ['', Validators.required],
+      maxPoints: [100, Validators.required],
+      selectedDataStructure: ['', Validators.required],
+      selectedAssignmentType: ['', Validators.required],
       checkboxEdgeDirected: [false ],
       checkboxEdgeWeighted: [false],
       checkboxNodeWeighted: [false],
@@ -94,7 +108,7 @@ export class CreateAssignmentComponent implements OnInit {
     if (this.workspaceModeCurrent === 'solution') {
 
       // ## CASE 1.1: Graph -> Set GraphService
-      if (this.form.value.selectedOption === 'graph') {
+      if (this.form.value.selectedDataStructure === 'graph') {
         // If there is no step yet, add the first step
         if (this.solutionGraphStructure.length === 0) {
           this.addNewSolutionStep()
@@ -117,7 +131,7 @@ export class CreateAssignmentComponent implements OnInit {
       }
 
       // ## CASE 1.2: Bst -> Set BstService
-      else if (this.form.value.selectedOption === 'tree') {
+      else if (this.form.value.selectedDataStructure === 'tree') {
         // If there is no step yet, add the first step
         if (this.solutionBstStructure.length === 0) {
           this.addNewSolutionStep()
@@ -137,7 +151,7 @@ export class CreateAssignmentComponent implements OnInit {
     else if (this.workspaceModeCurrent === 'assignment') {
       
       // ## CASE 2.1: Graph -> Set GraphService
-      if (this.form.value.selectedOption === 'graph') {
+      if (this.form.value.selectedDataStructure === 'graph') {
 
         // Clone the graph content and load it to the GraphService
         const clonedGraphContent: IGraphDataJSON = JSON.parse(JSON.stringify(this.assignmentGraphStructure));
@@ -153,7 +167,7 @@ export class CreateAssignmentComponent implements OnInit {
       }
 
       // ## CASE 2.2: Bst -> Set BstService
-      else if (this.form.value.selectedOption === 'tree') {
+      else if (this.form.value.selectedDataStructure === 'tree') {
         // Clone the bst content and load it to the BstService
         const clonedBstContent: IBstNodeJSON = JSON.parse(JSON.stringify(this.assignmentBstStructure));
         this.loadWorkspaceContent({bstContent: clonedBstContent});
@@ -179,7 +193,7 @@ export class CreateAssignmentComponent implements OnInit {
     } = params;
     
     // ## CASE 1: Graph ->  Load it to the GraphService
-    if (this.form.value.selectedOption === 'graph') {
+    if (this.form.value.selectedDataStructure === 'graph') {
 
       // Reset Graph Service to ensure the previous content is removed
       this.graphService.resetGraph();
@@ -199,7 +213,7 @@ export class CreateAssignmentComponent implements OnInit {
     }
     
     // ## CASE 2: Bst -> Load it to the BstService
-    else if (this.form.value.selectedOption === 'tree') {
+    else if (this.form.value.selectedDataStructure === 'tree') {
       // Reset
       this.bstService.resetTree();
 
@@ -219,7 +233,7 @@ export class CreateAssignmentComponent implements OnInit {
   saveWorkspaceContent(mode: string, step: number) {
     
     // ## CASE 1: Graph -> get data from GraphService
-    if (this.form.value.selectedOption === 'graph') {
+    if (this.form.value.selectedDataStructure === 'graph') {
       
       // graphToJSON returns also the configuration and structureType
       // Use only nodes and edges
@@ -238,7 +252,7 @@ export class CreateAssignmentComponent implements OnInit {
     }
 
     // ## CASE 2: Bst -> get data from BstService
-    else if (this.form.value.selectedOption === 'tree') {
+    else if (this.form.value.selectedDataStructure === 'tree') {
 
       // Clone BstService content
       const rootNodeJSON = this.bstService.treeToJSON();
@@ -264,7 +278,7 @@ export class CreateAssignmentComponent implements OnInit {
 
 
     // ## CASE 1: Graph Assignment -> Set GraphService
-    if (this.form.controls['selectedOption'].value === 'graph') {
+    if (this.form.controls['selectedDataStructure'].value === 'graph') {
 
       // Get Graph Configuration from form data
       this.graphService.configureGraph({
@@ -296,7 +310,7 @@ export class CreateAssignmentComponent implements OnInit {
 
 
     // ## CASE 2: Bst Assignment -> Set BstService
-    else if (this.form.controls['selectedOption'].value === 'tree') {
+    else if (this.form.controls['selectedDataStructure'].value === 'tree') {
 
       // Clone the bst structure (initialStructure) and load to the service
       if (this.workspaceModeCurrent === 'assignment') {
@@ -351,7 +365,7 @@ export class CreateAssignmentComponent implements OnInit {
     // Add new solution
 
     // ## Case 1: Bst
-    if (this.form.value.selectedOption === 'tree') {
+    if (this.form.value.selectedDataStructure === 'tree') {
 
       // Use the data of the last step for the new step if exists ; else use assignment data
       let last: IBstNodeJSON | null;
@@ -380,7 +394,7 @@ export class CreateAssignmentComponent implements OnInit {
 
 
     // ## Case 2: Graph
-    if (this.form.value.selectedOption === 'graph') {
+    if (this.form.value.selectedDataStructure === 'graph') {
 
       // Use the data of the last step for the new step if exists ; else use assignment data
       let last: IGraphDataJSON;
@@ -462,11 +476,13 @@ export class CreateAssignmentComponent implements OnInit {
       title: this.form.value.title,
       text: this.form.value.text,
       stepsEnabled: this.form.value.stepsEnabled,
-      dataStructure: this.form.value.selectedOption,
+      dataStructure: this.form.value.selectedDataStructure,
+      type: this.form.value.selectedAssignmentType,
+      maxPoints: this.form.value.maxPoints
     };
 
     // Set configuration for graph or tree according to the selected dataStructure
-    if (this.form.value.selectedOption === "graph") {
+    if (this.form.value.selectedDataStructure === "graph") {
       
       newAssignment.initialStructure = {
         nodes: this.assignmentGraphStructure.nodes,
@@ -483,7 +499,7 @@ export class CreateAssignmentComponent implements OnInit {
       }
 
     } 
-    else if (this.form.value.selectedOption === "tree") { 
+    else if (this.form.value.selectedDataStructure === "tree") { 
       newAssignment.initialStructure = this.assignmentBstStructure;
       newAssignment.expectedSolution = this.solutionBstStructure;
     }
@@ -502,7 +518,9 @@ export class CreateAssignmentComponent implements OnInit {
         title: assignment.title,
         stepsEnabled: assignment.stepsEnabled,
         text: assignment.text,
-        selectedOption: assignment.dataStructure,
+        selectedDataStructure: assignment.dataStructure,
+        selectedAssignmentType: assignment.type,
+        maxPoints: assignment.maxPoints || 100,
         checkboxEdgeDirected: assignment.graphConfiguration?.edgeDirected || false,
         checkboxEdgeWeighted: assignment.graphConfiguration?.edgeWeight || false,
         checkboxNodeWeighted: assignment.graphConfiguration?.nodeWeight || false,
@@ -551,8 +569,78 @@ export class CreateAssignmentComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  onChangeOption(event: any): void {
-    const option = event.target.value;
+  onChangeAssignmentType(event: any): void {
+    const assignmentType = event.target.value;
+
+    if (this.structureIsSet) {
+      alert('Der Entwurf wurde zurückgesetzt.')
+      this.resetWorkspaceContent();
+    }
+
+    // Update form controls according to the assignment type
+    if (assignmentType === 'bst_insert' || assignmentType === 'bst_remove') {
+      this.form.patchValue({
+        stepsEnabled: false,
+        selectedDataStructure: 'tree',
+      });
+      
+      this.showCheckbox = false;
+    }
+
+    else if (this.form.value.selectedAssignmentType === 'dijkstra') {
+      this.form.patchValue({
+        stepsEnabled: true,
+        selectedDataStructure: 'graph',
+        checkboxEdgeDirected: false,
+        checkboxEdgeWeighted: true,
+        checkboxNodeWeighted: true,
+        checkboxNodeVisited: true
+      });  
+      
+      this.showCheckbox = true;
+    }
+    else if (this.form.value.selectedAssignmentType === 'floyd') {
+      this.form.patchValue({
+        stepsEnabled: true,
+        selectedDataStructure: 'graph',
+        checkboxEdgeDirected: true,
+        checkboxEdgeWeighted: true,
+        checkboxNodeWeighted: false,
+        checkboxNodeVisited: true
+      });  
+      
+      this.showCheckbox = true;
+    }
+    else if (this.form.value.selectedAssignmentType === 'kruskal') {
+      this.form.patchValue({
+        stepsEnabled: true,
+        selectedDataStructure: 'graph',
+        checkboxEdgeDirected: false,
+        checkboxEdgeWeighted: true,
+        checkboxNodeWeighted: false,
+        checkboxNodeVisited: false
+      }); 
+
+      this.showCheckbox = true;
+    }
+    else if (this.form.value.selectedAssignmentType === 'transitive_closure') {
+      this.form.patchValue({
+        stepsEnabled: false,
+        selectedDataStructure: 'graph',
+        checkboxEdgeDirected: true,
+        checkboxEdgeWeighted: false,
+        checkboxNodeWeighted: false,
+        checkboxNodeVisited: false
+      }); 
+      
+      this.showCheckbox = true; 
+    }
+    
+
+  }
+
+  onChangeDataStructure(event: any): void {
+    const dataStructure = event.target.value;
 
     if (this.structureIsSet) {
       alert('Der Entwurf wurde zurückgesetzt.')
@@ -560,7 +648,7 @@ export class CreateAssignmentComponent implements OnInit {
     }
 
     // Show checkboxes only if graph structure is selected
-    this.showCheckbox = option === 'graph'; 
+    this.showCheckbox = dataStructure === 'graph'; 
   }
 
   onChangeCheckbox(event: any): void {

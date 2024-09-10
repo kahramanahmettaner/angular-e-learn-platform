@@ -9,9 +9,15 @@ export class AssignmentsService {
   async create(createAssignmentDto: Prisma.AssignmentCreateInput) {
 
     const {
-      title, text, dataStructure, stepsEnabled, 
-      initialStructure, expectedSolution, graphConfiguration
+      type, title, text, dataStructure, stepsEnabled, 
+      initialStructure, expectedSolution, graphConfiguration, maxPoints
     } = createAssignmentDto;
+    
+    if (![ 
+        'bst_insert', 'bst_remove', 'dijkstra','floyd', 'kruskal', 'transitive_closure'
+      ].includes(type)) {
+      return "Der Aufgabentyp ist nicht gültig."
+    }
 
     if (title === undefined || typeof title !== 'string') {
       return "Die Aufgabe muss einen gültigen Titel haben."
@@ -29,6 +35,10 @@ export class AssignmentsService {
     // If dataStructure is not valid, do not continue
     if (dataStructure !== 'graph' && dataStructure !== 'tree') {
       return "Datenstruktur muss entweder 'graph' oder 'tree' sein."
+    }
+
+    if (maxPoints === undefined || typeof maxPoints !== 'number') {
+      return "Maximale Punktanzahl muss angegeben werden."
     }
 
     // TODO: check type
