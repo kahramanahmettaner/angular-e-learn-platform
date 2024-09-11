@@ -40,6 +40,9 @@ export class AssignmentContainerComponent implements OnInit {
   public solutionBst: (IBstNodeJSON | null)[] = [];
   public solutionGraph: IGraphDataJSON[] = [];
 
+  public feedback$!: Observable<string>;
+  public feedback: string = '';
+
   constructor(
     private assignmentService: AssignmentService,
     private graphService: GraphService,
@@ -54,12 +57,16 @@ export class AssignmentContainerComponent implements OnInit {
     const idStr = this.route.snapshot.paramMap.get('id') || '-1';
     const id = parseInt(idStr);
 
-    // get assignment observable by id
-    this.assignment$ = this.assignmentService.getAssignmentById(id);
-
     // reset the state of the graph and bst
     this.graphService.resetGraph();
     this.bstService.resetTree();
+    
+    // get feedback observable and subscribe
+    this.feedback$ = this.assignmentService.getFeedback();
+    this.feedback$.subscribe( data => { this.feedback = data }) 
+
+    // get assignment observable by id
+    this.assignment$ = this.assignmentService.getAssignmentById(id);
 
     // subscribe to get assignment data
     this.assignment$.subscribe((assignment) => {
@@ -108,14 +115,18 @@ export class AssignmentContainerComponent implements OnInit {
     if (this.assignment?.dataStructure === 'graph') {
       // To save workspace content if it is in solution mode
       this.updateWorkspace();
-  
+      
+      this.assignmentService.submitSolution(this.assignment.id, this.solutionGraph)
+
     }
 
     // binary-search-tree-assigment
     else if (this.assignment?.dataStructure === 'tree') {
       // To save workspace content if it is in solution mode
       this.updateWorkspace();
-  
+
+      this.assignmentService.submitSolution(this.assignment.id, this.solutionBst);
+      
     }
   }
 

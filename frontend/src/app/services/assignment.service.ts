@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import IAssignment from '../models/Assignment.interface';
 import { BinarySearchTreeService } from './binary-search-tree.service';
 import { HttpClient } from '@angular/common/http';
+import { IBstNodeJSON } from '../models/BstNodeJSON.interface';
+import { IGraphDataJSON } from '../models/GraphDataJSON.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class AssignmentService {
 
   private assignments$ = new BehaviorSubject<IAssignment[]>([]);
+  private solutionFeedback$ = new BehaviorSubject<string>('');
 
   constructor(
     private httpClient: HttpClient
@@ -36,12 +39,20 @@ export class AssignmentService {
   }  
 
   createAssignment(newAssignment: Partial<IAssignment>) {
-    console.log(newAssignment)
     return this.httpClient.post('http://localhost:3000/assignments', newAssignment).subscribe( data => {
       console.log(data);
     })
-
   }  
+
+  submitSolution(assignmentId: number, studentSolution: (IBstNodeJSON | null)[] | IGraphDataJSON[]) {
+    this.httpClient.post(
+      'http://localhost:3000/student-solutions', 
+      {
+        assignmentId, studentSolution
+      }).subscribe( (data: any) => {
+        this.solutionFeedback$.next(data.feedback);
+    })
+  }
 
   checkSolution(): string {
     return 'NOT IMPLEMENTED!'
@@ -58,6 +69,10 @@ export class AssignmentService {
     return this.assignments$.pipe(
       map((assignments) => assignments.find((assignment) => assignment.id === id))
     );
+  }
+
+  getFeedback(): Observable<string> {
+    return this.solutionFeedback$;
   }
 
 }
