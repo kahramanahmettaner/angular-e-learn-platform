@@ -20,9 +20,11 @@ export class SolutionEvaluationService {
 
     evaluateSolution(assignment: any, studentSolution: any) {
 
+        // Some assignment types require evaluating a single-step solution, while others require a multi-step solution 
+        // For single-step solutions, use the first step from the solution array `studentSolution[0]` `expectedSolution[0]`, and for multi-step solutions, use the entire array `studentSolution`, `expectedSolution`
         switch (assignment.type) {
             case 'bst_insert':
-                return this.bstInsertService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.expectedSolution);
+                return this.bstInsertService.evaluateSolution(assignment.initialStructure, studentSolution[0], assignment.expectedSolution[0], assignment.maxPoints);
 
             case 'bst_remove':
                 return this.bstRemoveService.evaluateSolution(assignment.initialStructure, studentSolution);
