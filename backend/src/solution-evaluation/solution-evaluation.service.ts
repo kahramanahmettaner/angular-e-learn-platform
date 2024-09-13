@@ -39,7 +39,7 @@ export class SolutionEvaluationService {
                 return this.kruskalService.evaluateSolution(assignment.initialStructure, studentSolution);
                 
             case 'transitive_closure':
-                return this.transitiveClosureService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.expectedSolution);
+                return this.transitiveClosureService.evaluateSolution(assignment.initialStructure, studentSolution[0], assignment.expectedSolution[0], assignment.maxPoints);
 
             default:
                 throw new Error(`Der Aufgabentyp ${assignment.type} wird nicht unterstützt.`);

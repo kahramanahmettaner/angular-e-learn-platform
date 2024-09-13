@@ -1,0 +1,246 @@
+import { IGraphDataJSON } from "src/models/GraphDataJSON.interface";
+import { IGraphDataSemantic } from "src/models/GraphDataSemantic.interface";
+import { IGraphEdgeJSON } from "src/models/GraphEdgeJSON.interface";
+import { IGraphEdgeSemantic } from "src/models/GraphEdgeSemantic.interface";
+import { IGraphNodeJSON } from "src/models/GraphNodeJSON.interface";
+import { IGraphNodeSemantic } from "src/models/GraphNodeSemantic.interface";
+
+/**
+ * Checks if two graphs are identical by comparing their nodes and edges.
+ *
+ * This function compares two graphs, `graph1` and `graph2`, to determine if they are identical. 
+ * It checks if both graphs have the same number of nodes and edges. Then, it verifies that every 
+ * node in `graph1` exists in `graph2` and vice versa, and that every edge in `graph1` exists in 
+ * `graph2` and vice versa.
+ *
+ * @param {IGraphDataSemantic} graph1 - The first graph to compare.
+ * @param {IGraphDataSemantic} graph2 - The second graph to compare.
+ * @returns {boolean} - Returns `true` if the graphs are identical (same nodes and edges), otherwise `false`.
+ */
+export function graphsIdentical(graph1: IGraphDataSemantic, graph2: IGraphDataSemantic): boolean {
+
+    // Check if the number of nodes and edges are the same
+    if (graph1.nodes.length !== graph2.nodes.length || graph1.edges.length !== graph2.edges.length) {
+      return false;
+    }
+
+    // Check if all nodes in graph1 are in graph2
+    for (const node1 of graph1.nodes) {
+      const matchingNode = graph2.nodes.find(node2 => nodesHaveSameValue(node1, node2));
+      if (!matchingNode) {
+        return false;
+      }
+    }
+    // Check if all nodes in graph2 are in graph1
+    for (const node2 of graph2.nodes) {
+      const matchingNode = graph1.nodes.find(node1 => nodesHaveSameValue(node2, node1));
+      if (!matchingNode) {
+        return false;
+      }
+    }
+
+    // Check if all edges in graph1 are in graph2
+    for (const edge1 of graph1.edges) {
+      const matchingEdge = graph2.edges.find(edge2 => edgesConnectNodesWithSameValues(edge1, edge2));
+      if (!matchingEdge) {
+        return false;
+      }
+    }
+
+    // Check if all edges in graph2 are in graph1
+    for (const edge2 of graph2.edges) {
+      const matchingEdge = graph1.edges.find(edge1 => edgesConnectNodesWithSameValues(edge2, edge1));
+      if (!matchingEdge) {
+        return false;
+      }
+    }
+
+    return true;
+}
+
+
+
+/**
+ * Checks if two graphs contain the same set of nodes, regardless of their order.
+ *
+ * This function determines if `graph1` and `graph2` contain the same nodes by 
+ * comparing the sorted list of node values from both graphs. It first extracts 
+ * the node values from each graph, sorts them, and then compares the sorted lists. 
+ * If the lengths differ or any value does not match, the graphs do not contain 
+ * the same nodes.
+ *
+ * @param {IGraphDataSemantic} graph1 - The first graph to compare.
+ * @param {IGraphDataSemantic} graph2 - The second graph to compare.
+ * @returns {boolean} - Returns `true` if both graphs contain the same set of nodes, otherwise `false`.
+ */
+export function graphsContainSameNodes(graph1: IGraphDataSemantic, graph2: IGraphDataSemantic): boolean {
+    
+    function extractAndSortNodeValues(graph: IGraphDataSemantic) {
+      return graph.nodes.map(node => node.value).sort();
+    }
+
+    const graph1Values = extractAndSortNodeValues(graph1);
+    const graph2Values = extractAndSortNodeValues(graph2);
+
+    if (graph1Values.length !== graph2Values.length) {
+        return false;
+    }
+
+    for (let i = 0; i < graph1Values.length; i++) {
+        if (graph1Values[i] !== graph2Values[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Identifies edges in the first graph that are not present in the second graph.
+ *
+ * This function compares two lists of edges, `edgesGraph1` and `edgesGraph2`, and 
+ * returns a list of edges that are present in `edgesGraph1` but not in `edgesGraph2`.
+ * It iterates through each edge in `edgesGraph1` and checks if there is a matching 
+ * edge in `edgesGraph2` using the `compareEdges` method. If no matching edge is found, 
+ * the edge is considered an "extra" edge and added to the result list.
+ *
+ * @param {IGraphEdgeSemantic[]} edgesGraph1 - The list of edges from the first graph.
+ * @param {IGraphEdgeSemantic[]} edgesGraph2 - The list of edges from the second graph.
+ * @returns {IGraphEdgeSemantic[]} - Returns an array of edges that are present in `edgesGraph1` but not in `edgesGraph2`.
+ */
+export function getExtraEdges(edgesGraph1: IGraphEdgeSemantic[], edgesGraph2: IGraphEdgeSemantic[]): IGraphEdgeSemantic[] {
+    const extraEdges: IGraphEdgeSemantic[] = [];
+
+    for (const edge1 of edgesGraph1) {
+      const matchingEdge = edgesGraph2.find(edge2 => edgesConnectNodesWithSameValues(edge1, edge2));
+      if (!matchingEdge) {
+        extraEdges.push(edge1);
+      }
+    }
+  
+    return extraEdges;
+}
+
+/**
+ * Checks if two graph nodes have the same value.
+ *
+ * This function compares two graph nodes, `node1` and `node2`, and returns `true` 
+ * if they have the same `value` property. The comparison does not consider other 
+ * properties such as `visited` or `weight`.
+ *
+ * @param {IGraphNodeSemantic} node1 - The first graph node to compare.
+ * @param {IGraphNodeSemantic} node2 - The second graph node to compare.
+ * @returns {boolean} - Returns `true` if both nodes have the same value, otherwise `false`.
+ */
+export function nodesHaveSameValue(node1: IGraphNodeSemantic, node2: IGraphNodeSemantic) {
+    return node1.value === node2.value;
+};
+
+/**
+ * Checks if two directed edges connect nodes with the same values.
+ *
+ * This function compares two directed graph edges, `edge1` and `edge2`, and returns `true`
+ * if both edges connect the same pair of nodes based on their `node1Value` and `node2Value` properties.
+ * It does not consider other properties like `weight`.
+ *
+ * @param {IGraphEdgeSemantic} edge1 - The first edge to compare.
+ * @param {IGraphEdgeSemantic} edge2 - The second edge to compare.
+ * @returns {boolean} - Returns `true` if both edges connect nodes with the same values, otherwise `false`.
+ */
+export function edgesConnectNodesWithSameValues(edge1: IGraphEdgeSemantic, edge2: IGraphEdgeSemantic) {
+    return (
+      edge1.node1Value === edge2.node1Value &&
+      edge1.node2Value === edge2.node2Value
+    );
+};
+
+
+// #####
+// Convert GraphJSON to GraphSemantic
+
+
+/**
+ * Converts graph data from IGraphDataJSON type to IGraphDataSemantic format.
+ *
+ * This function takes a graph represented in IGraphDataJSON type, which includes nodes and edges,
+ * and converts each node and edge to a semantic format that is easier to work with programmatically.
+ * The conversion is done by transforming nodes and edges individually using helper functions.
+ *
+ * @param {IGraphDataJSON} graphData - The graph data as IGraphDataJSON, containing nodes and edges.
+ * @returns {IGraphDataSemantic} - The graph data as IGraphDataSemantic, containing nodes and edges.
+ */
+export function graphJSONToSemantic(graphData: IGraphDataJSON): IGraphDataSemantic {
+    const nodesSemantic: IGraphNodeSemantic[] = [];
+    const edgesSemantic: IGraphEdgeSemantic[] = [];
+  
+    graphData.nodes.forEach( node => {
+      const nodeSemantic: IGraphNodeSemantic = graphNodeJSONToSemantic(node);
+      nodesSemantic.push(nodeSemantic);
+    });
+  
+    graphData.edges.forEach( edge => {
+      const edgeSemantic: IGraphEdgeSemantic = graphEdgeJSONToSemantic(edge, graphData.nodes);
+      edgesSemantic.push(edgeSemantic);
+    });
+  
+    return {
+      nodes: nodesSemantic,
+      edges: edgesSemantic
+    };
+}
+ 
+/**
+ * Converts a graph node from IGraphNodeJSON type to IGraphNodeSemantic type.
+ *
+ * @param {IGraphNodeJSON} node - The graph node as IGraphNodeJSON, including value, weight, and visited properties.
+ * @returns {IGraphNodeSemantic} - The graph node as IGraphNodeSemantic, with relevant properties copied over.
+ */
+export function graphNodeJSONToSemantic(node: IGraphNodeJSON): IGraphNodeSemantic {
+    const nodeSemantic: IGraphNodeSemantic = {
+      value: node.value,
+    };
+  
+    if (node.weight !== null) {
+      nodeSemantic.weight = node.weight;
+    }
+    if (node.visited !== null) {
+      nodeSemantic.visited = node.visited;
+    }
+  
+    return nodeSemantic;
+}
+
+/**
+ * Converts a graph edge from IGraphEdgeJSON type to IGraphEdgeSemantic type.
+ *
+ * This function takes a single graph edge represented in IGraphEdgeJSON type and converts it to IGraphEdgeSemantic type.
+ * It finds the corresponding node values based on their IDs in the provided nodes list and sets these values
+ * for the semantic representation of the edge. Additional properties like weight are also copied over, if they exist.
+ *
+ * @param {IGraphEdgeJSON} edge - The graph edge as IGraphEdgeJSON, containing node IDs and optionally a weight.
+ * @param {IGraphNodeJSON[]} nodesList - The list of nodes as IGraphNodeJSON, used to lookup node values by their IDs.
+ * @returns {IGraphEdgeSemantic} - The graph edge as IGraphEdgeSemantic, with node values and weight copied over.
+ */
+export function graphEdgeJSONToSemantic(edge: IGraphEdgeJSON, nodesList: IGraphNodeJSON[]): IGraphEdgeSemantic {
+    let node1Value: string = 'no-value'
+    let node2Value: string = 'no-value'
+    nodesList.forEach(node => {
+      if (node.nodeId === edge.node1Id) {
+        node1Value = node.value;
+      }
+      if (node.nodeId === edge.node2Id) {
+        node2Value = node.value;
+      }
+    });
+  
+    const edgeSemantic: IGraphEdgeSemantic = {
+      node1Value: node1Value,
+      node2Value: node2Value,
+    };
+  
+    if (edge.weight !== null) {
+      edgeSemantic.weight = edge.weight;
+    }
+  
+    return edgeSemantic;
+}
