@@ -291,4 +291,16 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
       this.graphService.updateNode(this.node, { visited: { enabled: true, value: !current } })
     }
   }
+
+  setWeightInfinity(): void {
+    this.node.weight.value = Number.MAX_SAFE_INTEGER;
+    this.editNodeWeight = false;
+  }
+
+  getWeightDisplayValue(): string | number {
+    const intValue = Number(this.node.weight.value);
+    const weightValue = isNaN(intValue) ? 0 : intValue;
+
+    return weightValue === Number.MAX_SAFE_INTEGER ? '∞' : weightValue;
+  }
 }

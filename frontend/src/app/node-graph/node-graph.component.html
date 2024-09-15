@@ -65,7 +65,9 @@
                 (mouseenter)="onFieldHover($event)" 
                 (dblclick)="onNodeWeightDoubleClick($event)"
             >
-                <span style="display: flex; justify-content: center;">Gewicht: {{ node.weight.value }}</span>
+                <span style="display: flex; justify-content: center;">
+                    Gewicht: {{ getWeightDisplayValue() }}
+                </span>
             </div>
             <!-- End - Input -->
             <!-- ################### -->
@@ -193,6 +195,7 @@
         <!-- Extra functionalities -->
         
         @if (graphConfiguration.nodeWeight) {
+        <!-- Edit Weight -->
         <div 
         [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
         class="edit-weight container-item" 
@@ -202,6 +205,18 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exposure" viewBox="0 0 16 16">
                 <path d="M8.5 4a.5.5 0 0 0-1 0v2h-2a.5.5 0 0 0 0 1h2v2a.5.5 0 0 0 1 0V7h2a.5.5 0 0 0 0-1h-2zm-3 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
                 <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8"/>
+            </svg>
+        </div>
+
+        <!-- Set Weight Infinity -->
+        <div 
+        [ngStyle]="{display: newEdge.started ? 'none' : 'block'}"
+        class="set-weight-infinity container-item" 
+        title="Das Gewicht auf unendlich setzen" 
+        (click)="setWeightInfinity()"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-infinity" viewBox="0 0 16 16">
+                <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z"/>
             </svg>
         </div>
         }

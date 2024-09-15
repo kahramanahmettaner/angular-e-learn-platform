@@ -104,6 +104,16 @@
     transform: translate(-50%, -50%) scale(1.2, 1.2);
 }
 
+.set-weight-infinity {
+    top: 25%;
+    left: 5%;
+    transform: translate(-50%, -50%);
+}
+
+.set-weight-infinity:hover {
+    transform: translate(-50%, -50%) scale(1.2, 1.2);
+}
+
 .edit-visited {
     top: 75%;
     left: 95%;
