@@ -155,6 +155,105 @@ export function edgesConnectNodesWithSameValues(edge1: IGraphEdgeSemantic, edge2
 };
 
 
+/**
+ * Checks if the graphs contain only edges which connect the same nodes.
+ * It is not considered whether other edge attributes are different.
+ * This function is for graphs with undirected edges.
+ * @param graph1 
+ * @param graph2 
+ */
+export function graphsContainSameEdges(graph1: IGraphDataSemantic, graph2: IGraphDataSemantic) {
+
+  function extractAndSortEdges(graph: IGraphDataSemantic) {
+    return graph.edges.map( edge => {
+      // Ensure the smaller value is always node1Value and the larger value is node2Value 
+      // Reuqired to treat edges as undirected
+      const [node1Value, node2Value] = edge.node1Value.localeCompare(edge.node2Value) < 0 ?
+        [edge.node1Value, edge.node2Value] : [edge.node2Value, edge.node1Value];
+        return { node1Value, node2Value };
+
+      // Sort the edges first by node1Value and then by node2Value
+      }).sort((a, b) => {
+        if (a.node1Value === b.node1Value) {
+          return a.node2Value.localeCompare(b.node2Value);
+        }
+        return a.node1Value.localeCompare(b.node1Value);
+    });
+  }
+
+  // Extract and sort edges for both graphs
+  const graph1Edges = extractAndSortEdges(graph1);
+  const graph2Edges = extractAndSortEdges(graph2);
+
+  // Check if the number of edges is the same in both graphs
+  if (graph1Edges.length !== graph2Edges.length) {
+    return false;
+  }
+
+  // Check if all edges are the same in both graphs
+  for (let i = 0; i < graph1Edges.length; i++) {
+    if (graph1Edges[i].node1Value !== graph2Edges[i].node1Value ||
+      graph1Edges[i].node2Value !== graph2Edges[i].node2Value) {
+      return false;
+    }
+  }
+
+  // If all checks pass, return true
+  return true;
+}
+
+
+/**
+ * Returns the list of nodes with visited attribute set to true
+ * @param nodes Array of nodes to check
+ * @returns {IGraphNodeSemantic[]} Nodes with visited attribute true
+ */
+export function getVisitedNodes(nodes: IGraphNodeSemantic[]): IGraphNodeSemantic[] {
+  return nodes.filter(node => node.visited);
+}
+
+/**
+ * Returns the list of extra visited nodes in graph1 that are not visited in graph2
+ * @param nodesGraph1 Nodes to check
+ * @param nodesGraph2 Reference nodes
+ * @returns {IGraphNodeSemantic[]} Extra visited nodes
+ */
+export function getExtraVisitedNodes(nodesGraph1: IGraphNodeSemantic[], nodesGraph2: IGraphNodeSemantic[]): IGraphNodeSemantic[] {
+  const extraVisitedNodes = [];
+
+  for (const node1 of nodesGraph1) {
+    if (node1.visited) {
+      const matchingNode = nodesGraph2.find(node2 => node1.value === node2.value);
+      if (matchingNode && !matchingNode.visited) {
+        extraVisitedNodes.push(node1);
+      }
+    }
+  }
+
+  return extraVisitedNodes;
+}
+
+
+/**
+ * Returns the list of node value for the nodes with different weights between two node lists
+ * @param nodesGraph1 Array of nodes from the first graph
+ * @param nodesGraph2 Array of nodes from the second graph
+ * @returns {Array<string>} Node values for the nodes with different weights
+ */
+export function getNodesWithDifferentWeights(nodesGraph1: IGraphNodeSemantic[], nodesGraph2: IGraphNodeSemantic[]): string[] {
+  const nodesWithDifferentWeights: string[] = [];
+
+  for (const node1 of nodesGraph1) {
+    const matchingNode = nodesGraph2.find(node2 => node1.value === node2.value);
+    if (matchingNode && node1.weight !== matchingNode.weight) {
+      nodesWithDifferentWeights.push(node1.value);
+    }
+  }
+
+  return nodesWithDifferentWeights;
+}
+
+
 // #####
 // Convert GraphJSON to GraphSemantic
 

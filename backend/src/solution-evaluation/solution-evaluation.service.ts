@@ -30,7 +30,7 @@ export class SolutionEvaluationService {
                 return this.bstRemoveService.evaluateSolution(assignment.initialStructure, studentSolution);
 
             case 'dijkstra':
-                return this.dijkstraService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.expectedSolution);
+                return this.dijkstraService.evaluateSolution(studentSolution, assignment.expectedSolution, assignment.maxPoints);
 
             case 'floyd':
                 return this.floydService.evaluateSolution(assignment.initialStructure, studentSolution);
