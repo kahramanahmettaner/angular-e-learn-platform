@@ -112,7 +112,11 @@ export class DijkstraService {
             if (nodesWithDifferentWeights.length > 0) {
                 stepFeedback += '\n Die Lösung enthält Knoten mit falschen Gewichten';
             }
-        
+            
+            if (stepReceivedPoints === maxStepPoints) {
+                stepFeedback += '\n Der Lösungsschritt ist korrekt!';
+            }
+
             // Update feedback and points for this step
             feedback.push(`${stepFeedback} \n Punkte für diesen Schritt: ${stepReceivedPoints.toFixed(2)} / ${maxStepPoints.toFixed(2)}`);
             feedback.push('\n###############\n')

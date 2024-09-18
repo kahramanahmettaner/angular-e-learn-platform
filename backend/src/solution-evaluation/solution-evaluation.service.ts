@@ -33,7 +33,7 @@ export class SolutionEvaluationService {
                 return this.dijkstraService.evaluateSolution(studentSolution, assignment.expectedSolution, assignment.maxPoints);
 
             case 'floyd':
-                return this.floydService.evaluateSolution(assignment.initialStructure, studentSolution);
+                return this.floydService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.maxPoints);
 
             case 'kruskal':
                 return this.kruskalService.evaluateSolution(assignment.initialStructure, studentSolution);

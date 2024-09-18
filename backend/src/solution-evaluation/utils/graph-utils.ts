@@ -254,6 +254,25 @@ export function getNodesWithDifferentWeights(nodesGraph1: IGraphNodeSemantic[], 
 }
 
 
+/**
+ * Returns the list of edge value for the edges with different weights between two edge lists
+ * @param edgesGraph1 Array of edges from the first graph
+ * @param edgesGraph2 Array of edges from the second graph
+ * @returns {Array<string>} Edge values for the edges with different weights as string like: 'A -> B'
+ */
+export function getEdgesWithDifferentWeights(edgesGraph1: IGraphEdgeSemantic[], edgesGraph2: IGraphEdgeSemantic[]): string[] {
+  const edgesWithDifferentWeights: string[] = [];
+  
+  for (const edge1 of edgesGraph1) {
+    const matchingEdge = edgesGraph2.find(edge2 => edge1.node1Value === edge2.node1Value && edge1.node2Value === edge2.node2Value);
+      if (matchingEdge && edge1.weight !== matchingEdge.weight) {
+        edgesWithDifferentWeights.push(`${edge1.node1Value} -> ${edge1.node2Value}`);
+      }
+  }
+  return edgesWithDifferentWeights;
+}
+
+
 // #####
 // Convert GraphJSON to GraphSemantic
 
