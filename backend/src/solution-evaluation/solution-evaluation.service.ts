@@ -36,7 +36,7 @@ export class SolutionEvaluationService {
                 return this.floydService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.maxPoints);
 
             case 'kruskal':
-                return this.kruskalService.evaluateSolution(assignment.initialStructure, studentSolution);
+                return this.kruskalService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.maxPoints);
                 
             case 'transitive_closure':
                 return this.transitiveClosureService.evaluateSolution(assignment.initialStructure, studentSolution[0], assignment.expectedSolution[0], assignment.maxPoints);
