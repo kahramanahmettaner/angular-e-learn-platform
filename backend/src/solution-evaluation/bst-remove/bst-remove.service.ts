@@ -12,11 +12,11 @@ export class BstRemoveService {
         const initialBstHeight = getBstHeight(initialStructure);
         const initialBstArray = convertBstToArray(initialStructure, initialBstHeight);
     
-        const studentBstsArray = []
+        const studentSolutionArray = []
         studentSolution.forEach( currentStepBst => {
             const studentBstHeight = getBstHeight(currentStepBst);
             const currentStepBstArray = convertBstToArray(currentStepBst, studentBstHeight);
-            studentBstsArray.push(currentStepBstArray);
+            studentSolutionArray.push(currentStepBstArray);
         });
     
         const expectedBstsArray = []
@@ -49,22 +49,111 @@ export class BstRemoveService {
         // Generate all possible solutions
         const allPossibleSolutions = this.generatePossibleSolutions(initialBstArray, nodesToDelete);
 
-        const feedback = [];
-        allPossibleSolutions.forEach(solution => {
-            feedback.push('\n\nSolution:');
-            solution.forEach(step => {
-                feedback.push('> step');
-                feedback.push(JSON.stringify(step, null, 2))
-            });
-        }); 
+        let receivedPoints = 0;
+        let feedback = ''; 
         
-        // TODO: Evaluate the student solution
+        // Iterate through each generated possible solution to evaluate against the student's submission
+        allPossibleSolutions.forEach( (possibleSolution: (string|null)[][]) => {
+            // Evaluate the student's solution using the current possible solution and accumulate points and feedback
+            const { possibleReceivedPoints, possibleFeedback } = this.evaluatePossibleSolution(
+                initialBstArray, studentSolutionArray, possibleSolution, maxPoints
+            );
+            
+            // Update the received points and feedback if the current evaluation yields a higher score
+            if (possibleReceivedPoints >= receivedPoints) {
+                receivedPoints = possibleReceivedPoints;
+                feedback = possibleFeedback;
+            }
 
-        // For now, return all possible solutions
-        console.log(allPossibleSolutions)
+        })
+
+        // Return the total points received and the corresponding feedback
         return {
-          receivedPoints: 0,
-          feedback: feedback.join('\n')//JSON.stringify(allPossibleSolutions, null, 2)
+            receivedPoints, feedback
+        }
+    }
+
+    evaluatePossibleSolution(initialBstArray: (string | null)[], studentSolution: (string | null)[][], possibleSolution: (string | null)[][], maxPoints: number) {
+
+        // Calculate the maximum points per step by dividing maxPoints with the number of correct steps
+        const stepMaxPoints = maxPoints / possibleSolution.length;
+        let receivedPoints = 0;
+        let feedback: string = '';
+        let violation = false; // Flag to indicate if there is a violation in the student's solution
+        const lastEvaluatedIndex = 0;
+
+        
+        // Loop through each step in the student's solution
+        for (let stepIndex = 0; stepIndex < studentSolution.length; stepIndex++) {
+            
+            // Check if the number of steps in the student's solution exceeds the expected number of steps
+            if (stepIndex >= possibleSolution.length) {
+                feedback = 'Die Anzahl der Lösungsschritte überschreitet maximalen erwarteten Schritte.\n'
+                feedback += `\n> Insgesamt erzielte Punkte: ${receivedPoints.toFixed(2)} / ${maxPoints}.`
+                return {
+                    feedback,
+                    receivedPoints: 0
+                }
+            }
+
+            const studentStepBst = studentSolution[stepIndex];
+            const expectedStepBst = possibleSolution[stepIndex];
+            const prevStepBst = stepIndex > 0 ? possibleSolution[stepIndex-1] : initialBstArray;
+
+            feedback += `> Schritt ${stepIndex + 1}: `;
+            
+            const nodesToRemove = this.extractNodesToDelete(prevStepBst, expectedStepBst);
+            const studentRemovedNodes = this.extractNodesToDelete(prevStepBst, studentStepBst);
+            const studentInsertedNodes = this.extractNodesToDelete(studentStepBst, prevStepBst);
+            
+            // Ensure that exactly one node is removed in each step
+            if (studentRemovedNodes.length !== 1) {
+                feedback += 'In jedem Schritt muss genau ein Knoten gelöscht werden.'
+                feedback += '\n###############\n\n'
+                violation = true;
+                break;
+            }
+
+            // Check if the correct edge is removed
+            if (nodesToRemove[0] === null || studentRemovedNodes[0] !== nodesToRemove[0]) {
+                feedback += 'Ein falscher Knoten wurde gelöscht.'
+                feedback += '\n###############\n\n'
+                violation = true;
+                break;
+            }
+
+            // Ensure that no nodes are inserted
+            if (studentInsertedNodes.length !== 0) {
+                feedback += 'Es darf in den Baum kein Knoten hinzugefügt werden.'
+                feedback += '\n###############\n\n'
+                violation = true;
+                break;
+            }
+
+            // If the correct node is removed, add points for this step
+            receivedPoints += stepMaxPoints;
+            feedback += '\n Der Lösungsschritt ist korrekt!'
+            feedback += '\n###############\n\n'
+        }
+
+        // If there was a violation, indicate that further steps are not evaluated
+        if (violation && lastEvaluatedIndex < possibleSolution.length - 1) {
+            feedback += 'Daher wurden die weiteren Schritte nicht bewertet.\n'
+        }
+        else if (studentSolution.length < possibleSolution.length) {
+            feedback += 'Die Lösung enthält weniger Schritte als erwartet.\n'
+        }
+
+        if (receivedPoints === maxPoints) {
+            feedback = 'Die Lösung ist korrekt!\n'
+        }
+
+        // Provide total points and feedback
+        feedback += `\n> Insgesamt erzielte Punkte: ${receivedPoints.toFixed(2)} / ${maxPoints}.`
+
+        return {
+            possibleReceivedPoints: receivedPoints,
+            possibleFeedback: feedback
         }
     }
 
