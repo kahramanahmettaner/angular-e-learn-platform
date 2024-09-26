@@ -580,7 +580,7 @@ export class CreateAssignmentComponent implements OnInit {
     // Update form controls according to the assignment type
     if (assignmentType === 'bst_insert' || assignmentType === 'bst_remove') {
       this.form.patchValue({
-        stepsEnabled: false,
+        stepsEnabled: true,
         selectedDataStructure: 'tree',
       });
       

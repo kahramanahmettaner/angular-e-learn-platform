@@ -27,7 +27,7 @@ export class SolutionEvaluationService {
                 return this.bstInsertService.evaluateSolution(assignment.initialStructure, studentSolution[0], assignment.expectedSolution[0], assignment.maxPoints);
 
             case 'bst_remove':
-                return this.bstRemoveService.evaluateSolution(assignment.initialStructure, studentSolution);
+                return this.bstRemoveService.evaluateSolution(assignment.initialStructure, studentSolution, assignment.expectedSolution, assignment.maxPoints);
 
             case 'dijkstra':
                 return this.dijkstraService.evaluateSolution(studentSolution, assignment.expectedSolution, assignment.maxPoints);
