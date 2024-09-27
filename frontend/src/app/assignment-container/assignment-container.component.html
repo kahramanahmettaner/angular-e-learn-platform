@@ -12,10 +12,10 @@
     </div>
     <div class="solution box">
         @if (assignment.dataStructure === 'graph') {
-            <app-graph />
+            <app-graph [toolbarEnabled]="false"/>
         }
         @else if (assignment.dataStructure === 'tree') {
-            <app-binary-search-tree />
+            <app-binary-search-tree [toolbarEnabled]="false"/>
         }
         @else {
             <p>No Structure</p>

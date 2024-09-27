@@ -10,6 +10,7 @@
 }
 
 .assignment {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -23,6 +24,11 @@
                 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
+
+.assignment:hover {
+    background-color: #eee;
+}
+
 .assignment .title {
     display: flex;
     flex-direction: row;
@@ -32,4 +38,9 @@
 
 .assignment p {
     margin: 0;
+}
+
+.assignment .title button.to-assignment {
+    background: transparent;
+    border:none;
 }

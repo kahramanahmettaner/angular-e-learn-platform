@@ -80,11 +80,12 @@ export class BstRemoveService {
         let receivedPoints = 0;
         let feedback: string = '';
         let violation = false; // Flag to indicate if there is a violation in the student's solution
-        const lastEvaluatedIndex = 0;
+        let lastEvaluatedIndex = 0;
 
         
         // Loop through each step in the student's solution
         for (let stepIndex = 0; stepIndex < studentSolution.length; stepIndex++) {
+            lastEvaluatedIndex = stepIndex;
             
             // Check if the number of steps in the student's solution exceeds the expected number of steps
             if (stepIndex >= possibleSolution.length) {

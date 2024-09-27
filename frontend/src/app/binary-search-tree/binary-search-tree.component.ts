@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { BinarySearchTreeService } from '../services/binary-search-tree.service';
 import { IBstNode } from '../models/BstNode.interface';
@@ -57,6 +57,17 @@ export class BinarySearchTreeComponent implements OnInit, OnDestroy, AfterViewIn
   
   nodes!: IBstNode[];
   newEdge!: IBstNewEdge;
+
+  private _toolbarEnabled: boolean = true;
+
+  @Input()
+  set toolbarEnabled(value: boolean | undefined) {
+    this._toolbarEnabled = value ?? this._toolbarEnabled;
+  }
+
+  get toolbarEnabled(): boolean {
+    return this._toolbarEnabled;
+  }
 
   // #############################
   // Constructor

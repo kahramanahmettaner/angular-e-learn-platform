@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IPosition } from '../models/Position.interface';
 import { IRectangle } from '../models/Rectangle.interface';
 import { GraphService } from '../services/graph.service';
@@ -51,6 +51,17 @@ export class GraphComponent  implements OnInit, AfterViewInit, OnDestroy {
   edges!: IGraphEdge[];
   newEdge!: IGraphNewEdge;
   
+  private _toolbarEnabled: boolean = true;
+
+  @Input()
+  set toolbarEnabled(value: boolean | undefined) {
+    this._toolbarEnabled = value ?? this._toolbarEnabled;
+  }
+
+  get toolbarEnabled(): boolean {
+    return this._toolbarEnabled;
+  }
+
   // #############################
   // Constructor
   constructor( 

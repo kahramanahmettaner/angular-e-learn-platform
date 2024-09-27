@@ -23,6 +23,7 @@
   
     <!-- ################### -->
     <!-- Functionalities (JSON-Output etc.) -->
+    @if (toolbarEnabled) {
     <div class="functionalities">
       <div class="functionality">
         <button class="image-button" (click)="navigateToRoute('/')">
@@ -68,6 +69,7 @@
         <span>Von JSON importieren</span>
       </div>
     </div>
+    }
     <!-- End - Functionalities -->
     <!-- ################### -->
   
